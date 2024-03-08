@@ -1,0 +1,394 @@
+I "c:\p16ecc/include/pic16e"
+I "c:\p16ecc/include/p12f1840"
+P "p12f1840" 256 4096
+E _$$ 8432
+S CODE2 REL
+U OLED_setPos 3
+G OLED_setPos
+K OLED_setPos_$data$
+W 0x0016 0x0080:(OLED_setPos_$data$+1) 0x0016 0x0080:OLED_setPos_$data$
+; "; :: oled.c #19: OLED_command(0xb0+y);"
+W 0x30B0 0x0700:(OLED_setPos_$data$+1) 0x0080:(OLED_setPos_$data$+2)
+W 0x0800:(OLED_setPos_$data$+2) 0x001D
+J OLED_setPos OLED_command
+W 0x2000|(OLED_command&2047)
+; "; :: oled.c #20: OLED_command((x >> 4)|0x10);"
+K OLED_setPos_$data$
+W 0x0800:OLED_setPos_$data$ 0x0080:(OLED_setPos_$data$+2)
+W 0x0E80:(OLED_setPos_$data$+2) 0x300F 0x0580:(OLED_setPos_$data$+2)
+W 0x1600:(OLED_setPos_$data$+2) 0x0800:(OLED_setPos_$data$+2) 0x001D
+W 0x2000|(OLED_command&2047)
+; "; :: oled.c #21: OLED_command((x&0x0f)|0x01);"
+K OLED_setPos_$data$
+W 0x0800:OLED_setPos_$data$ 0x390F 0x0080:(OLED_setPos_$data$+2)
+W 0x1400:(OLED_setPos_$data$+2) 0x0800:(OLED_setPos_$data$+2) 0x001D
+W 0x2000|(OLED_command&2047)
+J OLED_command OLED_setPos
+W 0x0008
+F OLED_setPos OLED_command
+S CODE2 REL
+U OLED_clr 4
+G OLED_clr
+K OLED_clr_$data$
+W 0x0180:(OLED_clr_$data$+2)
+; "; :: oled.c #34: for (y = 0;"
+W 0x0180:OLED_clr_$data$
+J OLED_clr _$L3
+L _$L3
+; "; :: oled.c #34: y < OLED_HEIGHT/8;"
+W 0x3004
+K OLED_clr_$data$
+W 0x0200:OLED_clr_$data$
+J _$L3 _$L5
+W 0x1803 0x2800|(_$L5&2047)
+; "; :: oled.c #36: OLED_command(0xb0+y);"
+W 0x30B0 0x0700:OLED_clr_$data$ 0x0080:(OLED_clr_$data$+3)
+W 0x0800:(OLED_clr_$data$+3) 0x001D
+J _$L5 OLED_command
+W 0x2000|(OLED_command&2047)
+; "; :: oled.c #37: OLED_command(0x01);"
+W 0x3001 0x001D 0x2000|(OLED_command&2047)
+; "; :: oled.c #38: OLED_command(0x10);"
+W 0x3010 0x001D 0x2000|(OLED_command&2047)
+; "; :: oled.c #40: for (x = 0;"
+K OLED_clr_$data$
+W 0x0180:(OLED_clr_$data$+1)
+J OLED_command _$L7
+L _$L7
+; "; :: oled.c #40: x < OLED_WIDTH;"
+W 0x3080
+K OLED_clr_$data$
+W 0x0200:(OLED_clr_$data$+1)
+J _$L7 _$L9
+W 0x1803 0x2800|(_$L9&2047)
+; "; :: oled.c #41: OLED_data(&c, 1);"
+W 0x3000|((OLED_clr_$data$+2)&255) 0x001D 0x3000|(((OLED_clr_$data$+2)>>8)&255)
+W 0x001D 0x3001 0x001D
+J _$L9 OLED_data
+W 0x2000|(OLED_data&2047)
+; "; :: oled.c #40: x++)"
+K OLED_clr_$data$
+W 0x0A80:(OLED_clr_$data$+1)
+J OLED_data _$L7
+W 0x2800|(_$L7&2047)
+J _$L7 _$L9
+L _$L9
+; "; :: oled.c #34: y++)"
+K OLED_clr_$data$
+W 0x0A80:OLED_clr_$data$
+J _$L9 _$L3
+W 0x2800|(_$L3&2047)
+J _$L3 _$L5
+L _$L5
+J _$L5 OLED_clr
+W 0x0008
+F OLED_clr OLED_data
+F OLED_clr OLED_command
+S CODE2 REL
+U OLED_init 3
+G OLED_init
+; "; :: oled.c #57: TMR0_delayMs(100);"
+W 0x3064 0x001D
+J OLED_init TMR0_delayMs
+W 0x2000|(TMR0_delayMs&2047)
+; "; :: oled.c #59: for (i = 0;"
+K OLED_init_$data$
+W 0x0180:OLED_init_$data$
+J TMR0_delayMs _$L12
+L _$L12
+; "; :: oled.c #59: i < sizeof(oledInitCmdList);"
+W 0x301E
+K OLED_init_$data$
+W 0x0200:OLED_init_$data$
+J _$L12 _$L14
+W 0x1803 0x2800|(_$L14&2047)
+; "; :: oled.c #60: OLED_command(oledInitCmdList[i]);"
+W 0x3000|(oledInitCmdList&255) 0x0700:OLED_init_$data$
+W 0x0080:(OLED_init_$data$+1) 0x3000|((oledInitCmdList>>8)&255) 0x3D7F
+W 0x0080:((OLED_init_$data$+1)+1) 0x0800:(OLED_init_$data$+1) 0x0084
+W 0x0800:((OLED_init_$data$+1)+1) 0x0085 0x3F00 0x001D
+J _$L14 OLED_command
+W 0x2000|(OLED_command&2047)
+; "; :: oled.c #59: i++)"
+K OLED_init_$data$
+W 0x0A80:OLED_init_$data$
+J OLED_command _$L12
+W 0x2800|(_$L12&2047)
+J _$L12 _$L14
+L _$L14
+; "; :: oled.c #62: TMR0_delayMs(100);"
+W 0x3064 0x001D
+J _$L14 TMR0_delayMs
+W 0x2000|(TMR0_delayMs&2047)
+; "; :: oled.c #64: OLED_clr();"
+J TMR0_delayMs OLED_clr
+W 0x2000|(OLED_clr&2047)
+J OLED_clr OLED_init
+W 0x0008
+F OLED_init OLED_clr
+F OLED_init OLED_command
+F OLED_init TMR0_delayMs
+S CODE2 REL
+U OLED_command 1
+G OLED_command
+K OLED_command_$data$
+W 0x0016 0x0080:OLED_command_$data$
+; "; :: oled.c #70: I2C_start(SSD1306_IIC_ADDR);"
+W 0x3078 0x001D
+J OLED_command I2C_start
+W 0x2000|(I2C_start&2047)
+; "; :: oled.c #71: I2C_writeByte(SSD1306_IIC_CMD_MASK);"
+W 0x3000 0x001D
+J I2C_start I2C_writeByte
+W 0x2000|(I2C_writeByte&2047)
+; "; :: oled.c #72: I2C_writeByte(cmd);"
+K OLED_command_$data$
+W 0x0800:OLED_command_$data$ 0x001D 0x2000|(I2C_writeByte&2047)
+; "; :: oled.c #73: I2C_end();"
+J I2C_writeByte I2C_end
+W 0x2000|(I2C_end&2047)
+J I2C_end OLED_command
+W 0x0008
+F OLED_command I2C_end
+F OLED_command I2C_writeByte
+F OLED_command I2C_start
+S CODE2 REL
+U OLED_data 5
+G OLED_data
+W 0x3000|((OLED_data_$data$+3)&255) 0x0084
+W 0x3000|(((OLED_data_$data$+3)>>8)&255) 0x0085 0x0023
+J OLED_data _copyPar
+W 0x2000|(_copyPar&2047)
+; "; :: oled.c #78: I2C_start(SSD1306_IIC_ADDR);"
+W 0x3078 0x001D
+J _copyPar I2C_start
+W 0x2000|(I2C_start&2047)
+; "; :: oled.c #79: I2C_writeByte(SSD1306_IIC_DAT_MASK);"
+W 0x3040 0x001D
+J I2C_start I2C_writeByte
+W 0x2000|(I2C_writeByte&2047)
+J I2C_writeByte _$L18
+L _$L18
+; "; :: oled.c #80: while ( length-- )"
+K OLED_data_$data$
+W 0x0380:(OLED_data_$data$+2) 0x0A00:(OLED_data_$data$+2)
+J _$L18 _$L20
+W 0x1903 0x2800|(_$L20&2047)
+; "; :: oled.c #80: I2C_writeByte(*dat++);"
+W 0x0800:OLED_data_$data$ 0x0080:(OLED_data_$data$+3)
+W 0x0800:(OLED_data_$data$+1) 0x0080:((OLED_data_$data$+3)+1)
+W 0x0A80:OLED_data_$data$ 0x1903 0x0A80:(OLED_data_$data$+1)
+W 0x0800:(OLED_data_$data$+3) 0x0084 0x0800:((OLED_data_$data$+3)+1) 0x0085
+W 0x3F00 0x001D
+J _$L20 I2C_writeByte
+W 0x2000|(I2C_writeByte&2047)
+J I2C_writeByte _$L18
+W 0x2800|(_$L18&2047)
+J _$L18 _$L20
+L _$L20
+; "; :: oled.c #81: I2C_end();"
+J _$L20 I2C_end
+W 0x2000|(I2C_end&2047)
+J I2C_end OLED_data
+W 0x0008
+F OLED_data I2C_end
+F OLED_data I2C_writeByte
+F OLED_data I2C_start
+F OLED_data _copyPar
+S CODE2 REL
+U OLED_displayChar_8x6_str 6
+G OLED_displayChar_8x6_str
+W 0x3000|((OLED_displayChar_8x6_str_$data$+4)&255) 0x0084
+W 0x3000|(((OLED_displayChar_8x6_str_$data$+4)>>8)&255) 0x0085 0x0024
+J OLED_displayChar_8x6_str _copyPar
+W 0x2000|(_copyPar&2047)
+J _copyPar _$L22
+L _$L22
+; "; :: oled.c #126: while ( *sp )"
+K OLED_displayChar_8x6_str_$data$
+W 0x0800:(OLED_displayChar_8x6_str_$data$+2) 0x0084
+W 0x0800:((OLED_displayChar_8x6_str_$data$+2)+1) 0x0085 0x3F00
+J _$L22 _$L24
+W 0x1903 0x2800|(_$L24&2047)
+; "; :: oled.c #128: OLED_setPos(x, y);"
+W 0x0800:OLED_displayChar_8x6_str_$data$ 0x001D
+W 0x0800:(OLED_displayChar_8x6_str_$data$+1) 0x001D
+J _$L24 OLED_setPos
+W 0x2000|(OLED_setPos&2047)
+; "; :: oled.c #129: OLED_data(FONT_6x8[*sp++ - 32], 6);"
+K OLED_displayChar_8x6_str_$data$
+W 0x0800:(OLED_displayChar_8x6_str_$data$+2)
+W 0x0080:(OLED_displayChar_8x6_str_$data$+4)
+W 0x0800:((OLED_displayChar_8x6_str_$data$+2)+1)
+W 0x0080:((OLED_displayChar_8x6_str_$data$+4)+1)
+W 0x0A80:(OLED_displayChar_8x6_str_$data$+2) 0x1903
+W 0x0A80:((OLED_displayChar_8x6_str_$data$+2)+1)
+W 0x0800:(OLED_displayChar_8x6_str_$data$+4) 0x0084
+W 0x0800:((OLED_displayChar_8x6_str_$data$+4)+1) 0x0085 0x3020 0x0200
+W 0x0080:(OLED_displayChar_8x6_str_$data$+4) 0x3101 0x0100 0x3B7F
+W 0x0080:((OLED_displayChar_8x6_str_$data$+4)+1) 0x3006 0x001D 0x3000 0x001D
+W 0x3000|((OLED_displayChar_8x6_str_$data$+4)&255) 0x0084
+W 0x3000|(((OLED_displayChar_8x6_str_$data$+4)>>8)&255) 0x0085
+J OLED_setPos _mul16indf
+W 0x2000|(_mul16indf&2047) 0x3000|(FONT_6x8&255)
+W 0x0780:(OLED_displayChar_8x6_str_$data$+4) 0x3000|((FONT_6x8>>8)&255)
+W 0x3D80:((OLED_displayChar_8x6_str_$data$+4)+1)
+W 0x0800:(OLED_displayChar_8x6_str_$data$+4) 0x001D
+W 0x0800:((OLED_displayChar_8x6_str_$data$+4)+1) 0x001D 0x3006 0x001D
+J _mul16indf OLED_data
+W 0x2000|(OLED_data&2047)
+; "; :: oled.c #130: x += 6;"
+W 0x3006
+K OLED_displayChar_8x6_str_$data$
+W 0x0780:OLED_displayChar_8x6_str_$data$
+J OLED_data _$L22
+W 0x2800|(_$L22&2047)
+J _$L22 _$L24
+L _$L24
+J _$L24 OLED_displayChar_8x6_str
+W 0x0008
+F OLED_displayChar_8x6_str OLED_data
+F OLED_displayChar_8x6_str _mul16indf
+F OLED_displayChar_8x6_str OLED_setPos
+F OLED_displayChar_8x6_str _copyPar
+S CODE2 REL
+U OLED_displayChar_32x19 5
+G OLED_displayChar_32x19
+W 0x3000|((OLED_displayChar_32x19_$data$+3)&255) 0x0084
+W 0x3000|(((OLED_displayChar_32x19_$data$+3)>>8)&255) 0x0085 0x0023
+J OLED_displayChar_32x19 _copyPar
+W 0x2000|(_copyPar&2047)
+; "; :: oled.c #137: for (y = 0;"
+K 0 OLED_displayChar_32x19_$data$
+W 0x0180:(OLED_displayChar_32x19_$data$+4)
+J _copyPar _$L26
+L _$L26
+; "; :: oled.c #137: y < 4;"
+W 0x3004
+K OLED_displayChar_32x19_$data$
+W 0x0200:(OLED_displayChar_32x19_$data$+4)
+J _$L26 _$L28
+W 0x1803 0x2800|(_$L28&2047)
+; "; :: oled.c #139: OLED_setPos(x, y);"
+W 0x0800:OLED_displayChar_32x19_$data$ 0x001D
+W 0x0800:(OLED_displayChar_32x19_$data$+4) 0x001D
+J _$L28 OLED_setPos
+W 0x2000|(OLED_setPos&2047)
+; "; :: oled.c #140: OLED_data(fp, 19);"
+K OLED_displayChar_32x19_$data$
+W 0x0800:(OLED_displayChar_32x19_$data$+1) 0x001D
+W 0x0800:((OLED_displayChar_32x19_$data$+1)+1) 0x001D 0x3013 0x001D
+J OLED_setPos OLED_data
+W 0x2000|(OLED_data&2047)
+; "; :: oled.c #141: fp += 19;"
+W 0x3013
+K OLED_displayChar_32x19_$data$
+W 0x0780:(OLED_displayChar_32x19_$data$+1) 0x3000
+W 0x3D80:((OLED_displayChar_32x19_$data$+1)+1)
+; "; :: oled.c #137: y++)"
+W 0x0A80:(OLED_displayChar_32x19_$data$+4)
+J OLED_data _$L26
+W 0x2800|(_$L26&2047)
+J _$L26 _$L28
+L _$L28
+J _$L28 OLED_displayChar_32x19
+W 0x0008
+F OLED_displayChar_32x19 OLED_data
+F OLED_displayChar_32x19 OLED_setPos
+F OLED_displayChar_32x19 _copyPar
+S CODE2 REL
+U OLED_displayChar_32x10 5
+G OLED_displayChar_32x10
+W 0x3000|((OLED_displayChar_32x10_$data$+3)&255) 0x0084
+W 0x3000|(((OLED_displayChar_32x10_$data$+3)>>8)&255) 0x0085 0x0023
+J OLED_displayChar_32x10 _copyPar
+W 0x2000|(_copyPar&2047)
+; "; :: oled.c #148: for (y = 0;"
+K 0 OLED_displayChar_32x10_$data$
+W 0x0180:(OLED_displayChar_32x10_$data$+4)
+J _copyPar _$L31
+L _$L31
+; "; :: oled.c #148: y < 4;"
+W 0x3004
+K OLED_displayChar_32x10_$data$
+W 0x0200:(OLED_displayChar_32x10_$data$+4)
+J _$L31 _$L33
+W 0x1803 0x2800|(_$L33&2047)
+; "; :: oled.c #150: OLED_setPos(x, y);"
+W 0x0800:OLED_displayChar_32x10_$data$ 0x001D
+W 0x0800:(OLED_displayChar_32x10_$data$+4) 0x001D
+J _$L33 OLED_setPos
+W 0x2000|(OLED_setPos&2047)
+; "; :: oled.c #151: OLED_data(fp, 10);"
+K OLED_displayChar_32x10_$data$
+W 0x0800:(OLED_displayChar_32x10_$data$+1) 0x001D
+W 0x0800:((OLED_displayChar_32x10_$data$+1)+1) 0x001D 0x300A 0x001D
+J OLED_setPos OLED_data
+W 0x2000|(OLED_data&2047)
+; "; :: oled.c #152: fp += 10;"
+W 0x300A
+K OLED_displayChar_32x10_$data$
+W 0x0780:(OLED_displayChar_32x10_$data$+1) 0x3000
+W 0x3D80:((OLED_displayChar_32x10_$data$+1)+1)
+; "; :: oled.c #148: y++)"
+W 0x0A80:(OLED_displayChar_32x10_$data$+4)
+J OLED_data _$L31
+W 0x2800|(_$L31&2047)
+J _$L31 _$L33
+L _$L33
+J _$L33 OLED_displayChar_32x10
+W 0x0008
+F OLED_displayChar_32x10 OLED_data
+F OLED_displayChar_32x10 OLED_setPos
+F OLED_displayChar_32x10 _copyPar
+S CODE2 REL
+U OLED_displayChar_16 7
+G OLED_displayChar_16
+W 0x3000|((OLED_displayChar_16_$data$+5)&255) 0x0084
+W 0x3000|(((OLED_displayChar_16_$data$+5)>>8)&255) 0x0085 0x0025
+J OLED_displayChar_16 _copyPar
+W 0x2000|(_copyPar&2047)
+; "; :: oled.c #159: for (row = 0;"
+K 0 OLED_displayChar_16_$data$
+W 0x0180:(OLED_displayChar_16_$data$+5)
+J _copyPar _$L36
+L _$L36
+; "; :: oled.c #159: row < 2;"
+W 0x3002
+K OLED_displayChar_16_$data$
+W 0x0200:(OLED_displayChar_16_$data$+5)
+J _$L36 _$L38
+W 0x1803 0x2800|(_$L38&2047)
+; "; :: oled.c #161: OLED_setPos(x, y+row);"
+W 0x0800:OLED_displayChar_16_$data$ 0x001D 0x0800:(OLED_displayChar_16_$data$+5)
+W 0x0700:(OLED_displayChar_16_$data$+1) 0x0080:(OLED_displayChar_16_$data$+6)
+W 0x0800:(OLED_displayChar_16_$data$+6) 0x001D
+J _$L38 OLED_setPos
+W 0x2000|(OLED_setPos&2047)
+; "; :: oled.c #162: OLED_data(fp, width);"
+K OLED_displayChar_16_$data$
+W 0x0800:(OLED_displayChar_16_$data$+2) 0x001D
+W 0x0800:((OLED_displayChar_16_$data$+2)+1) 0x001D
+W 0x0800:(OLED_displayChar_16_$data$+4) 0x001D
+J OLED_setPos OLED_data
+W 0x2000|(OLED_data&2047)
+; "; :: oled.c #163: fp += width;"
+K OLED_displayChar_16_$data$
+W 0x0800:(OLED_displayChar_16_$data$+4) 0x0780:(OLED_displayChar_16_$data$+2)
+W 0x3000 0x3D80:((OLED_displayChar_16_$data$+2)+1)
+; "; :: oled.c #159: row++)"
+W 0x0A80:(OLED_displayChar_16_$data$+5)
+J OLED_data _$L36
+W 0x2800|(_$L36&2047)
+J _$L36 _$L38
+L _$L38
+J _$L38 OLED_displayChar_16
+W 0x0008
+F OLED_displayChar_16 OLED_data
+F OLED_displayChar_16 OLED_setPos
+F OLED_displayChar_16 _copyPar
+S CONSTi REL
+L oledInitCmdList
+W 0x34AE 0x3400 0x3410 0x3440 0x34B0 0x3481 0x34FF 0x34A1 0x34A6 0x34A8 0x341F
+W 0x34C8 0x34D3 0x3400 0x34D5 0x3480 0x34D9 0x34F1 0x34DA 0x3402 0x34DB 0x3440
+W 0x348D 0x3414 0x3420 0x3402 0x34A4 0x34A6 0x342E 0x34AF

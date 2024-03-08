@@ -1,0 +1,3851 @@
+>>>>>>>>>>>> MAP OUTPUT <<<<<<<<<<<<
+
+- DATA MEMORY 21 bytes(0.51%) used
+timer0.obj  tmr0Count (1): 0x2000 [0:0x20]
+main.obj  main_$data$ (1): 0x2001 [0:0x21]
+timer0.obj  TMR0_delayMs_$data$ (3): 0x2002 [0:0x22]
+oled.obj  OLED_setPos_$data$ (3): 0x2002 [0:0x22]
+oled.obj  OLED_fill_$data$ (4): 0x2002 [0:0x22]
+i2c.obj  I2C_dataLength_$data$ (5): 0x2002 [0:0x22]
+oled.obj  OLED_ShowStr_$data$ (10): 0x2007 [0:0x27]
+oled.obj  OLED_travelImg_$data$ (11): 0x2007 [0:0x27]
+i2c.obj  I2C_command_$data$ (1): 0x2012 [0:0x32]
+i2c.obj  I2C_data_$data$ (1): 0x2012 [0:0x32]
+i2c.obj  I2C_write_$data$ (2): 0x2013 [0:0x33]
+
+- MEMORY MAP   'X'=forbidden, '+'=used, '.'=unused
+0000: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX+++++++++++++++++++++...........
+0040: ................................................XXXXXXXXXXXXXXXX
+0080: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+00C0: ................................................XXXXXXXXXXXXXXXX
+0100: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0140: ................................................XXXXXXXXXXXXXXXX
+0180: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+01C0: ................................................XXXXXXXXXXXXXXXX
+0200: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0240: ................................................XXXXXXXXXXXXXXXX
+0280: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+02C0: ................................................XXXXXXXXXXXXXXXX
+0300: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0340: ................................................XXXXXXXXXXXXXXXX
+0380: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+03C0: ................................................XXXXXXXXXXXXXXXX
+0400: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0440: ................................................XXXXXXXXXXXXXXXX
+0480: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+04C0: ................................................XXXXXXXXXXXXXXXX
+0500: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0540: ................................................XXXXXXXXXXXXXXXX
+0580: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+05C0: ................................................XXXXXXXXXXXXXXXX
+0600: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0640: ................................................XXXXXXXXXXXXXXXX
+0680: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+06C0: ................................................XXXXXXXXXXXXXXXX
+0700: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0740: ................................................XXXXXXXXXXXXXXXX
+0780: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+07C0: ................................................XXXXXXXXXXXXXXXX
+0800: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0840: ................................................XXXXXXXXXXXXXXXX
+0880: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+08C0: ................................................XXXXXXXXXXXXXXXX
+0900: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0940: ................................................XXXXXXXXXXXXXXXX
+0980: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+09C0: ................................................XXXXXXXXXXXXXXXX
+0A00: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0A40: ................................................XXXXXXXXXXXXXXXX
+0A80: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0AC0: ................................................XXXXXXXXXXXXXXXX
+0B00: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0B40: ................................................XXXXXXXXXXXXXXXX
+0B80: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0BC0: ................................................XXXXXXXXXXXXXXXX
+0C00: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0C40: ................................................XXXXXXXXXXXXXXXX
+0C80: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0CC0: ................................................XXXXXXXXXXXXXXXX
+0D00: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0D40: ................................................XXXXXXXXXXXXXXXX
+0D80: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0DC0: ................................................XXXXXXXXXXXXXXXX
+0E00: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0E40: ................................................XXXXXXXXXXXXXXXX
+0E80: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0EC0: ................................................XXXXXXXXXXXXXXXX
+0F00: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0F40: ................................................XXXXXXXXXXXXXXXX
+0F80: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0FC0: ................................................XXXXXXXXXXXXXXXX
+1000: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+1040: ................................................XXXXXXXXXXXXXXXX
+1080: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+10C0: ................................................XXXXXXXXXXXXXXXX
+1100: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+1140: ................................................XXXXXXXXXXXXXXXX
+1180: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+11C0: ................................................XXXXXXXXXXXXXXXX
+1200: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+1240: ................................................XXXXXXXXXXXXXXXX
+1280: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+12C0: ................................................XXXXXXXXXXXXXXXX
+1300: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+1340: ................................................XXXXXXXXXXXXXXXX
+1380: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+13C0: ................................................XXXXXXXXXXXXXXXX
+1400: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+1440: ................................................XXXXXXXXXXXXXXXX
+1480: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+14C0: ................................................XXXXXXXXXXXXXXXX
+1500: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+1540: ................................................XXXXXXXXXXXXXXXX
+1580: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+15C0: ................................................XXXXXXXXXXXXXXXX
+1600: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+1640: ................................................XXXXXXXXXXXXXXXX
+1680: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+16C0: ................................................XXXXXXXXXXXXXXXX
+1700: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+1740: ................................................XXXXXXXXXXXXXXXX
+1780: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+17C0: ................................................XXXXXXXXXXXXXXXX
+1800: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+1840: ................................................XXXXXXXXXXXXXXXX
+1880: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+18C0: ................................................XXXXXXXXXXXXXXXX
+1900: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+1940: ................................................XXXXXXXXXXXXXXXX
+
+
+- CODE MEMORY 3274 words(9.99%) used
+          	(main.obj line#15, 3 words)
+0000: 0000		nop
+0001: 3180		movlp	0x00
+0002: 2810		goto	0x010
+          	(main.obj line#22, 1 words)
+0004: 018A		clrf	PCLATH
+          	(timer0.obj line#23, 10 words)
+0005: 014E		movlb	0x0E
+0006: 1E8C		btfss	0x0C, 5
+0007: 280F		goto	0x00F
+          		; :: timer0.c #17: TMR0L  = 68;
+0008: 3044		movlw	0x44
+0009: 0140		movlb	0x00
+000A: 009C		movwf	0x1C
+          		; :: timer0.c #18: TMR0IF = 0;
+000B: 014E		movlb	0x0E
+000C: 128C		bcf	0x0C, 5
+          		; :: timer0.c #19: tmr0Count++;
+000D: 0140		movlb	0x00
+000E: 0AA0		incf	0x20, F
+          	_$L4:
+          	(main.obj line#24, 1 words)
+000F: 0009		retfie
+          	(main.obj line#26, 60 words)
+          	main::
+0010: 22A3		call	0x2A3
+0011: 30F0		movlw	0xF0
+0012: 0086		movwf	FSR1L
+0013: 302F		movlw	0x2F
+0014: 0087		movwf	FSR1H
+          		; :: main.c #20: OSCCON1 = 0x70;
+0015: 3070		movlw	0x70
+0016: 0151		movlb	0x11
+0017: 008D		movwf	0x0D
+          		; :: main.c #21: OSCTUNE = 0x00;
+0018: 0192		clrf	0x12
+          	_$L2:
+          		; :: main.c #23: while( !(OSCSTAT & (1 << 6)) )
+0019: 0151		movlb	0x11
+001A: 1F10		btfss	0x10, 6
+001B: 2819		goto	0x019
+          		; :: main.c #23: ;
+          		; :: main.c #25: GIE = 1;
+001C: 178B		bsf	INTCON, 7
+          		; :: main.c #26: PEIE = 1;
+001D: 170B		bsf	INTCON, 6
+          		; :: main.c #27: ANSELA = 0;
+001E: 017E		movlb	0x3E
+001F: 01B8		clrf	0x38
+          		; :: main.c #29: TMR0_init();
+0020: 204C		call	0x04C
+          		; :: main.c #30: I2C_init();
+0021: 221B		call	0x21B
+          		; :: main.c #32: OLED_init();
+0022: 20A8		call	0x0A8
+          		; :: main.c #34: OLED_ShowStr(0, 0, "Hello, world!", 		FONT_SIZE_16x8);
+0023: 3000		movlw	0x00
+0024: 001D		movwi	[--FSR1]
+0025: 001D		movwi	[--FSR1]
+0026: 30A6		movlw	0xA6
+0027: 001D		movwi	[--FSR1]
+0028: 3082		movlw	0x82
+0029: 001D		movwi	[--FSR1]
+002A: 3001		movlw	0x01
+002B: 001D		movwi	[--FSR1]
+002C: 2103		call	0x103
+          		; :: main.c #35: OLED_ShowStr(0, 7, "diycompiler@gmail.com", FONT_SIZE_8x6);
+002D: 3000		movlw	0x00
+002E: 001D		movwi	[--FSR1]
+002F: 3007		movlw	0x07
+0030: 001D		movwi	[--FSR1]
+0031: 30B4		movlw	0xB4
+0032: 001D		movwi	[--FSR1]
+0033: 3082		movlw	0x82
+0034: 001D		movwi	[--FSR1]
+0035: 3000		movlw	0x00
+0036: 001D		movwi	[--FSR1]
+0037: 2103		call	0x103
+          		; :: main.c #36: for (c = 0;
+0038: 0140		movlb	0x00
+0039: 01A1		clrf	0x21
+          	_$L5:
+          		; :: main.c #38: OLED_travelImg(c);
+003A: 0140		movlb	0x00
+003B: 0821		movf	0x21, W
+003C: 001D		movwi	[--FSR1]
+003D: 2192		call	0x192
+          		; :: main.c #39: if ( ++c > 120 )
+003E: 0140		movlb	0x00
+003F: 0AA1		incf	0x21, F
+0040: 3078		movlw	0x78
+0041: 0621		xorwf	0x21, W
+0042: 001D		movwi	[--FSR1]
+0043: 0621		xorwf	0x21, W
+0044: 0221		subwf	0x21, W
+0045: 229C		call	0x29C
+0046: 1C09		btfss	WREG, 0
+0047: 283A		goto	0x03A
+          		; :: main.c #39: c = -128;
+0048: 3080		movlw	0x80
+0049: 00A1		movwf	0x21
+004A: 283A		goto	0x03A
+004B: 0008		return
+          	(timer0.obj line#8, 9 words)
+          	TMR0_init::
+          		; :: timer0.c #7: T0CON0 = 0x80 | 0x2f;
+004C: 30AF		movlw	0xAF
+004D: 0140		movlb	0x00
+004E: 009E		movwf	0x1E
+          		; :: timer0.c #8: T0CON1 = (3 << 5) | 0x2;
+004F: 3062		movlw	0x62
+0050: 009F		movwf	0x1F
+          		; :: timer0.c #9: TMR0IF = 0;
+0051: 014E		movlb	0x0E
+0052: 128C		bcf	0x0C, 5
+          		; :: timer0.c #10: TMR0IE = 1;
+0053: 1696		bsf	0x16, 5
+0054: 0008		return
+          	(timer0.obj line#39, 14 words)
+          	TMR0_delayMs::
+0055: 0140		movlb	0x00
+0056: 0016		moviw	[FSR1++]
+0057: 00A2		movwf	0x22
+0058: 0820		movf	0x20, W
+0059: 00A3		movwf	0x23
+          	_$L7:
+          		; :: timer0.c #26: while ( (unsigned char)(tmr0Count - t) < ms )
+005A: 0140		movlb	0x00
+005B: 0823		movf	0x23, W
+005C: 0220		subwf	0x20, W
+005D: 00A4		movwf	0x24
+005E: 0822		movf	0x22, W
+005F: 0224		subwf	0x24, W
+0060: 1C03		btfss	STATUS, 0
+0061: 285A		goto	0x05A
+          		; :: timer0.c #26: ;
+0062: 0008		return
+          	(oled.obj line#2, 31 words)
+          	OLED_setPos::
+0063: 0140		movlb	0x00
+0064: 0016		moviw	[FSR1++]
+0065: 00A3		movwf	0x23
+0066: 0016		moviw	[FSR1++]
+0067: 00A2		movwf	0x22
+          		; :: oled.c #13: I2C_command(0xb0+y);
+0068: 30B0		movlw	0xB0
+0069: 0723		addwf	0x23, W
+006A: 00A4		movwf	0x24
+006B: 0824		movf	0x24, W
+006C: 001D		movwi	[--FSR1]
+006D: 2233		call	0x233
+          		; :: oled.c #14: I2C_command(((x&0xf0)>>4)|0x10);
+006E: 0140		movlb	0x00
+006F: 0822		movf	0x22, W
+0070: 39F0		andlw	0xF0
+0071: 00A4		movwf	0x24
+0072: 0EA4		swapf	0x24, F
+0073: 300F		movlw	0x0F
+0074: 05A4		andwf	0x24, F
+0075: 1624		bsf	0x24, 4
+0076: 0824		movf	0x24, W
+0077: 001D		movwi	[--FSR1]
+0078: 2233		call	0x233
+          		; :: oled.c #15: I2C_command((x&0x0f)|0x01);
+0079: 0140		movlb	0x00
+007A: 0822		movf	0x22, W
+007B: 390F		andlw	0x0F
+007C: 00A4		movwf	0x24
+007D: 1424		bsf	0x24, 0
+007E: 0824		movf	0x24, W
+007F: 001D		movwi	[--FSR1]
+0080: 2233		call	0x233
+0081: 0008		return
+          	(oled.obj line#26, 38 words)
+          	OLED_fill::
+0082: 0140		movlb	0x00
+0083: 0016		moviw	[FSR1++]
+0084: 00A2		movwf	0x22
+          		; :: oled.c #22: for (y = 0;
+0085: 01A3		clrf	0x23
+          	_$L3:
+          		; :: oled.c #22: y < OLED_HEIGHT/8;
+0086: 3008		movlw	0x08
+0087: 0140		movlb	0x00
+0088: 0223		subwf	0x23, W
+0089: 1803		btfsc	STATUS, 0
+008A: 28A7		goto	0x0A7
+          		; :: oled.c #24: I2C_command(0xb0+y);
+008B: 30B0		movlw	0xB0
+008C: 0723		addwf	0x23, W
+008D: 00A5		movwf	0x25
+008E: 0825		movf	0x25, W
+008F: 001D		movwi	[--FSR1]
+0090: 2233		call	0x233
+          		; :: oled.c #25: I2C_command(0x01);
+0091: 3001		movlw	0x01
+0092: 001D		movwi	[--FSR1]
+0093: 2233		call	0x233
+          		; :: oled.c #26: I2C_command(0x10);
+0094: 3010		movlw	0x10
+0095: 001D		movwi	[--FSR1]
+0096: 2233		call	0x233
+          		; :: oled.c #28: for (x = 0;
+0097: 0140		movlb	0x00
+0098: 01A4		clrf	0x24
+          	_$L7:
+          		; :: oled.c #28: x < OLED_WIDTH;
+0099: 3080		movlw	0x80
+009A: 0140		movlb	0x00
+009B: 0224		subwf	0x24, W
+009C: 1803		btfsc	STATUS, 0
+009D: 28A4		goto	0x0A4
+          		; :: oled.c #29: I2C_data(bmp_dat);
+009E: 0822		movf	0x22, W
+009F: 001D		movwi	[--FSR1]
+00A0: 2240		call	0x240
+          		; :: oled.c #28: x++)
+00A1: 0140		movlb	0x00
+00A2: 0AA4		incf	0x24, F
+00A3: 2899		goto	0x099
+          	_$L9:
+          		; :: oled.c #22: y++)
+00A4: 0140		movlb	0x00
+00A5: 0AA3		incf	0x23, F
+00A6: 2886		goto	0x086
+          	_$L5:
+00A7: 0008		return
+          	(oled.obj line#139, 91 words)
+          	OLED_init::
+          		; :: oled.c #64: TMR0_delayMs(200);
+00A8: 30C8		movlw	0xC8
+00A9: 001D		movwi	[--FSR1]
+00AA: 2055		call	0x055
+          		; :: oled.c #65: I2C_command(0xAE);
+00AB: 30AE		movlw	0xAE
+00AC: 001D		movwi	[--FSR1]
+00AD: 2233		call	0x233
+          		; :: oled.c #66: I2C_command(0x00);
+00AE: 3000		movlw	0x00
+00AF: 001D		movwi	[--FSR1]
+00B0: 2233		call	0x233
+          		; :: oled.c #67: I2C_command(0x10);
+00B1: 3010		movlw	0x10
+00B2: 001D		movwi	[--FSR1]
+00B3: 2233		call	0x233
+          		; :: oled.c #68: I2C_command(0x40);
+00B4: 3040		movlw	0x40
+00B5: 001D		movwi	[--FSR1]
+00B6: 2233		call	0x233
+          		; :: oled.c #69: I2C_command(0x81);
+00B7: 3081		movlw	0x81
+00B8: 001D		movwi	[--FSR1]
+00B9: 2233		call	0x233
+          		; :: oled.c #70: I2C_command(OLED_BRIGHTNESS);
+00BA: 3001		movlw	0x01
+00BB: 001D		movwi	[--FSR1]
+00BC: 2233		call	0x233
+          		; :: oled.c #71: I2C_command(0xA1);
+00BD: 30A1		movlw	0xA1
+00BE: 001D		movwi	[--FSR1]
+00BF: 2233		call	0x233
+          		; :: oled.c #72: I2C_command(0xC8);
+00C0: 30C8		movlw	0xC8
+00C1: 001D		movwi	[--FSR1]
+00C2: 2233		call	0x233
+          		; :: oled.c #73: I2C_command(0xA6);
+00C3: 30A6		movlw	0xA6
+00C4: 001D		movwi	[--FSR1]
+00C5: 2233		call	0x233
+          		; :: oled.c #74: I2C_command(0xA8);
+00C6: 30A8		movlw	0xA8
+00C7: 001D		movwi	[--FSR1]
+00C8: 2233		call	0x233
+          		; :: oled.c #75: I2C_command(0x3F);
+00C9: 303F		movlw	0x3F
+00CA: 001D		movwi	[--FSR1]
+00CB: 2233		call	0x233
+          		; :: oled.c #76: I2C_command(0xD3);
+00CC: 30D3		movlw	0xD3
+00CD: 001D		movwi	[--FSR1]
+00CE: 2233		call	0x233
+          		; :: oled.c #77: I2C_command(0x00);
+00CF: 3000		movlw	0x00
+00D0: 001D		movwi	[--FSR1]
+00D1: 2233		call	0x233
+          		; :: oled.c #78: I2C_command(0xD5);
+00D2: 30D5		movlw	0xD5
+00D3: 001D		movwi	[--FSR1]
+00D4: 2233		call	0x233
+          		; :: oled.c #79: I2C_command(0x80);
+00D5: 3080		movlw	0x80
+00D6: 001D		movwi	[--FSR1]
+00D7: 2233		call	0x233
+          		; :: oled.c #80: I2C_command(0xD9);
+00D8: 30D9		movlw	0xD9
+00D9: 001D		movwi	[--FSR1]
+00DA: 2233		call	0x233
+          		; :: oled.c #81: I2C_command(0xF1);
+00DB: 30F1		movlw	0xF1
+00DC: 001D		movwi	[--FSR1]
+00DD: 2233		call	0x233
+          		; :: oled.c #82: I2C_command(0xDA);
+00DE: 30DA		movlw	0xDA
+00DF: 001D		movwi	[--FSR1]
+00E0: 2233		call	0x233
+          		; :: oled.c #83: I2C_command(0x12);
+00E1: 3012		movlw	0x12
+00E2: 001D		movwi	[--FSR1]
+00E3: 2233		call	0x233
+          		; :: oled.c #84: I2C_command(0xDB);
+00E4: 30DB		movlw	0xDB
+00E5: 001D		movwi	[--FSR1]
+00E6: 2233		call	0x233
+          		; :: oled.c #85: I2C_command(0x40);
+00E7: 3040		movlw	0x40
+00E8: 001D		movwi	[--FSR1]
+00E9: 2233		call	0x233
+          		; :: oled.c #86: I2C_command(0x20);
+00EA: 3020		movlw	0x20
+00EB: 001D		movwi	[--FSR1]
+00EC: 2233		call	0x233
+          		; :: oled.c #87: I2C_command(0x02);
+00ED: 3002		movlw	0x02
+00EE: 001D		movwi	[--FSR1]
+00EF: 2233		call	0x233
+          		; :: oled.c #88: I2C_command(0x8D);
+00F0: 308D		movlw	0x8D
+00F1: 001D		movwi	[--FSR1]
+00F2: 2233		call	0x233
+          		; :: oled.c #89: I2C_command(0x14);
+00F3: 3014		movlw	0x14
+00F4: 001D		movwi	[--FSR1]
+00F5: 2233		call	0x233
+          		; :: oled.c #90: I2C_command(0xA4);
+00F6: 30A4		movlw	0xA4
+00F7: 001D		movwi	[--FSR1]
+00F8: 2233		call	0x233
+          		; :: oled.c #91: I2C_command(0xA6);
+00F9: 30A6		movlw	0xA6
+00FA: 001D		movwi	[--FSR1]
+00FB: 2233		call	0x233
+          		; :: oled.c #92: I2C_command(0xAF);
+00FC: 30AF		movlw	0xAF
+00FD: 001D		movwi	[--FSR1]
+00FE: 2233		call	0x233
+          		; :: oled.c #94: OLED_fill(0x00);
+00FF: 3000		movlw	0x00
+0100: 001D		movwi	[--FSR1]
+0101: 2082		call	0x082
+0102: 0008		return
+          	(oled.obj line#256, 143 words)
+          	OLED_ShowStr::
+0103: 300C		movlw	0x0C
+0104: 0084		movwf	FSR0L
+0105: 3020		movlw	0x20
+0106: 0085		movwf	FSR0H
+0107: 0145		movlb	0x05
+0108: 228A		call	0x28A
+          	_$L25:
+          		; :: oled.c #143: while ( *ch )
+0109: 0140		movlb	0x00
+010A: 0829		movf	0x29, W
+010B: 0084		movwf	FSR0L
+010C: 082A		movf	0x2A, W
+010D: 0085		movwf	FSR0H
+010E: 3F00		moviw	0[FSR0]
+010F: 1903		btfsc	STATUS, 2
+0110: 2991		goto	0x191
+0111: 0829		movf	0x29, W
+0112: 00AF		movwf	0x2F
+0113: 082A		movf	0x2A, W
+0114: 00B0		movwf	0x30
+0115: 0AA9		incf	0x29, F
+0116: 1903		btfsc	STATUS, 2
+0117: 0AAA		incf	0x2A, F
+0118: 082F		movf	0x2F, W
+0119: 0084		movwf	FSR0L
+011A: 0830		movf	0x30, W
+011B: 0085		movwf	FSR0H
+011C: 3020		movlw	0x20
+011D: 0200		subwf	INDF0, W
+011E: 00AC		movwf	0x2C
+          		; :: oled.c #148: switch ( size )		
+          		; :: oled.c #149: case FONT_SIZE_8x6:
+011F: 082B		movf	0x2B, W
+0120: 1903		btfsc	STATUS, 2
+0121: 2926		goto	0x126
+          		; :: oled.c #160: case FONT_SIZE_16x8:
+0122: 3A01		xorlw	0x01
+0123: 1903		btfsc	STATUS, 2
+0124: 294D		goto	0x14D
+0125: 2909		goto	0x109
+          	_$L29:
+          		; :: oled.c #150: if ( x > 126 )
+0126: 307E		movlw	0x7E
+0127: 0140		movlb	0x00
+0128: 0227		subwf	0x27, W
+0129: 1903		btfsc	STATUS, 2
+012A: 1003		bcf	STATUS, 0
+012B: 1C03		btfss	STATUS, 0
+012C: 292F		goto	0x12F
+          		; :: oled.c #152: x = 0;
+012D: 01A7		clrf	0x27
+          		; :: oled.c #153: y++;
+012E: 0AA8		incf	0x28, F
+          	_$L32:
+          		; :: oled.c #155: OLED_setPos(x, y);
+012F: 0140		movlb	0x00
+0130: 0827		movf	0x27, W
+0131: 001D		movwi	[--FSR1]
+0132: 0828		movf	0x28, W
+0133: 001D		movwi	[--FSR1]
+0134: 2063		call	0x063
+          		; :: oled.c #156: I2C_dataLength(FONT_6x8[c], 6);
+0135: 0140		movlb	0x00
+0136: 082C		movf	0x2C, W
+0137: 00F0		movwf	0x70
+0138: 3006		movlw	0x06
+0139: 228F		call	0x28F
+013A: 0870		movf	0x70, W
+013B: 00AF		movwf	0x2F
+013C: 0871		movf	0x71, W
+013D: 00B0		movwf	0x30
+013E: 30A2		movlw	0xA2
+013F: 07AF		addwf	0x2F, F
+0140: 308A		movlw	0x8A
+0141: 3DB0		addwfc	0x30, F
+0142: 082F		movf	0x2F, W
+0143: 001D		movwi	[--FSR1]
+0144: 0830		movf	0x30, W
+0145: 001D		movwi	[--FSR1]
+0146: 3006		movlw	0x06
+0147: 001D		movwi	[--FSR1]
+0148: 224D		call	0x24D
+          		; :: oled.c #157: x += 6;
+0149: 3006		movlw	0x06
+014A: 0140		movlb	0x00
+014B: 07A7		addwf	0x27, F
+          		; :: oled.c #158: break;
+014C: 2909		goto	0x109
+          	_$L30:
+          		; :: oled.c #161: if ( x > 120 )
+014D: 3078		movlw	0x78
+014E: 0140		movlb	0x00
+014F: 0227		subwf	0x27, W
+0150: 1903		btfsc	STATUS, 2
+0151: 1003		bcf	STATUS, 0
+0152: 1C03		btfss	STATUS, 0
+0153: 2956		goto	0x156
+          		; :: oled.c #163: x = 0;
+0154: 01A7		clrf	0x27
+          		; :: oled.c #164: y++;
+0155: 0AA8		incf	0x28, F
+          	_$L35:
+          		; :: oled.c #166: OLED_setPos(x,y);
+0156: 0140		movlb	0x00
+0157: 0827		movf	0x27, W
+0158: 001D		movwi	[--FSR1]
+0159: 0828		movf	0x28, W
+015A: 001D		movwi	[--FSR1]
+015B: 2063		call	0x063
+          		; :: oled.c #167: pos = c * 16;
+015C: 0140		movlb	0x00
+015D: 082C		movf	0x2C, W
+015E: 00AD		movwf	0x2D
+015F: 01AE		clrf	0x2E
+0160: 3004		movlw	0x04
+          	_$L75:
+0161: 35AD		lslf	0x2D, F
+0162: 0DAE		rlf	0x2E, F
+0163: 0B89		decfsz	WREG, F
+0164: 33FC		bra	0x0161
+          		; :: oled.c #169: I2C_dataLength(&FONT_8x16[pos], 8);
+0165: 30B2		movlw	0xB2
+0166: 072D		addwf	0x2D, W
+0167: 00AF		movwf	0x2F
+0168: 3084		movlw	0x84
+0169: 3D2E		addwfc	0x2E, W
+016A: 00B0		movwf	0x30
+016B: 082F		movf	0x2F, W
+016C: 001D		movwi	[--FSR1]
+016D: 0830		movf	0x30, W
+016E: 001D		movwi	[--FSR1]
+016F: 3008		movlw	0x08
+0170: 001D		movwi	[--FSR1]
+0171: 224D		call	0x24D
+          		; :: oled.c #170: OLED_setPos(x,y+1);
+0172: 0140		movlb	0x00
+0173: 0827		movf	0x27, W
+0174: 001D		movwi	[--FSR1]
+0175: 3001		movlw	0x01
+0176: 0728		addwf	0x28, W
+0177: 00AF		movwf	0x2F
+0178: 082F		movf	0x2F, W
+0179: 001D		movwi	[--FSR1]
+017A: 2063		call	0x063
+          		; :: oled.c #171: I2C_dataLength(&FONT_8x16[pos+8], 8);
+017B: 3008		movlw	0x08
+017C: 0140		movlb	0x00
+017D: 072D		addwf	0x2D, W
+017E: 00AF		movwf	0x2F
+017F: 0100		clrw
+0180: 3D2E		addwfc	0x2E, W
+0181: 00B0		movwf	0x30
+0182: 30B2		movlw	0xB2
+0183: 07AF		addwf	0x2F, F
+0184: 3084		movlw	0x84
+0185: 3DB0		addwfc	0x30, F
+0186: 082F		movf	0x2F, W
+0187: 001D		movwi	[--FSR1]
+0188: 0830		movf	0x30, W
+0189: 001D		movwi	[--FSR1]
+018A: 3008		movlw	0x08
+018B: 001D		movwi	[--FSR1]
+018C: 224D		call	0x24D
+          		; :: oled.c #172: x += 8;
+018D: 3008		movlw	0x08
+018E: 0140		movlb	0x00
+018F: 07A7		addwf	0x27, F
+          		; :: oled.c #173: break;
+0190: 2909		goto	0x109
+          	_$L27:
+0191: 0008		return
+          	(oled.obj line#494, 137 words)
+          	OLED_travelImg::
+0192: 0140		movlb	0x00
+0193: 0016		moviw	[FSR1++]
+0194: 00A7		movwf	0x27
+          		; :: oled.c #296: for (row = 0;
+0195: 01A9		clrf	0x29
+          	_$L54:
+          		; :: oled.c #296: row < 32/8;
+0196: 3004		movlw	0x04
+0197: 0140		movlb	0x00
+0198: 0229		subwf	0x29, W
+0199: 1803		btfsc	STATUS, 0
+019A: 2A1A		goto	0x21A
+          		; :: oled.c #298: OLED_setPos(4, row+2);
+019B: 3004		movlw	0x04
+019C: 001D		movwi	[--FSR1]
+019D: 3002		movlw	0x02
+019E: 0729		addwf	0x29, W
+019F: 00AE		movwf	0x2E
+01A0: 082E		movf	0x2E, W
+01A1: 001D		movwi	[--FSR1]
+01A2: 2063		call	0x063
+          		; :: oled.c #299: for (col = 0;
+01A3: 0140		movlb	0x00
+01A4: 01A8		clrf	0x28
+          	_$L58:
+          		; :: oled.c #299: col < 15*8;
+01A5: 3078		movlw	0x78
+01A6: 0140		movlb	0x00
+01A7: 0628		xorwf	0x28, W
+01A8: 001D		movwi	[--FSR1]
+01A9: 0628		xorwf	0x28, W
+01AA: 0228		subwf	0x28, W
+01AB: 0016		moviw	[FSR1++]
+01AC: 1803		btfsc	STATUS, 0
+01AD: 3A80		xorlw	0x80
+01AE: 1B89		btfsc	WREG, 7
+01AF: 2A17		goto	0x217
+          		; :: oled.c #301: d = 0;
+01B0: 01AB		clrf	0x2B
+01B1: 0827		movf	0x27, W
+01B2: 0728		addwf	0x28, W
+01B3: 00AD		movwf	0x2D
+          		; :: oled.c #303: if ( cc >= 0 )
+01B4: 3000		movlw	0x00
+01B5: 062D		xorwf	0x2D, W
+01B6: 001D		movwi	[--FSR1]
+01B7: 062D		xorwf	0x2D, W
+01B8: 022D		subwf	0x2D, W
+01B9: 0016		moviw	[FSR1++]
+01BA: 1803		btfsc	STATUS, 0
+01BB: 3A80		xorlw	0x80
+01BC: 1F89		btfss	WREG, 7
+01BD: 2A10		goto	0x210
+          		; :: oled.c #305: if ( cc < 120 )
+01BE: 3078		movlw	0x78
+01BF: 062D		xorwf	0x2D, W
+01C0: 001D		movwi	[--FSR1]
+01C1: 062D		xorwf	0x2D, W
+01C2: 022D		subwf	0x2D, W
+01C3: 0016		moviw	[FSR1++]
+01C4: 1803		btfsc	STATUS, 0
+01C5: 3A80		xorlw	0x80
+01C6: 1B89		btfsc	WREG, 7
+01C7: 2A10		goto	0x210
+          		; :: oled.c #306: for (i = 0;
+01C8: 01AA		clrf	0x2A
+          	_$L68:
+          		; :: oled.c #306: i < 8;
+01C9: 3008		movlw	0x08
+01CA: 0140		movlb	0x00
+01CB: 022A		subwf	0x2A, W
+01CC: 1803		btfsc	STATUS, 0
+01CD: 2A10		goto	0x210
+          		; :: oled.c #307: c = powerOnImage[row*120 + i*15 + cc/8];
+01CE: 0829		movf	0x29, W
+01CF: 00F0		movwf	0x70
+01D0: 3078		movlw	0x78
+01D1: 228F		call	0x28F
+01D2: 0870		movf	0x70, W
+01D3: 00AE		movwf	0x2E
+01D4: 0871		movf	0x71, W
+01D5: 00AF		movwf	0x2F
+01D6: 082A		movf	0x2A, W
+01D7: 00F0		movwf	0x70
+01D8: 300F		movlw	0x0F
+01D9: 228F		call	0x28F
+01DA: 0870		movf	0x70, W
+01DB: 00B0		movwf	0x30
+01DC: 0871		movf	0x71, W
+01DD: 00B1		movwf	0x31
+01DE: 0830		movf	0x30, W
+01DF: 07AE		addwf	0x2E, F
+01E0: 0831		movf	0x31, W
+01E1: 3DAF		addwfc	0x2F, F
+01E2: 082D		movf	0x2D, W
+01E3: 00B0		movwf	0x30
+01E4: 3003		movlw	0x03
+          	_$L76::
+01E5: 37B0		asrf	0x30, F
+01E6: 0B89		decfsz	WREG, F
+01E7: 33FD		bra	0x01E5
+01E8: 0830		movf	0x30, W
+01E9: 07AE		addwf	0x2E, F
+01EA: 3980		andlw	0x80
+01EB: 1D03		btfss	STATUS, 2
+01EC: 30FF		movlw	0xFF
+01ED: 3DAF		addwfc	0x2F, F
+01EE: 30D2		movlw	0xD2
+01EF: 07AE		addwf	0x2E, F
+01F0: 3082		movlw	0x82
+01F1: 3DAF		addwfc	0x2F, F
+01F2: 082E		movf	0x2E, W
+01F3: 0084		movwf	FSR0L
+01F4: 082F		movf	0x2F, W
+01F5: 0085		movwf	FSR0H
+01F6: 3F00		moviw	0[FSR0]
+01F7: 00AC		movwf	0x2C
+          		; :: oled.c #308: d >>= 1;
+01F8: 36AB		lsrf	0x2B, F
+          		; :: oled.c #309: if ( c & mask8[cc&7] )
+01F9: 082D		movf	0x2D, W
+01FA: 3907		andlw	0x07
+01FB: 00AE		movwf	0x2E
+01FC: 30CA		movlw	0xCA
+01FD: 072E		addwf	0x2E, W
+01FE: 00AE		movwf	0x2E
+01FF: 3082		movlw	0x82
+0200: 3D7F		addwfc	0x7F, W
+0201: 00AF		movwf	0x2F
+0202: 082E		movf	0x2E, W
+0203: 0084		movwf	FSR0L
+0204: 082F		movf	0x2F, W
+0205: 0085		movwf	FSR0H
+0206: 082C		movf	0x2C, W
+0207: 0500		andwf	INDF0, W
+0208: 00AE		movwf	0x2E
+0209: 082E		movf	0x2E, W
+020A: 1903		btfsc	STATUS, 2
+020B: 2A0D		goto	0x20D
+          		; :: oled.c #309: d |= 0x80;
+020C: 17AB		bsf	0x2B, 7
+          	_$L73:
+          		; :: oled.c #306: i++)
+020D: 0140		movlb	0x00
+020E: 0AAA		incf	0x2A, F
+020F: 29C9		goto	0x1C9
+          	_$L70:
+          		; :: oled.c #312: (d);
+0210: 0140		movlb	0x00
+0211: 082B		movf	0x2B, W
+0212: 001D		movwi	[--FSR1]
+0213: 2240		call	0x240
+          		; :: oled.c #299: col++)
+0214: 0140		movlb	0x00
+0215: 0AA8		incf	0x28, F
+0216: 29A5		goto	0x1A5
+          	_$L60:
+          		; :: oled.c #296: row++)
+0217: 0140		movlb	0x00
+0218: 0AA9		incf	0x29, F
+0219: 2996		goto	0x196
+          	_$L56:
+021A: 0008		return
+          	(i2c.obj line#5, 6 words)
+          	I2C_init::
+          		; :: i2c.c #22: I2C_ODR_PORT &= ~((1 << I2C_SCL_PIN) | (1 << I2C_SDA_PIN));
+021B: 30FC		movlw	0xFC
+021C: 0140		movlb	0x00
+021D: 0596		andwf	0x16, F
+          		; :: i2c.c #23: I2C_DDR_PORT |=  ((1 << I2C_SCL_PIN) | (1 << I2C_SDA_PIN));
+021E: 3003		movlw	0x03
+021F: 0491		iorwf	0x11, F
+0220: 0008		return
+          	(i2c.obj line#14, 1 words)
+          	I2C_delay::
+0003: 0008		return
+          	(i2c.obj line#18, 9 words)
+          	I2C_start::
+          		; :: i2c.c #33: SDA_LO;
+0221: 0140		movlb	0x00
+0222: 1011		bcf	0x11, 0
+          		; :: i2c.c #34: I2C_delay();
+0223: 2003		call	0x003
+          		; :: i2c.c #35: SCL_LO;
+0224: 0140		movlb	0x00
+0225: 1091		bcf	0x11, 1
+          		; :: i2c.c #36: I2C_write(I2C_ADDR);
+0226: 3078		movlw	0x78
+0227: 001D		movwi	[--FSR1]
+0228: 226D		call	0x26D
+0229: 0008		return
+          	(i2c.obj line#36, 9 words)
+          	I2C_end::
+          		; :: i2c.c #41: SDA_LO;
+022A: 0140		movlb	0x00
+022B: 1011		bcf	0x11, 0
+          		; :: i2c.c #42: I2C_delay();
+022C: 2003		call	0x003
+          		; :: i2c.c #43: SCL_HI;
+022D: 0140		movlb	0x00
+022E: 1491		bsf	0x11, 1
+          		; :: i2c.c #44: I2C_delay();
+022F: 2003		call	0x003
+          		; :: i2c.c #45: SDA_HI;
+0230: 0140		movlb	0x00
+0231: 1411		bsf	0x11, 0
+0232: 0008		return
+          	(i2c.obj line#53, 13 words)
+          	I2C_command::
+0233: 0140		movlb	0x00
+0234: 0016		moviw	[FSR1++]
+0235: 00B2		movwf	0x32
+          		; :: i2c.c #50: I2C_start();
+0236: 2221		call	0x221
+          		; :: i2c.c #51: I2C_write(0x00);
+0237: 3000		movlw	0x00
+0238: 001D		movwi	[--FSR1]
+0239: 226D		call	0x26D
+          		; :: i2c.c #52: I2C_write(c);
+023A: 0140		movlb	0x00
+023B: 0832		movf	0x32, W
+023C: 001D		movwi	[--FSR1]
+023D: 226D		call	0x26D
+          		; :: i2c.c #53: I2C_end();
+023E: 222A		call	0x22A
+023F: 0008		return
+          	(i2c.obj line#76, 13 words)
+          	I2C_data::
+0240: 0140		movlb	0x00
+0241: 0016		moviw	[FSR1++]
+0242: 00B2		movwf	0x32
+          		; :: i2c.c #58: I2C_start();
+0243: 2221		call	0x221
+          		; :: i2c.c #59: I2C_write(0x40);
+0244: 3040		movlw	0x40
+0245: 001D		movwi	[--FSR1]
+0246: 226D		call	0x26D
+          		; :: i2c.c #60: I2C_write(c);
+0247: 0140		movlb	0x00
+0248: 0832		movf	0x32, W
+0249: 001D		movwi	[--FSR1]
+024A: 226D		call	0x26D
+          		; :: i2c.c #61: I2C_end();
+024B: 222A		call	0x22A
+024C: 0008		return
+          	(i2c.obj line#99, 32 words)
+          	I2C_dataLength::
+024D: 3005		movlw	0x05
+024E: 0084		movwf	FSR0L
+024F: 3020		movlw	0x20
+0250: 0085		movwf	FSR0H
+0251: 0143		movlb	0x03
+0252: 228A		call	0x28A
+          		; :: i2c.c #66: I2C_start();
+0253: 2221		call	0x221
+          		; :: i2c.c #67: I2C_write(0x40);
+0254: 3040		movlw	0x40
+0255: 001D		movwi	[--FSR1]
+0256: 226D		call	0x26D
+          	_$L8:
+          		; :: i2c.c #68: while ( length-- )
+0257: 0140		movlb	0x00
+0258: 03A4		decf	0x24, F
+0259: 0A24		incf	0x24, W
+025A: 1903		btfsc	STATUS, 2
+025B: 2A6B		goto	0x26B
+          		; :: i2c.c #68: I2C_write(*s++);
+025C: 0822		movf	0x22, W
+025D: 00A5		movwf	0x25
+025E: 0823		movf	0x23, W
+025F: 00A6		movwf	0x26
+0260: 0AA2		incf	0x22, F
+0261: 1903		btfsc	STATUS, 2
+0262: 0AA3		incf	0x23, F
+0263: 0825		movf	0x25, W
+0264: 0084		movwf	FSR0L
+0265: 0826		movf	0x26, W
+0266: 0085		movwf	FSR0H
+0267: 3F00		moviw	0[FSR0]
+0268: 001D		movwi	[--FSR1]
+0269: 226D		call	0x26D
+026A: 2A57		goto	0x257
+          	_$L10:
+          		; :: i2c.c #69: I2C_end();
+026B: 222A		call	0x22A
+026C: 0008		return
+          	(i2c.obj line#141, 29 words)
+          	I2C_write::
+026D: 0140		movlb	0x00
+026E: 0016		moviw	[FSR1++]
+026F: 00B3		movwf	0x33
+0270: 3008		movlw	0x08
+0271: 00B4		movwf	0x34
+          	_$L12:
+          		; :: i2c.c #76: if ( c & 0x80 )
+0272: 0140		movlb	0x00
+0273: 1FB3		btfss	0x33, 7
+0274: 2A77		goto	0x277
+          		; :: i2c.c #76: SDA_HI;
+0275: 1411		bsf	0x11, 0
+0276: 2A79		goto	0x279
+          	_$L16:
+          		; :: i2c.c #77: else SDA_LO;
+0277: 0140		movlb	0x00
+0278: 1011		bcf	0x11, 0
+          	_$L17:
+          		; :: i2c.c #78: I2C_delay();
+0279: 2003		call	0x003
+          		; :: i2c.c #79: SCL_HI;
+027A: 0140		movlb	0x00
+027B: 1491		bsf	0x11, 1
+          		; :: i2c.c #80: I2C_delay();
+027C: 2003		call	0x003
+          		; :: i2c.c #81: c <<= 1;
+027D: 0140		movlb	0x00
+027E: 35B3		lslf	0x33, F
+          		; :: i2c.c #82: SCL_LO;
+027F: 1091		bcf	0x11, 1
+          		; :: i2c.c #83: while ( --count )
+0280: 0BB4		decfsz	0x34, F
+0281: 2A72		goto	0x272
+          		; :: i2c.c #85: SDA_HI;
+0282: 1411		bsf	0x11, 0
+          		; :: i2c.c #86: I2C_delay();
+0283: 2003		call	0x003
+          		; :: i2c.c #87: SCL_HI;
+0284: 0140		movlb	0x00
+0285: 1491		bsf	0x11, 1
+          		; :: i2c.c #88: I2C_delay();
+0286: 2003		call	0x003
+          		; :: i2c.c #89: SCL_LO;
+0287: 0140		movlb	0x00
+0288: 1091		bcf	0x11, 1
+0289: 0008		return
+          	(c:\p16ecc\lib/crt0.lib line#12, 5 words)
+          	_copyPar::
+          	_$L3:
+028A: 0016		moviw	[FSR1++]
+028B: 0019		movwi	[--FSR0]
+028C: 0B88		decfsz	BSR, F
+028D: 2A8A		goto	0x28A
+028E: 0008		return
+          	(c:\p16ecc\lib/crt0.lib line#25, 13 words)
+          	_mul8::
+028F: 0184		clrf	FSR0L
+0290: 0185		clrf	FSR0H
+0291: 1585		bsf	FSR0H, 3
+          	_$L7:
+0292: 1003		bcf	STATUS, 0
+0293: 1870		btfsc	0x70, 0
+0294: 0784		addwf	FSR0L, F
+0295: 0C84		rrf	FSR0L, F
+0296: 0CF0		rrf	0x70, F
+0297: 0B85		decfsz	FSR0H, F
+0298: 2A92		goto	0x292
+0299: 0804		movf	FSR0L, W
+029A: 00F1		movwf	0x71
+029B: 0008		return
+          	(c:\p16ecc\lib/crt0.lib line#912, 7 words)
+          	_signedCmp::
+029C: 0803		movf	STATUS, W
+029D: 1B81		btfsc	INDF1, 7
+029E: 3A01		xorlw	0x01
+029F: 3141		addfsr	FSR1, 1
+02A0: 1909		btfsc	WREG, 2
+02A1: 39FE		andlw	0xFE
+02A2: 0008		return
+          	(main.obj line#17, 2 words)
+          	_$init$::
+02A3: 01FF		clrf	0x7F
+02A4: 01FE		clrf	0x7E
+          	(main.obj line#20, 1 words)
+02A5: 0008		return
+          	(main.obj line#94, 14 words)
+          	_$CS1:
+02A6: 3448		retlw	0x48
+02A7: 3465		retlw	0x65
+02A8: 346C		retlw	0x6C
+02A9: 346C		retlw	0x6C
+02AA: 346F		retlw	0x6F
+02AB: 342C		retlw	0x2C
+02AC: 3420		retlw	0x20
+02AD: 3477		retlw	0x77
+02AE: 346F		retlw	0x6F
+02AF: 3472		retlw	0x72
+02B0: 346C		retlw	0x6C
+02B1: 3464		retlw	0x64
+02B2: 3421		retlw	0x21
+02B3: 3400		retlw	0x00
+          	(main.obj line#98, 22 words)
+          	_$CS2:
+02B4: 3464		retlw	0x64
+02B5: 3469		retlw	0x69
+02B6: 3479		retlw	0x79
+02B7: 3463		retlw	0x63
+02B8: 346F		retlw	0x6F
+02B9: 346D		retlw	0x6D
+02BA: 3470		retlw	0x70
+02BB: 3469		retlw	0x69
+02BC: 346C		retlw	0x6C
+02BD: 3465		retlw	0x65
+02BE: 3472		retlw	0x72
+02BF: 3440		retlw	0x40
+02C0: 3467		retlw	0x67
+02C1: 346D		retlw	0x6D
+02C2: 3461		retlw	0x61
+02C3: 3469		retlw	0x69
+02C4: 346C		retlw	0x6C
+02C5: 342E		retlw	0x2E
+02C6: 3463		retlw	0x63
+02C7: 346F		retlw	0x6F
+02C8: 346D		retlw	0x6D
+02C9: 3400		retlw	0x00
+          	(oled.obj line#612, 8 words)
+          	mask8::
+02CA: 3480		retlw	0x80
+02CB: 3440		retlw	0x40
+02CC: 3420		retlw	0x20
+02CD: 3410		retlw	0x10
+02CE: 3408		retlw	0x08
+02CF: 3404		retlw	0x04
+02D0: 3402		retlw	0x02
+02D1: 3401		retlw	0x01
+          	(on_img.obj line#2, 480 words)
+          	powerOnImage::
+02D2: 3400		retlw	0x00
+02D3: 3400		retlw	0x00
+02D4: 3400		retlw	0x00
+02D5: 3400		retlw	0x00
+02D6: 3400		retlw	0x00
+02D7: 3400		retlw	0x00
+02D8: 3400		retlw	0x00
+02D9: 3400		retlw	0x00
+02DA: 3400		retlw	0x00
+02DB: 3400		retlw	0x00
+02DC: 3400		retlw	0x00
+02DD: 3400		retlw	0x00
+02DE: 3400		retlw	0x00
+02DF: 3400		retlw	0x00
+02E0: 3400		retlw	0x00
+02E1: 3403		retlw	0x03
+02E2: 34C0		retlw	0xC0
+02E3: 3400		retlw	0x00
+02E4: 3403		retlw	0x03
+02E5: 34F8		retlw	0xF8
+02E6: 3400		retlw	0x00
+02E7: 340F		retlw	0x0F
+02E8: 34C0		retlw	0xC0
+02E9: 3400		retlw	0x00
+02EA: 341F		retlw	0x1F
+02EB: 34FC		retlw	0xFC
+02EC: 3400		retlw	0x00
+02ED: 3400		retlw	0x00
+02EE: 3400		retlw	0x00
+02EF: 3400		retlw	0x00
+02F0: 3407		retlw	0x07
+02F1: 34E0		retlw	0xE0
+02F2: 3400		retlw	0x00
+02F3: 3407		retlw	0x07
+02F4: 34FC		retlw	0xFC
+02F5: 3400		retlw	0x00
+02F6: 343F		retlw	0x3F
+02F7: 34C0		retlw	0xC0
+02F8: 3400		retlw	0x00
+02F9: 34FF		retlw	0xFF
+02FA: 34FF		retlw	0xFF
+02FB: 3480		retlw	0x80
+02FC: 3400		retlw	0x00
+02FD: 340F		retlw	0x0F
+02FE: 34E0		retlw	0xE0
+02FF: 3407		retlw	0x07
+0300: 34E0		retlw	0xE0
+0301: 3400		retlw	0x00
+0302: 3403		retlw	0x03
+0303: 34FE		retlw	0xFE
+0304: 3400		retlw	0x00
+0305: 347F		retlw	0x7F
+0306: 34C0		retlw	0xC0
+0307: 3401		retlw	0x01
+0308: 34FF		retlw	0xFF
+0309: 34FF		retlw	0xFF
+030A: 34E0		retlw	0xE0
+030B: 3400		retlw	0x00
+030C: 347F		retlw	0x7F
+030D: 34F8		retlw	0xF8
+030E: 340F		retlw	0x0F
+030F: 34E0		retlw	0xE0
+0310: 3400		retlw	0x00
+0311: 3403		retlw	0x03
+0312: 34FE		retlw	0xFE
+0313: 3400		retlw	0x00
+0314: 34FF		retlw	0xFF
+0315: 34C0		retlw	0xC0
+0316: 3403		retlw	0x03
+0317: 34FF		retlw	0xFF
+0318: 34FF		retlw	0xFF
+0319: 34F0		retlw	0xF0
+031A: 3400		retlw	0x00
+031B: 34FF		retlw	0xFF
+031C: 34FC		retlw	0xFC
+031D: 340F		retlw	0x0F
+031E: 34E0		retlw	0xE0
+031F: 3400		retlw	0x00
+0320: 3407		retlw	0x07
+0321: 34FE		retlw	0xFE
+0322: 3400		retlw	0x00
+0323: 34FF		retlw	0xFF
+0324: 34C0		retlw	0xC0
+0325: 3403		retlw	0x03
+0326: 34FF		retlw	0xFF
+0327: 34FF		retlw	0xFF
+0328: 34F8		retlw	0xF8
+0329: 3401		retlw	0x01
+032A: 34FF		retlw	0xFF
+032B: 34FE		retlw	0xFE
+032C: 340F		retlw	0x0F
+032D: 34C0		retlw	0xC0
+032E: 3400		retlw	0x00
+032F: 3407		retlw	0x07
+0330: 34FF		retlw	0xFF
+0331: 3401		retlw	0x01
+0332: 34FF		retlw	0xFF
+0333: 34C0		retlw	0xC0
+0334: 3400		retlw	0x00
+0335: 343F		retlw	0x3F
+0336: 34FF		retlw	0xFF
+0337: 34F8		retlw	0xF8
+0338: 3403		retlw	0x03
+0339: 34FB		retlw	0xFB
+033A: 34FE		retlw	0xFE
+033B: 340F		retlw	0x0F
+033C: 34C0		retlw	0xC0
+033D: 3400		retlw	0x00
+033E: 340F		retlw	0x0F
+033F: 34FF		retlw	0xFF
+0340: 3401		retlw	0x01
+0341: 34FF		retlw	0xFF
+0342: 34C0		retlw	0xC0
+0343: 3400		retlw	0x00
+0344: 343F		retlw	0x3F
+0345: 34FF		retlw	0xFF
+0346: 34FC		retlw	0xFC
+0347: 3407		retlw	0x07
+0348: 34F3		retlw	0xF3
+0349: 34FE		retlw	0xFE
+034A: 3407		retlw	0x07
+034B: 3480		retlw	0x80
+034C: 3400		retlw	0x00
+034D: 340F		retlw	0x0F
+034E: 34FF		retlw	0xFF
+034F: 3403		retlw	0x03
+0350: 34FF		retlw	0xFF
+0351: 34C0		retlw	0xC0
+0352: 3400		retlw	0x00
+0353: 343F		retlw	0x3F
+0354: 34EF		retlw	0xEF
+0355: 34FC		retlw	0xFC
+0356: 3407		retlw	0x07
+0357: 34F3		retlw	0xF3
+0358: 34FE		retlw	0xFE
+0359: 3400		retlw	0x00
+035A: 3400		retlw	0x00
+035B: 3400		retlw	0x00
+035C: 341F		retlw	0x1F
+035D: 34FF		retlw	0xFF
+035E: 3403		retlw	0x03
+035F: 34FF		retlw	0xFF
+0360: 34C0		retlw	0xC0
+0361: 3400		retlw	0x00
+0362: 347F		retlw	0x7F
+0363: 34E7		retlw	0xE7
+0364: 34FC		retlw	0xFC
+0365: 3407		retlw	0x07
+0366: 34F3		retlw	0xF3
+0367: 34FE		retlw	0xFE
+0368: 3407		retlw	0x07
+0369: 3400		retlw	0x00
+036A: 3400		retlw	0x00
+036B: 341F		retlw	0x1F
+036C: 34FF		retlw	0xFF
+036D: 3407		retlw	0x07
+036E: 34FF		retlw	0xFF
+036F: 34C0		retlw	0xC0
+0370: 3400		retlw	0x00
+0371: 347F		retlw	0x7F
+0372: 34C3		retlw	0xC3
+0373: 34FC		retlw	0xFC
+0374: 3407		retlw	0x07
+0375: 34E7		retlw	0xE7
+0376: 34FC		retlw	0xFC
+0377: 340F		retlw	0x0F
+0378: 3480		retlw	0x80
+0379: 3400		retlw	0x00
+037A: 343F		retlw	0x3F
+037B: 34FF		retlw	0xFF
+037C: 3407		retlw	0x07
+037D: 34FF		retlw	0xFF
+037E: 34C0		retlw	0xC0
+037F: 3400		retlw	0x00
+0380: 34FF		retlw	0xFF
+0381: 34C3		retlw	0xC3
+0382: 34FC		retlw	0xFC
+0383: 3403		retlw	0x03
+0384: 34C7		retlw	0xC7
+0385: 34F8		retlw	0xF8
+0386: 341F		retlw	0x1F
+0387: 3480		retlw	0x80
+0388: 3400		retlw	0x00
+0389: 343F		retlw	0x3F
+038A: 34FF		retlw	0xFF
+038B: 3487		retlw	0x87
+038C: 34FF		retlw	0xFF
+038D: 34C0		retlw	0xC0
+038E: 3400		retlw	0x00
+038F: 34FF		retlw	0xFF
+0390: 34C3		retlw	0xC3
+0391: 34FC		retlw	0xFC
+0392: 3401		retlw	0x01
+0393: 34CF		retlw	0xCF
+0394: 34F0		retlw	0xF0
+0395: 341F		retlw	0x1F
+0396: 34C0		retlw	0xC0
+0397: 3400		retlw	0x00
+0398: 347F		retlw	0x7F
+0399: 34FF		retlw	0xFF
+039A: 348F		retlw	0x8F
+039B: 34FF		retlw	0xFF
+039C: 34C0		retlw	0xC0
+039D: 3400		retlw	0x00
+039E: 34FF		retlw	0xFF
+039F: 3483		retlw	0x83
+03A0: 34F8		retlw	0xF8
+03A1: 3400		retlw	0x00
+03A2: 341F		retlw	0x1F
+03A3: 34C0		retlw	0xC0
+03A4: 343F		retlw	0x3F
+03A5: 34C0		retlw	0xC0
+03A6: 3400		retlw	0x00
+03A7: 347E		retlw	0x7E
+03A8: 34FF		retlw	0xFF
+03A9: 348F		retlw	0x8F
+03AA: 34FF		retlw	0xFF
+03AB: 34C0		retlw	0xC0
+03AC: 3401		retlw	0x01
+03AD: 34FF		retlw	0xFF
+03AE: 3483		retlw	0x83
+03AF: 34F8		retlw	0xF8
+03B0: 3400		retlw	0x00
+03B1: 343F		retlw	0x3F
+03B2: 34F0		retlw	0xF0
+03B3: 343F		retlw	0x3F
+03B4: 34C0		retlw	0xC0
+03B5: 3400		retlw	0x00
+03B6: 34FE		retlw	0xFE
+03B7: 34FF		retlw	0xFF
+03B8: 349F		retlw	0x9F
+03B9: 347F		retlw	0x7F
+03BA: 34C0		retlw	0xC0
+03BB: 3401		retlw	0x01
+03BC: 34FF		retlw	0xFF
+03BD: 3407		retlw	0x07
+03BE: 34F0		retlw	0xF0
+03BF: 3400		retlw	0x00
+03C0: 343F		retlw	0x3F
+03C1: 34FC		retlw	0xFC
+03C2: 343F		retlw	0x3F
+03C3: 3480		retlw	0x80
+03C4: 3400		retlw	0x00
+03C5: 34FC		retlw	0xFC
+03C6: 34FF		retlw	0xFF
+03C7: 349F		retlw	0x9F
+03C8: 347F		retlw	0x7F
+03C9: 34E0		retlw	0xE0
+03CA: 3401		retlw	0x01
+03CB: 34FF		retlw	0xFF
+03CC: 3407		retlw	0x07
+03CD: 34F0		retlw	0xF0
+03CE: 3400		retlw	0x00
+03CF: 340F		retlw	0x0F
+03D0: 34FC		retlw	0xFC
+03D1: 347F		retlw	0x7F
+03D2: 3480		retlw	0x80
+03D3: 3401		retlw	0x01
+03D4: 34FC		retlw	0xFC
+03D5: 34FF		retlw	0xFF
+03D6: 34BF		retlw	0xBF
+03D7: 347F		retlw	0x7F
+03D8: 34E0		retlw	0xE0
+03D9: 3403		retlw	0x03
+03DA: 34FF		retlw	0xFF
+03DB: 340F		retlw	0x0F
+03DC: 34E0		retlw	0xE0
+03DD: 3403		retlw	0x03
+03DE: 34C3		retlw	0xC3
+03DF: 34FE		retlw	0xFE
+03E0: 347F		retlw	0x7F
+03E1: 3480		retlw	0x80
+03E2: 3401		retlw	0x01
+03E3: 34F8		retlw	0xF8
+03E4: 34FF		retlw	0xFF
+03E5: 34BE		retlw	0xBE
+03E6: 347F		retlw	0x7F
+03E7: 34E0		retlw	0xE0
+03E8: 3403		retlw	0x03
+03E9: 34FE		retlw	0xFE
+03EA: 341F		retlw	0x1F
+03EB: 34C0		retlw	0xC0
+03EC: 340F		retlw	0x0F
+03ED: 3483		retlw	0x83
+03EE: 34FE		retlw	0xFE
+03EF: 347F		retlw	0x7F
+03F0: 3480		retlw	0x80
+03F1: 3403		retlw	0x03
+03F2: 34F8		retlw	0xF8
+03F3: 347F		retlw	0x7F
+03F4: 34FE		retlw	0xFE
+03F5: 347F		retlw	0x7F
+03F6: 34E0		retlw	0xE0
+03F7: 3403		retlw	0x03
+03F8: 34FE		retlw	0xFE
+03F9: 347F		retlw	0x7F
+03FA: 3480		retlw	0x80
+03FB: 341F		retlw	0x1F
+03FC: 3403		retlw	0x03
+03FD: 34FE		retlw	0xFE
+03FE: 347F		retlw	0x7F
+03FF: 3480		retlw	0x80
+0400: 3403		retlw	0x03
+0401: 34F0		retlw	0xF0
+0402: 347F		retlw	0x7F
+0403: 34FC		retlw	0xFC
+0404: 347F		retlw	0x7F
+0405: 34F0		retlw	0xF0
+0406: 3407		retlw	0x07
+0407: 34FF		retlw	0xFF
+0408: 34FF		retlw	0xFF
+0409: 3400		retlw	0x00
+040A: 343F		retlw	0x3F
+040B: 3403		retlw	0x03
+040C: 34FE		retlw	0xFE
+040D: 34FF		retlw	0xFF
+040E: 3480		retlw	0x80
+040F: 3407		retlw	0x07
+0410: 34F0		retlw	0xF0
+0411: 347F		retlw	0x7F
+0412: 34FC		retlw	0xFC
+0413: 347F		retlw	0x7F
+0414: 34F0		retlw	0xF0
+0415: 3407		retlw	0x07
+0416: 34FF		retlw	0xFF
+0417: 34FE		retlw	0xFE
+0418: 3400		retlw	0x00
+0419: 347E		retlw	0x7E
+041A: 3407		retlw	0x07
+041B: 34FC		retlw	0xFC
+041C: 34FF		retlw	0xFF
+041D: 3400		retlw	0x00
+041E: 3407		retlw	0x07
+041F: 34E0		retlw	0xE0
+0420: 347F		retlw	0x7F
+0421: 34F8		retlw	0xF8
+0422: 347F		retlw	0x7F
+0423: 34F0		retlw	0xF0
+0424: 3407		retlw	0x07
+0425: 34FF		retlw	0xFF
+0426: 34F0		retlw	0xF0
+0427: 3400		retlw	0x00
+0428: 34FE		retlw	0xFE
+0429: 3407		retlw	0x07
+042A: 34FC		retlw	0xFC
+042B: 34FF		retlw	0xFF
+042C: 3400		retlw	0x00
+042D: 340F		retlw	0x0F
+042E: 34E0		retlw	0xE0
+042F: 347F		retlw	0x7F
+0430: 34F8		retlw	0xF8
+0431: 343F		retlw	0x3F
+0432: 34F8		retlw	0xF8
+0433: 340F		retlw	0x0F
+0434: 34FC		retlw	0xFC
+0435: 3400		retlw	0x00
+0436: 3400		retlw	0x00
+0437: 34FE		retlw	0xFE
+0438: 340F		retlw	0x0F
+0439: 34F8		retlw	0xF8
+043A: 34FF		retlw	0xFF
+043B: 3400		retlw	0x00
+043C: 340F		retlw	0x0F
+043D: 34C0		retlw	0xC0
+043E: 343F		retlw	0x3F
+043F: 34F0		retlw	0xF0
+0440: 343F		retlw	0x3F
+0441: 34FC		retlw	0xFC
+0442: 340F		retlw	0x0F
+0443: 34FC		retlw	0xFC
+0444: 3400		retlw	0x00
+0445: 3400		retlw	0x00
+0446: 34FE		retlw	0xFE
+0447: 341F		retlw	0x1F
+0448: 34F0		retlw	0xF0
+0449: 34FE		retlw	0xFE
+044A: 3400		retlw	0x00
+044B: 341F		retlw	0x1F
+044C: 34C0		retlw	0xC0
+044D: 343F		retlw	0x3F
+044E: 34F0		retlw	0xF0
+044F: 343F		retlw	0x3F
+0450: 34FC		retlw	0xFC
+0451: 340F		retlw	0x0F
+0452: 34F8		retlw	0xF8
+0453: 3400		retlw	0x00
+0454: 3400		retlw	0x00
+0455: 34FE		retlw	0xFE
+0456: 343F		retlw	0x3F
+0457: 34E0		retlw	0xE0
+0458: 34FE		retlw	0xFE
+0459: 3400		retlw	0x00
+045A: 343F		retlw	0x3F
+045B: 3480		retlw	0x80
+045C: 343F		retlw	0x3F
+045D: 34E0		retlw	0xE0
+045E: 341F		retlw	0x1F
+045F: 34FF		retlw	0xFF
+0460: 340F		retlw	0x0F
+0461: 34F8		retlw	0xF8
+0462: 3400		retlw	0x00
+0463: 3400		retlw	0x00
+0464: 34FE		retlw	0xFE
+0465: 34FF		retlw	0xFF
+0466: 34C0		retlw	0xC0
+0467: 34FE		retlw	0xFE
+0468: 3400		retlw	0x00
+0469: 343F		retlw	0x3F
+046A: 3400		retlw	0x00
+046B: 341F		retlw	0x1F
+046C: 34E0		retlw	0xE0
+046D: 341F		retlw	0x1F
+046E: 34FF		retlw	0xFF
+046F: 341F		retlw	0x1F
+0470: 34F0		retlw	0xF0
+0471: 3400		retlw	0x00
+0472: 3400		retlw	0x00
+0473: 347F		retlw	0x7F
+0474: 34FF		retlw	0xFF
+0475: 3480		retlw	0x80
+0476: 34FC		retlw	0xFC
+0477: 3400		retlw	0x00
+0478: 347F		retlw	0x7F
+0479: 3400		retlw	0x00
+047A: 341F		retlw	0x1F
+047B: 34C0		retlw	0xC0
+047C: 340F		retlw	0x0F
+047D: 34FE		retlw	0xFE
+047E: 341F		retlw	0x1F
+047F: 34E0		retlw	0xE0
+0480: 3400		retlw	0x00
+0481: 3400		retlw	0x00
+0482: 347F		retlw	0x7F
+0483: 34FE		retlw	0xFE
+0484: 3400		retlw	0x00
+0485: 347C		retlw	0x7C
+0486: 3400		retlw	0x00
+0487: 34FC		retlw	0xFC
+0488: 3400		retlw	0x00
+0489: 340F		retlw	0x0F
+048A: 34C0		retlw	0xC0
+048B: 3407		retlw	0x07
+048C: 34FC		retlw	0xFC
+048D: 341F		retlw	0x1F
+048E: 34C0		retlw	0xC0
+048F: 3400		retlw	0x00
+0490: 3400		retlw	0x00
+0491: 343F		retlw	0x3F
+0492: 34F8		retlw	0xF8
+0493: 3400		retlw	0x00
+0494: 3438		retlw	0x38
+0495: 3400		retlw	0x00
+0496: 34F8		retlw	0xF8
+0497: 3400		retlw	0x00
+0498: 3407		retlw	0x07
+0499: 3480		retlw	0x80
+049A: 3401		retlw	0x01
+049B: 34F8		retlw	0xF8
+049C: 341F		retlw	0x1F
+049D: 3400		retlw	0x00
+049E: 3400		retlw	0x00
+049F: 3400		retlw	0x00
+04A0: 340F		retlw	0x0F
+04A1: 34E0		retlw	0xE0
+04A2: 3400		retlw	0x00
+04A3: 3400		retlw	0x00
+04A4: 3400		retlw	0x00
+04A5: 3400		retlw	0x00
+04A6: 3400		retlw	0x00
+04A7: 3400		retlw	0x00
+04A8: 3400		retlw	0x00
+04A9: 3400		retlw	0x00
+04AA: 3400		retlw	0x00
+04AB: 3400		retlw	0x00
+04AC: 3400		retlw	0x00
+04AD: 3400		retlw	0x00
+04AE: 3400		retlw	0x00
+04AF: 3400		retlw	0x00
+04B0: 3400		retlw	0x00
+04B1: 3400		retlw	0x00
+          	(font.obj line#7, 1520 words)
+          	FONT_8x16::
+04B2: 3400		retlw	0x00
+04B3: 3400		retlw	0x00
+04B4: 3400		retlw	0x00
+04B5: 3400		retlw	0x00
+04B6: 3400		retlw	0x00
+04B7: 3400		retlw	0x00
+04B8: 3400		retlw	0x00
+04B9: 3400		retlw	0x00
+04BA: 3400		retlw	0x00
+04BB: 3400		retlw	0x00
+04BC: 3400		retlw	0x00
+04BD: 3400		retlw	0x00
+04BE: 3400		retlw	0x00
+04BF: 3400		retlw	0x00
+04C0: 3400		retlw	0x00
+04C1: 3400		retlw	0x00
+04C2: 3400		retlw	0x00
+04C3: 3400		retlw	0x00
+04C4: 3400		retlw	0x00
+04C5: 34F8		retlw	0xF8
+04C6: 3400		retlw	0x00
+04C7: 3400		retlw	0x00
+04C8: 3400		retlw	0x00
+04C9: 3400		retlw	0x00
+04CA: 3400		retlw	0x00
+04CB: 3400		retlw	0x00
+04CC: 3400		retlw	0x00
+04CD: 3433		retlw	0x33
+04CE: 3430		retlw	0x30
+04CF: 3400		retlw	0x00
+04D0: 3400		retlw	0x00
+04D1: 3400		retlw	0x00
+04D2: 3400		retlw	0x00
+04D3: 3410		retlw	0x10
+04D4: 340C		retlw	0x0C
+04D5: 3406		retlw	0x06
+04D6: 3410		retlw	0x10
+04D7: 340C		retlw	0x0C
+04D8: 3406		retlw	0x06
+04D9: 3400		retlw	0x00
+04DA: 3400		retlw	0x00
+04DB: 3400		retlw	0x00
+04DC: 3400		retlw	0x00
+04DD: 3400		retlw	0x00
+04DE: 3400		retlw	0x00
+04DF: 3400		retlw	0x00
+04E0: 3400		retlw	0x00
+04E1: 3400		retlw	0x00
+04E2: 3440		retlw	0x40
+04E3: 34C0		retlw	0xC0
+04E4: 3478		retlw	0x78
+04E5: 3440		retlw	0x40
+04E6: 34C0		retlw	0xC0
+04E7: 3478		retlw	0x78
+04E8: 3440		retlw	0x40
+04E9: 3400		retlw	0x00
+04EA: 3404		retlw	0x04
+04EB: 343F		retlw	0x3F
+04EC: 3404		retlw	0x04
+04ED: 3404		retlw	0x04
+04EE: 343F		retlw	0x3F
+04EF: 3404		retlw	0x04
+04F0: 3404		retlw	0x04
+04F1: 3400		retlw	0x00
+04F2: 3400		retlw	0x00
+04F3: 3470		retlw	0x70
+04F4: 3488		retlw	0x88
+04F5: 34FC		retlw	0xFC
+04F6: 3408		retlw	0x08
+04F7: 3430		retlw	0x30
+04F8: 3400		retlw	0x00
+04F9: 3400		retlw	0x00
+04FA: 3400		retlw	0x00
+04FB: 3418		retlw	0x18
+04FC: 3420		retlw	0x20
+04FD: 34FF		retlw	0xFF
+04FE: 3421		retlw	0x21
+04FF: 341E		retlw	0x1E
+0500: 3400		retlw	0x00
+0501: 3400		retlw	0x00
+0502: 34F0		retlw	0xF0
+0503: 3408		retlw	0x08
+0504: 34F0		retlw	0xF0
+0505: 3400		retlw	0x00
+0506: 34E0		retlw	0xE0
+0507: 3418		retlw	0x18
+0508: 3400		retlw	0x00
+0509: 3400		retlw	0x00
+050A: 3400		retlw	0x00
+050B: 3421		retlw	0x21
+050C: 341C		retlw	0x1C
+050D: 3403		retlw	0x03
+050E: 341E		retlw	0x1E
+050F: 3421		retlw	0x21
+0510: 341E		retlw	0x1E
+0511: 3400		retlw	0x00
+0512: 3400		retlw	0x00
+0513: 34F0		retlw	0xF0
+0514: 3408		retlw	0x08
+0515: 3488		retlw	0x88
+0516: 3470		retlw	0x70
+0517: 3400		retlw	0x00
+0518: 3400		retlw	0x00
+0519: 3400		retlw	0x00
+051A: 341E		retlw	0x1E
+051B: 3421		retlw	0x21
+051C: 3423		retlw	0x23
+051D: 3424		retlw	0x24
+051E: 3419		retlw	0x19
+051F: 3427		retlw	0x27
+0520: 3421		retlw	0x21
+0521: 3410		retlw	0x10
+0522: 3410		retlw	0x10
+0523: 3416		retlw	0x16
+0524: 340E		retlw	0x0E
+0525: 3400		retlw	0x00
+0526: 3400		retlw	0x00
+0527: 3400		retlw	0x00
+0528: 3400		retlw	0x00
+0529: 3400		retlw	0x00
+052A: 3400		retlw	0x00
+052B: 3400		retlw	0x00
+052C: 3400		retlw	0x00
+052D: 3400		retlw	0x00
+052E: 3400		retlw	0x00
+052F: 3400		retlw	0x00
+0530: 3400		retlw	0x00
+0531: 3400		retlw	0x00
+0532: 3400		retlw	0x00
+0533: 3400		retlw	0x00
+0534: 3400		retlw	0x00
+0535: 34E0		retlw	0xE0
+0536: 3418		retlw	0x18
+0537: 3404		retlw	0x04
+0538: 3402		retlw	0x02
+0539: 3400		retlw	0x00
+053A: 3400		retlw	0x00
+053B: 3400		retlw	0x00
+053C: 3400		retlw	0x00
+053D: 3407		retlw	0x07
+053E: 3418		retlw	0x18
+053F: 3420		retlw	0x20
+0540: 3440		retlw	0x40
+0541: 3400		retlw	0x00
+0542: 3400		retlw	0x00
+0543: 3402		retlw	0x02
+0544: 3404		retlw	0x04
+0545: 3418		retlw	0x18
+0546: 34E0		retlw	0xE0
+0547: 3400		retlw	0x00
+0548: 3400		retlw	0x00
+0549: 3400		retlw	0x00
+054A: 3400		retlw	0x00
+054B: 3440		retlw	0x40
+054C: 3420		retlw	0x20
+054D: 3418		retlw	0x18
+054E: 3407		retlw	0x07
+054F: 3400		retlw	0x00
+0550: 3400		retlw	0x00
+0551: 3400		retlw	0x00
+0552: 3440		retlw	0x40
+0553: 3440		retlw	0x40
+0554: 3480		retlw	0x80
+0555: 34F0		retlw	0xF0
+0556: 3480		retlw	0x80
+0557: 3440		retlw	0x40
+0558: 3440		retlw	0x40
+0559: 3400		retlw	0x00
+055A: 3402		retlw	0x02
+055B: 3402		retlw	0x02
+055C: 3401		retlw	0x01
+055D: 340F		retlw	0x0F
+055E: 3401		retlw	0x01
+055F: 3402		retlw	0x02
+0560: 3402		retlw	0x02
+0561: 3400		retlw	0x00
+0562: 3400		retlw	0x00
+0563: 3400		retlw	0x00
+0564: 3400		retlw	0x00
+0565: 34F0		retlw	0xF0
+0566: 3400		retlw	0x00
+0567: 3400		retlw	0x00
+0568: 3400		retlw	0x00
+0569: 3400		retlw	0x00
+056A: 3401		retlw	0x01
+056B: 3401		retlw	0x01
+056C: 3401		retlw	0x01
+056D: 341F		retlw	0x1F
+056E: 3401		retlw	0x01
+056F: 3401		retlw	0x01
+0570: 3401		retlw	0x01
+0571: 3400		retlw	0x00
+0572: 3400		retlw	0x00
+0573: 3400		retlw	0x00
+0574: 3400		retlw	0x00
+0575: 3400		retlw	0x00
+0576: 3400		retlw	0x00
+0577: 3400		retlw	0x00
+0578: 3400		retlw	0x00
+0579: 3400		retlw	0x00
+057A: 3480		retlw	0x80
+057B: 34B0		retlw	0xB0
+057C: 3470		retlw	0x70
+057D: 3400		retlw	0x00
+057E: 3400		retlw	0x00
+057F: 3400		retlw	0x00
+0580: 3400		retlw	0x00
+0581: 3400		retlw	0x00
+0582: 3400		retlw	0x00
+0583: 3400		retlw	0x00
+0584: 3400		retlw	0x00
+0585: 3400		retlw	0x00
+0586: 3400		retlw	0x00
+0587: 3400		retlw	0x00
+0588: 3400		retlw	0x00
+0589: 3400		retlw	0x00
+058A: 3400		retlw	0x00
+058B: 3401		retlw	0x01
+058C: 3401		retlw	0x01
+058D: 3401		retlw	0x01
+058E: 3401		retlw	0x01
+058F: 3401		retlw	0x01
+0590: 3401		retlw	0x01
+0591: 3401		retlw	0x01
+0592: 3400		retlw	0x00
+0593: 3400		retlw	0x00
+0594: 3400		retlw	0x00
+0595: 3400		retlw	0x00
+0596: 3400		retlw	0x00
+0597: 3400		retlw	0x00
+0598: 3400		retlw	0x00
+0599: 3400		retlw	0x00
+059A: 3400		retlw	0x00
+059B: 3430		retlw	0x30
+059C: 3430		retlw	0x30
+059D: 3400		retlw	0x00
+059E: 3400		retlw	0x00
+059F: 3400		retlw	0x00
+05A0: 3400		retlw	0x00
+05A1: 3400		retlw	0x00
+05A2: 3400		retlw	0x00
+05A3: 3400		retlw	0x00
+05A4: 3400		retlw	0x00
+05A5: 3400		retlw	0x00
+05A6: 3480		retlw	0x80
+05A7: 3460		retlw	0x60
+05A8: 3418		retlw	0x18
+05A9: 3404		retlw	0x04
+05AA: 3400		retlw	0x00
+05AB: 3460		retlw	0x60
+05AC: 3418		retlw	0x18
+05AD: 3406		retlw	0x06
+05AE: 3401		retlw	0x01
+05AF: 3400		retlw	0x00
+05B0: 3400		retlw	0x00
+05B1: 3400		retlw	0x00
+05B2: 3400		retlw	0x00
+05B3: 34E0		retlw	0xE0
+05B4: 3410		retlw	0x10
+05B5: 3408		retlw	0x08
+05B6: 3408		retlw	0x08
+05B7: 3410		retlw	0x10
+05B8: 34E0		retlw	0xE0
+05B9: 3400		retlw	0x00
+05BA: 3400		retlw	0x00
+05BB: 340F		retlw	0x0F
+05BC: 3410		retlw	0x10
+05BD: 3420		retlw	0x20
+05BE: 3420		retlw	0x20
+05BF: 3410		retlw	0x10
+05C0: 340F		retlw	0x0F
+05C1: 3400		retlw	0x00
+05C2: 3400		retlw	0x00
+05C3: 3410		retlw	0x10
+05C4: 3410		retlw	0x10
+05C5: 34F8		retlw	0xF8
+05C6: 3400		retlw	0x00
+05C7: 3400		retlw	0x00
+05C8: 3400		retlw	0x00
+05C9: 3400		retlw	0x00
+05CA: 3400		retlw	0x00
+05CB: 3420		retlw	0x20
+05CC: 3420		retlw	0x20
+05CD: 343F		retlw	0x3F
+05CE: 3420		retlw	0x20
+05CF: 3420		retlw	0x20
+05D0: 3400		retlw	0x00
+05D1: 3400		retlw	0x00
+05D2: 3400		retlw	0x00
+05D3: 3470		retlw	0x70
+05D4: 3408		retlw	0x08
+05D5: 3408		retlw	0x08
+05D6: 3408		retlw	0x08
+05D7: 3488		retlw	0x88
+05D8: 3470		retlw	0x70
+05D9: 3400		retlw	0x00
+05DA: 3400		retlw	0x00
+05DB: 3430		retlw	0x30
+05DC: 3428		retlw	0x28
+05DD: 3424		retlw	0x24
+05DE: 3422		retlw	0x22
+05DF: 3421		retlw	0x21
+05E0: 3430		retlw	0x30
+05E1: 3400		retlw	0x00
+05E2: 3400		retlw	0x00
+05E3: 3430		retlw	0x30
+05E4: 3408		retlw	0x08
+05E5: 3488		retlw	0x88
+05E6: 3488		retlw	0x88
+05E7: 3448		retlw	0x48
+05E8: 3430		retlw	0x30
+05E9: 3400		retlw	0x00
+05EA: 3400		retlw	0x00
+05EB: 3418		retlw	0x18
+05EC: 3420		retlw	0x20
+05ED: 3420		retlw	0x20
+05EE: 3420		retlw	0x20
+05EF: 3411		retlw	0x11
+05F0: 340E		retlw	0x0E
+05F1: 3400		retlw	0x00
+05F2: 3400		retlw	0x00
+05F3: 3400		retlw	0x00
+05F4: 34C0		retlw	0xC0
+05F5: 3420		retlw	0x20
+05F6: 3410		retlw	0x10
+05F7: 34F8		retlw	0xF8
+05F8: 3400		retlw	0x00
+05F9: 3400		retlw	0x00
+05FA: 3400		retlw	0x00
+05FB: 3407		retlw	0x07
+05FC: 3404		retlw	0x04
+05FD: 3424		retlw	0x24
+05FE: 3424		retlw	0x24
+05FF: 343F		retlw	0x3F
+0600: 3424		retlw	0x24
+0601: 3400		retlw	0x00
+0602: 3400		retlw	0x00
+0603: 34F8		retlw	0xF8
+0604: 3408		retlw	0x08
+0605: 3488		retlw	0x88
+0606: 3488		retlw	0x88
+0607: 3408		retlw	0x08
+0608: 3408		retlw	0x08
+0609: 3400		retlw	0x00
+060A: 3400		retlw	0x00
+060B: 3419		retlw	0x19
+060C: 3421		retlw	0x21
+060D: 3420		retlw	0x20
+060E: 3420		retlw	0x20
+060F: 3411		retlw	0x11
+0610: 340E		retlw	0x0E
+0611: 3400		retlw	0x00
+0612: 3400		retlw	0x00
+0613: 34E0		retlw	0xE0
+0614: 3410		retlw	0x10
+0615: 3488		retlw	0x88
+0616: 3488		retlw	0x88
+0617: 3418		retlw	0x18
+0618: 3400		retlw	0x00
+0619: 3400		retlw	0x00
+061A: 3400		retlw	0x00
+061B: 340F		retlw	0x0F
+061C: 3411		retlw	0x11
+061D: 3420		retlw	0x20
+061E: 3420		retlw	0x20
+061F: 3411		retlw	0x11
+0620: 340E		retlw	0x0E
+0621: 3400		retlw	0x00
+0622: 3400		retlw	0x00
+0623: 3438		retlw	0x38
+0624: 3408		retlw	0x08
+0625: 3408		retlw	0x08
+0626: 34C8		retlw	0xC8
+0627: 3438		retlw	0x38
+0628: 3408		retlw	0x08
+0629: 3400		retlw	0x00
+062A: 3400		retlw	0x00
+062B: 3400		retlw	0x00
+062C: 3400		retlw	0x00
+062D: 343F		retlw	0x3F
+062E: 3400		retlw	0x00
+062F: 3400		retlw	0x00
+0630: 3400		retlw	0x00
+0631: 3400		retlw	0x00
+0632: 3400		retlw	0x00
+0633: 3470		retlw	0x70
+0634: 3488		retlw	0x88
+0635: 3408		retlw	0x08
+0636: 3408		retlw	0x08
+0637: 3488		retlw	0x88
+0638: 3470		retlw	0x70
+0639: 3400		retlw	0x00
+063A: 3400		retlw	0x00
+063B: 341C		retlw	0x1C
+063C: 3422		retlw	0x22
+063D: 3421		retlw	0x21
+063E: 3421		retlw	0x21
+063F: 3422		retlw	0x22
+0640: 341C		retlw	0x1C
+0641: 3400		retlw	0x00
+0642: 3400		retlw	0x00
+0643: 34E0		retlw	0xE0
+0644: 3410		retlw	0x10
+0645: 3408		retlw	0x08
+0646: 3408		retlw	0x08
+0647: 3410		retlw	0x10
+0648: 34E0		retlw	0xE0
+0649: 3400		retlw	0x00
+064A: 3400		retlw	0x00
+064B: 3400		retlw	0x00
+064C: 3431		retlw	0x31
+064D: 3422		retlw	0x22
+064E: 3422		retlw	0x22
+064F: 3411		retlw	0x11
+0650: 340F		retlw	0x0F
+0651: 3400		retlw	0x00
+0652: 3400		retlw	0x00
+0653: 3400		retlw	0x00
+0654: 3400		retlw	0x00
+0655: 34C0		retlw	0xC0
+0656: 34C0		retlw	0xC0
+0657: 3400		retlw	0x00
+0658: 3400		retlw	0x00
+0659: 3400		retlw	0x00
+065A: 3400		retlw	0x00
+065B: 3400		retlw	0x00
+065C: 3400		retlw	0x00
+065D: 3430		retlw	0x30
+065E: 3430		retlw	0x30
+065F: 3400		retlw	0x00
+0660: 3400		retlw	0x00
+0661: 3400		retlw	0x00
+0662: 3400		retlw	0x00
+0663: 3400		retlw	0x00
+0664: 3400		retlw	0x00
+0665: 3480		retlw	0x80
+0666: 3400		retlw	0x00
+0667: 3400		retlw	0x00
+0668: 3400		retlw	0x00
+0669: 3400		retlw	0x00
+066A: 3400		retlw	0x00
+066B: 3400		retlw	0x00
+066C: 3480		retlw	0x80
+066D: 3460		retlw	0x60
+066E: 3400		retlw	0x00
+066F: 3400		retlw	0x00
+0670: 3400		retlw	0x00
+0671: 3400		retlw	0x00
+0672: 3400		retlw	0x00
+0673: 3400		retlw	0x00
+0674: 3480		retlw	0x80
+0675: 3440		retlw	0x40
+0676: 3420		retlw	0x20
+0677: 3410		retlw	0x10
+0678: 3408		retlw	0x08
+0679: 3400		retlw	0x00
+067A: 3400		retlw	0x00
+067B: 3401		retlw	0x01
+067C: 3402		retlw	0x02
+067D: 3404		retlw	0x04
+067E: 3408		retlw	0x08
+067F: 3410		retlw	0x10
+0680: 3420		retlw	0x20
+0681: 3400		retlw	0x00
+0682: 3440		retlw	0x40
+0683: 3440		retlw	0x40
+0684: 3440		retlw	0x40
+0685: 3440		retlw	0x40
+0686: 3440		retlw	0x40
+0687: 3440		retlw	0x40
+0688: 3440		retlw	0x40
+0689: 3400		retlw	0x00
+068A: 3404		retlw	0x04
+068B: 3404		retlw	0x04
+068C: 3404		retlw	0x04
+068D: 3404		retlw	0x04
+068E: 3404		retlw	0x04
+068F: 3404		retlw	0x04
+0690: 3404		retlw	0x04
+0691: 3400		retlw	0x00
+0692: 3400		retlw	0x00
+0693: 3408		retlw	0x08
+0694: 3410		retlw	0x10
+0695: 3420		retlw	0x20
+0696: 3440		retlw	0x40
+0697: 3480		retlw	0x80
+0698: 3400		retlw	0x00
+0699: 3400		retlw	0x00
+069A: 3400		retlw	0x00
+069B: 3420		retlw	0x20
+069C: 3410		retlw	0x10
+069D: 3408		retlw	0x08
+069E: 3404		retlw	0x04
+069F: 3402		retlw	0x02
+06A0: 3401		retlw	0x01
+06A1: 3400		retlw	0x00
+06A2: 3400		retlw	0x00
+06A3: 3470		retlw	0x70
+06A4: 3448		retlw	0x48
+06A5: 3408		retlw	0x08
+06A6: 3408		retlw	0x08
+06A7: 3408		retlw	0x08
+06A8: 34F0		retlw	0xF0
+06A9: 3400		retlw	0x00
+06AA: 3400		retlw	0x00
+06AB: 3400		retlw	0x00
+06AC: 3400		retlw	0x00
+06AD: 3430		retlw	0x30
+06AE: 3436		retlw	0x36
+06AF: 3401		retlw	0x01
+06B0: 3400		retlw	0x00
+06B1: 3400		retlw	0x00
+06B2: 34C0		retlw	0xC0
+06B3: 3430		retlw	0x30
+06B4: 34C8		retlw	0xC8
+06B5: 3428		retlw	0x28
+06B6: 34E8		retlw	0xE8
+06B7: 3410		retlw	0x10
+06B8: 34E0		retlw	0xE0
+06B9: 3400		retlw	0x00
+06BA: 3407		retlw	0x07
+06BB: 3418		retlw	0x18
+06BC: 3427		retlw	0x27
+06BD: 3424		retlw	0x24
+06BE: 3423		retlw	0x23
+06BF: 3414		retlw	0x14
+06C0: 340B		retlw	0x0B
+06C1: 3400		retlw	0x00
+06C2: 3400		retlw	0x00
+06C3: 3400		retlw	0x00
+06C4: 34C0		retlw	0xC0
+06C5: 3438		retlw	0x38
+06C6: 34E0		retlw	0xE0
+06C7: 3400		retlw	0x00
+06C8: 3400		retlw	0x00
+06C9: 3400		retlw	0x00
+06CA: 3420		retlw	0x20
+06CB: 343C		retlw	0x3C
+06CC: 3423		retlw	0x23
+06CD: 3402		retlw	0x02
+06CE: 3402		retlw	0x02
+06CF: 3427		retlw	0x27
+06D0: 3438		retlw	0x38
+06D1: 3420		retlw	0x20
+06D2: 3408		retlw	0x08
+06D3: 34F8		retlw	0xF8
+06D4: 3488		retlw	0x88
+06D5: 3488		retlw	0x88
+06D6: 3488		retlw	0x88
+06D7: 3470		retlw	0x70
+06D8: 3400		retlw	0x00
+06D9: 3400		retlw	0x00
+06DA: 3420		retlw	0x20
+06DB: 343F		retlw	0x3F
+06DC: 3420		retlw	0x20
+06DD: 3420		retlw	0x20
+06DE: 3420		retlw	0x20
+06DF: 3411		retlw	0x11
+06E0: 340E		retlw	0x0E
+06E1: 3400		retlw	0x00
+06E2: 34C0		retlw	0xC0
+06E3: 3430		retlw	0x30
+06E4: 3408		retlw	0x08
+06E5: 3408		retlw	0x08
+06E6: 3408		retlw	0x08
+06E7: 3408		retlw	0x08
+06E8: 3438		retlw	0x38
+06E9: 3400		retlw	0x00
+06EA: 3407		retlw	0x07
+06EB: 3418		retlw	0x18
+06EC: 3420		retlw	0x20
+06ED: 3420		retlw	0x20
+06EE: 3420		retlw	0x20
+06EF: 3410		retlw	0x10
+06F0: 3408		retlw	0x08
+06F1: 3400		retlw	0x00
+06F2: 3408		retlw	0x08
+06F3: 34F8		retlw	0xF8
+06F4: 3408		retlw	0x08
+06F5: 3408		retlw	0x08
+06F6: 3408		retlw	0x08
+06F7: 3410		retlw	0x10
+06F8: 34E0		retlw	0xE0
+06F9: 3400		retlw	0x00
+06FA: 3420		retlw	0x20
+06FB: 343F		retlw	0x3F
+06FC: 3420		retlw	0x20
+06FD: 3420		retlw	0x20
+06FE: 3420		retlw	0x20
+06FF: 3410		retlw	0x10
+0700: 340F		retlw	0x0F
+0701: 3400		retlw	0x00
+0702: 3408		retlw	0x08
+0703: 34F8		retlw	0xF8
+0704: 3488		retlw	0x88
+0705: 3488		retlw	0x88
+0706: 34E8		retlw	0xE8
+0707: 3408		retlw	0x08
+0708: 3410		retlw	0x10
+0709: 3400		retlw	0x00
+070A: 3420		retlw	0x20
+070B: 343F		retlw	0x3F
+070C: 3420		retlw	0x20
+070D: 3420		retlw	0x20
+070E: 3423		retlw	0x23
+070F: 3420		retlw	0x20
+0710: 3418		retlw	0x18
+0711: 3400		retlw	0x00
+0712: 3408		retlw	0x08
+0713: 34F8		retlw	0xF8
+0714: 3488		retlw	0x88
+0715: 3488		retlw	0x88
+0716: 34E8		retlw	0xE8
+0717: 3408		retlw	0x08
+0718: 3410		retlw	0x10
+0719: 3400		retlw	0x00
+071A: 3420		retlw	0x20
+071B: 343F		retlw	0x3F
+071C: 3420		retlw	0x20
+071D: 3400		retlw	0x00
+071E: 3403		retlw	0x03
+071F: 3400		retlw	0x00
+0720: 3400		retlw	0x00
+0721: 3400		retlw	0x00
+0722: 34C0		retlw	0xC0
+0723: 3430		retlw	0x30
+0724: 3408		retlw	0x08
+0725: 3408		retlw	0x08
+0726: 3408		retlw	0x08
+0727: 3438		retlw	0x38
+0728: 3400		retlw	0x00
+0729: 3400		retlw	0x00
+072A: 3407		retlw	0x07
+072B: 3418		retlw	0x18
+072C: 3420		retlw	0x20
+072D: 3420		retlw	0x20
+072E: 3422		retlw	0x22
+072F: 341E		retlw	0x1E
+0730: 3402		retlw	0x02
+0731: 3400		retlw	0x00
+0732: 3408		retlw	0x08
+0733: 34F8		retlw	0xF8
+0734: 3408		retlw	0x08
+0735: 3400		retlw	0x00
+0736: 3400		retlw	0x00
+0737: 3408		retlw	0x08
+0738: 34F8		retlw	0xF8
+0739: 3408		retlw	0x08
+073A: 3420		retlw	0x20
+073B: 343F		retlw	0x3F
+073C: 3421		retlw	0x21
+073D: 3401		retlw	0x01
+073E: 3401		retlw	0x01
+073F: 3421		retlw	0x21
+0740: 343F		retlw	0x3F
+0741: 3420		retlw	0x20
+0742: 3400		retlw	0x00
+0743: 3408		retlw	0x08
+0744: 3408		retlw	0x08
+0745: 34F8		retlw	0xF8
+0746: 3408		retlw	0x08
+0747: 3408		retlw	0x08
+0748: 3400		retlw	0x00
+0749: 3400		retlw	0x00
+074A: 3400		retlw	0x00
+074B: 3420		retlw	0x20
+074C: 3420		retlw	0x20
+074D: 343F		retlw	0x3F
+074E: 3420		retlw	0x20
+074F: 3420		retlw	0x20
+0750: 3400		retlw	0x00
+0751: 3400		retlw	0x00
+0752: 3400		retlw	0x00
+0753: 3400		retlw	0x00
+0754: 3408		retlw	0x08
+0755: 3408		retlw	0x08
+0756: 34F8		retlw	0xF8
+0757: 3408		retlw	0x08
+0758: 3408		retlw	0x08
+0759: 3400		retlw	0x00
+075A: 34C0		retlw	0xC0
+075B: 3480		retlw	0x80
+075C: 3480		retlw	0x80
+075D: 3480		retlw	0x80
+075E: 347F		retlw	0x7F
+075F: 3400		retlw	0x00
+0760: 3400		retlw	0x00
+0761: 3400		retlw	0x00
+0762: 3408		retlw	0x08
+0763: 34F8		retlw	0xF8
+0764: 3488		retlw	0x88
+0765: 34C0		retlw	0xC0
+0766: 3428		retlw	0x28
+0767: 3418		retlw	0x18
+0768: 3408		retlw	0x08
+0769: 3400		retlw	0x00
+076A: 3420		retlw	0x20
+076B: 343F		retlw	0x3F
+076C: 3420		retlw	0x20
+076D: 3401		retlw	0x01
+076E: 3426		retlw	0x26
+076F: 3438		retlw	0x38
+0770: 3420		retlw	0x20
+0771: 3400		retlw	0x00
+0772: 3408		retlw	0x08
+0773: 34F8		retlw	0xF8
+0774: 3408		retlw	0x08
+0775: 3400		retlw	0x00
+0776: 3400		retlw	0x00
+0777: 3400		retlw	0x00
+0778: 3400		retlw	0x00
+0779: 3400		retlw	0x00
+077A: 3420		retlw	0x20
+077B: 343F		retlw	0x3F
+077C: 3420		retlw	0x20
+077D: 3420		retlw	0x20
+077E: 3420		retlw	0x20
+077F: 3420		retlw	0x20
+0780: 3430		retlw	0x30
+0781: 3400		retlw	0x00
+0782: 3408		retlw	0x08
+0783: 34F8		retlw	0xF8
+0784: 34F8		retlw	0xF8
+0785: 3400		retlw	0x00
+0786: 34F8		retlw	0xF8
+0787: 34F8		retlw	0xF8
+0788: 3408		retlw	0x08
+0789: 3400		retlw	0x00
+078A: 3420		retlw	0x20
+078B: 343F		retlw	0x3F
+078C: 3400		retlw	0x00
+078D: 343F		retlw	0x3F
+078E: 3400		retlw	0x00
+078F: 343F		retlw	0x3F
+0790: 3420		retlw	0x20
+0791: 3400		retlw	0x00
+0792: 3408		retlw	0x08
+0793: 34F8		retlw	0xF8
+0794: 3430		retlw	0x30
+0795: 34C0		retlw	0xC0
+0796: 3400		retlw	0x00
+0797: 3408		retlw	0x08
+0798: 34F8		retlw	0xF8
+0799: 3408		retlw	0x08
+079A: 3420		retlw	0x20
+079B: 343F		retlw	0x3F
+079C: 3420		retlw	0x20
+079D: 3400		retlw	0x00
+079E: 3407		retlw	0x07
+079F: 3418		retlw	0x18
+07A0: 343F		retlw	0x3F
+07A1: 3400		retlw	0x00
+07A2: 34E0		retlw	0xE0
+07A3: 3410		retlw	0x10
+07A4: 3408		retlw	0x08
+07A5: 3408		retlw	0x08
+07A6: 3408		retlw	0x08
+07A7: 3410		retlw	0x10
+07A8: 34E0		retlw	0xE0
+07A9: 3400		retlw	0x00
+07AA: 340F		retlw	0x0F
+07AB: 3410		retlw	0x10
+07AC: 3420		retlw	0x20
+07AD: 3420		retlw	0x20
+07AE: 3420		retlw	0x20
+07AF: 3410		retlw	0x10
+07B0: 340F		retlw	0x0F
+07B1: 3400		retlw	0x00
+07B2: 3408		retlw	0x08
+07B3: 34F8		retlw	0xF8
+07B4: 3408		retlw	0x08
+07B5: 3408		retlw	0x08
+07B6: 3408		retlw	0x08
+07B7: 3408		retlw	0x08
+07B8: 34F0		retlw	0xF0
+07B9: 3400		retlw	0x00
+07BA: 3420		retlw	0x20
+07BB: 343F		retlw	0x3F
+07BC: 3421		retlw	0x21
+07BD: 3401		retlw	0x01
+07BE: 3401		retlw	0x01
+07BF: 3401		retlw	0x01
+07C0: 3400		retlw	0x00
+07C1: 3400		retlw	0x00
+07C2: 34E0		retlw	0xE0
+07C3: 3410		retlw	0x10
+07C4: 3408		retlw	0x08
+07C5: 3408		retlw	0x08
+07C6: 3408		retlw	0x08
+07C7: 3410		retlw	0x10
+07C8: 34E0		retlw	0xE0
+07C9: 3400		retlw	0x00
+07CA: 340F		retlw	0x0F
+07CB: 3418		retlw	0x18
+07CC: 3424		retlw	0x24
+07CD: 3424		retlw	0x24
+07CE: 3438		retlw	0x38
+07CF: 3450		retlw	0x50
+07D0: 344F		retlw	0x4F
+07D1: 3400		retlw	0x00
+07D2: 3408		retlw	0x08
+07D3: 34F8		retlw	0xF8
+07D4: 3488		retlw	0x88
+07D5: 3488		retlw	0x88
+07D6: 3488		retlw	0x88
+07D7: 3488		retlw	0x88
+07D8: 3470		retlw	0x70
+07D9: 3400		retlw	0x00
+07DA: 3420		retlw	0x20
+07DB: 343F		retlw	0x3F
+07DC: 3420		retlw	0x20
+07DD: 3400		retlw	0x00
+07DE: 3403		retlw	0x03
+07DF: 340C		retlw	0x0C
+07E0: 3430		retlw	0x30
+07E1: 3420		retlw	0x20
+07E2: 3400		retlw	0x00
+07E3: 3470		retlw	0x70
+07E4: 3488		retlw	0x88
+07E5: 3408		retlw	0x08
+07E6: 3408		retlw	0x08
+07E7: 3408		retlw	0x08
+07E8: 3438		retlw	0x38
+07E9: 3400		retlw	0x00
+07EA: 3400		retlw	0x00
+07EB: 3438		retlw	0x38
+07EC: 3420		retlw	0x20
+07ED: 3421		retlw	0x21
+07EE: 3421		retlw	0x21
+07EF: 3422		retlw	0x22
+07F0: 341C		retlw	0x1C
+07F1: 3400		retlw	0x00
+07F2: 3418		retlw	0x18
+07F3: 3408		retlw	0x08
+07F4: 3408		retlw	0x08
+07F5: 34F8		retlw	0xF8
+07F6: 3408		retlw	0x08
+07F7: 3408		retlw	0x08
+07F8: 3418		retlw	0x18
+07F9: 3400		retlw	0x00
+07FA: 3400		retlw	0x00
+07FB: 3400		retlw	0x00
+07FC: 3420		retlw	0x20
+07FD: 343F		retlw	0x3F
+07FE: 3420		retlw	0x20
+07FF: 3400		retlw	0x00
+0800: 3400		retlw	0x00
+0801: 3400		retlw	0x00
+0802: 3408		retlw	0x08
+0803: 34F8		retlw	0xF8
+0804: 3408		retlw	0x08
+0805: 3400		retlw	0x00
+0806: 3400		retlw	0x00
+0807: 3408		retlw	0x08
+0808: 34F8		retlw	0xF8
+0809: 3408		retlw	0x08
+080A: 3400		retlw	0x00
+080B: 341F		retlw	0x1F
+080C: 3420		retlw	0x20
+080D: 3420		retlw	0x20
+080E: 3420		retlw	0x20
+080F: 3420		retlw	0x20
+0810: 341F		retlw	0x1F
+0811: 3400		retlw	0x00
+0812: 3408		retlw	0x08
+0813: 3478		retlw	0x78
+0814: 3488		retlw	0x88
+0815: 3400		retlw	0x00
+0816: 3400		retlw	0x00
+0817: 34C8		retlw	0xC8
+0818: 3438		retlw	0x38
+0819: 3408		retlw	0x08
+081A: 3400		retlw	0x00
+081B: 3400		retlw	0x00
+081C: 3407		retlw	0x07
+081D: 3438		retlw	0x38
+081E: 340E		retlw	0x0E
+081F: 3401		retlw	0x01
+0820: 3400		retlw	0x00
+0821: 3400		retlw	0x00
+0822: 34F8		retlw	0xF8
+0823: 3408		retlw	0x08
+0824: 3400		retlw	0x00
+0825: 34F8		retlw	0xF8
+0826: 3400		retlw	0x00
+0827: 3408		retlw	0x08
+0828: 34F8		retlw	0xF8
+0829: 3400		retlw	0x00
+082A: 3403		retlw	0x03
+082B: 343C		retlw	0x3C
+082C: 3407		retlw	0x07
+082D: 3400		retlw	0x00
+082E: 3407		retlw	0x07
+082F: 343C		retlw	0x3C
+0830: 3403		retlw	0x03
+0831: 3400		retlw	0x00
+0832: 3408		retlw	0x08
+0833: 3418		retlw	0x18
+0834: 3468		retlw	0x68
+0835: 3480		retlw	0x80
+0836: 3480		retlw	0x80
+0837: 3468		retlw	0x68
+0838: 3418		retlw	0x18
+0839: 3408		retlw	0x08
+083A: 3420		retlw	0x20
+083B: 3430		retlw	0x30
+083C: 342C		retlw	0x2C
+083D: 3403		retlw	0x03
+083E: 3403		retlw	0x03
+083F: 342C		retlw	0x2C
+0840: 3430		retlw	0x30
+0841: 3420		retlw	0x20
+0842: 3408		retlw	0x08
+0843: 3438		retlw	0x38
+0844: 34C8		retlw	0xC8
+0845: 3400		retlw	0x00
+0846: 34C8		retlw	0xC8
+0847: 3438		retlw	0x38
+0848: 3408		retlw	0x08
+0849: 3400		retlw	0x00
+084A: 3400		retlw	0x00
+084B: 3400		retlw	0x00
+084C: 3420		retlw	0x20
+084D: 343F		retlw	0x3F
+084E: 3420		retlw	0x20
+084F: 3400		retlw	0x00
+0850: 3400		retlw	0x00
+0851: 3400		retlw	0x00
+0852: 3410		retlw	0x10
+0853: 3408		retlw	0x08
+0854: 3408		retlw	0x08
+0855: 3408		retlw	0x08
+0856: 34C8		retlw	0xC8
+0857: 3438		retlw	0x38
+0858: 3408		retlw	0x08
+0859: 3400		retlw	0x00
+085A: 3420		retlw	0x20
+085B: 3438		retlw	0x38
+085C: 3426		retlw	0x26
+085D: 3421		retlw	0x21
+085E: 3420		retlw	0x20
+085F: 3420		retlw	0x20
+0860: 3418		retlw	0x18
+0861: 3400		retlw	0x00
+0862: 3400		retlw	0x00
+0863: 3400		retlw	0x00
+0864: 3400		retlw	0x00
+0865: 34FE		retlw	0xFE
+0866: 3402		retlw	0x02
+0867: 3402		retlw	0x02
+0868: 3402		retlw	0x02
+0869: 3400		retlw	0x00
+086A: 3400		retlw	0x00
+086B: 3400		retlw	0x00
+086C: 3400		retlw	0x00
+086D: 347F		retlw	0x7F
+086E: 3440		retlw	0x40
+086F: 3440		retlw	0x40
+0870: 3440		retlw	0x40
+0871: 3400		retlw	0x00
+0872: 3400		retlw	0x00
+0873: 340C		retlw	0x0C
+0874: 3430		retlw	0x30
+0875: 34C0		retlw	0xC0
+0876: 3400		retlw	0x00
+0877: 3400		retlw	0x00
+0878: 3400		retlw	0x00
+0879: 3400		retlw	0x00
+087A: 3400		retlw	0x00
+087B: 3400		retlw	0x00
+087C: 3400		retlw	0x00
+087D: 3401		retlw	0x01
+087E: 3406		retlw	0x06
+087F: 3438		retlw	0x38
+0880: 34C0		retlw	0xC0
+0881: 3400		retlw	0x00
+0882: 3400		retlw	0x00
+0883: 3402		retlw	0x02
+0884: 3402		retlw	0x02
+0885: 3402		retlw	0x02
+0886: 34FE		retlw	0xFE
+0887: 3400		retlw	0x00
+0888: 3400		retlw	0x00
+0889: 3400		retlw	0x00
+088A: 3400		retlw	0x00
+088B: 3440		retlw	0x40
+088C: 3440		retlw	0x40
+088D: 3440		retlw	0x40
+088E: 347F		retlw	0x7F
+088F: 3400		retlw	0x00
+0890: 3400		retlw	0x00
+0891: 3400		retlw	0x00
+0892: 3400		retlw	0x00
+0893: 3400		retlw	0x00
+0894: 3404		retlw	0x04
+0895: 3402		retlw	0x02
+0896: 3402		retlw	0x02
+0897: 3402		retlw	0x02
+0898: 3404		retlw	0x04
+0899: 3400		retlw	0x00
+089A: 3400		retlw	0x00
+089B: 3400		retlw	0x00
+089C: 3400		retlw	0x00
+089D: 3400		retlw	0x00
+089E: 3400		retlw	0x00
+089F: 3400		retlw	0x00
+08A0: 3400		retlw	0x00
+08A1: 3400		retlw	0x00
+08A2: 3400		retlw	0x00
+08A3: 3400		retlw	0x00
+08A4: 3400		retlw	0x00
+08A5: 3400		retlw	0x00
+08A6: 3400		retlw	0x00
+08A7: 3400		retlw	0x00
+08A8: 3400		retlw	0x00
+08A9: 3400		retlw	0x00
+08AA: 3480		retlw	0x80
+08AB: 3480		retlw	0x80
+08AC: 3480		retlw	0x80
+08AD: 3480		retlw	0x80
+08AE: 3480		retlw	0x80
+08AF: 3480		retlw	0x80
+08B0: 3480		retlw	0x80
+08B1: 3480		retlw	0x80
+08B2: 3400		retlw	0x00
+08B3: 3402		retlw	0x02
+08B4: 3402		retlw	0x02
+08B5: 3404		retlw	0x04
+08B6: 3400		retlw	0x00
+08B7: 3400		retlw	0x00
+08B8: 3400		retlw	0x00
+08B9: 3400		retlw	0x00
+08BA: 3400		retlw	0x00
+08BB: 3400		retlw	0x00
+08BC: 3400		retlw	0x00
+08BD: 3400		retlw	0x00
+08BE: 3400		retlw	0x00
+08BF: 3400		retlw	0x00
+08C0: 3400		retlw	0x00
+08C1: 3400		retlw	0x00
+08C2: 3400		retlw	0x00
+08C3: 3400		retlw	0x00
+08C4: 3480		retlw	0x80
+08C5: 3480		retlw	0x80
+08C6: 3480		retlw	0x80
+08C7: 3480		retlw	0x80
+08C8: 3400		retlw	0x00
+08C9: 3400		retlw	0x00
+08CA: 3400		retlw	0x00
+08CB: 3419		retlw	0x19
+08CC: 3424		retlw	0x24
+08CD: 3422		retlw	0x22
+08CE: 3422		retlw	0x22
+08CF: 3422		retlw	0x22
+08D0: 343F		retlw	0x3F
+08D1: 3420		retlw	0x20
+08D2: 3408		retlw	0x08
+08D3: 34F8		retlw	0xF8
+08D4: 3400		retlw	0x00
+08D5: 3480		retlw	0x80
+08D6: 3480		retlw	0x80
+08D7: 3400		retlw	0x00
+08D8: 3400		retlw	0x00
+08D9: 3400		retlw	0x00
+08DA: 3400		retlw	0x00
+08DB: 343F		retlw	0x3F
+08DC: 3411		retlw	0x11
+08DD: 3420		retlw	0x20
+08DE: 3420		retlw	0x20
+08DF: 3411		retlw	0x11
+08E0: 340E		retlw	0x0E
+08E1: 3400		retlw	0x00
+08E2: 3400		retlw	0x00
+08E3: 3400		retlw	0x00
+08E4: 3400		retlw	0x00
+08E5: 3480		retlw	0x80
+08E6: 3480		retlw	0x80
+08E7: 3480		retlw	0x80
+08E8: 3400		retlw	0x00
+08E9: 3400		retlw	0x00
+08EA: 3400		retlw	0x00
+08EB: 340E		retlw	0x0E
+08EC: 3411		retlw	0x11
+08ED: 3420		retlw	0x20
+08EE: 3420		retlw	0x20
+08EF: 3420		retlw	0x20
+08F0: 3411		retlw	0x11
+08F1: 3400		retlw	0x00
+08F2: 3400		retlw	0x00
+08F3: 3400		retlw	0x00
+08F4: 3400		retlw	0x00
+08F5: 3480		retlw	0x80
+08F6: 3480		retlw	0x80
+08F7: 3488		retlw	0x88
+08F8: 34F8		retlw	0xF8
+08F9: 3400		retlw	0x00
+08FA: 3400		retlw	0x00
+08FB: 340E		retlw	0x0E
+08FC: 3411		retlw	0x11
+08FD: 3420		retlw	0x20
+08FE: 3420		retlw	0x20
+08FF: 3410		retlw	0x10
+0900: 343F		retlw	0x3F
+0901: 3420		retlw	0x20
+0902: 3400		retlw	0x00
+0903: 3400		retlw	0x00
+0904: 3480		retlw	0x80
+0905: 3480		retlw	0x80
+0906: 3480		retlw	0x80
+0907: 3480		retlw	0x80
+0908: 3400		retlw	0x00
+0909: 3400		retlw	0x00
+090A: 3400		retlw	0x00
+090B: 341F		retlw	0x1F
+090C: 3422		retlw	0x22
+090D: 3422		retlw	0x22
+090E: 3422		retlw	0x22
+090F: 3422		retlw	0x22
+0910: 3413		retlw	0x13
+0911: 3400		retlw	0x00
+0912: 3400		retlw	0x00
+0913: 3480		retlw	0x80
+0914: 3480		retlw	0x80
+0915: 34F0		retlw	0xF0
+0916: 3488		retlw	0x88
+0917: 3488		retlw	0x88
+0918: 3488		retlw	0x88
+0919: 3418		retlw	0x18
+091A: 3400		retlw	0x00
+091B: 3420		retlw	0x20
+091C: 3420		retlw	0x20
+091D: 343F		retlw	0x3F
+091E: 3420		retlw	0x20
+091F: 3420		retlw	0x20
+0920: 3400		retlw	0x00
+0921: 3400		retlw	0x00
+0922: 3400		retlw	0x00
+0923: 3400		retlw	0x00
+0924: 3480		retlw	0x80
+0925: 3480		retlw	0x80
+0926: 3480		retlw	0x80
+0927: 3480		retlw	0x80
+0928: 3480		retlw	0x80
+0929: 3400		retlw	0x00
+092A: 3400		retlw	0x00
+092B: 346B		retlw	0x6B
+092C: 3494		retlw	0x94
+092D: 3494		retlw	0x94
+092E: 3494		retlw	0x94
+092F: 3493		retlw	0x93
+0930: 3460		retlw	0x60
+0931: 3400		retlw	0x00
+0932: 3408		retlw	0x08
+0933: 34F8		retlw	0xF8
+0934: 3400		retlw	0x00
+0935: 3480		retlw	0x80
+0936: 3480		retlw	0x80
+0937: 3480		retlw	0x80
+0938: 3400		retlw	0x00
+0939: 3400		retlw	0x00
+093A: 3420		retlw	0x20
+093B: 343F		retlw	0x3F
+093C: 3421		retlw	0x21
+093D: 3400		retlw	0x00
+093E: 3400		retlw	0x00
+093F: 3420		retlw	0x20
+0940: 343F		retlw	0x3F
+0941: 3420		retlw	0x20
+0942: 3400		retlw	0x00
+0943: 3480		retlw	0x80
+0944: 3498		retlw	0x98
+0945: 3498		retlw	0x98
+0946: 3400		retlw	0x00
+0947: 3400		retlw	0x00
+0948: 3400		retlw	0x00
+0949: 3400		retlw	0x00
+094A: 3400		retlw	0x00
+094B: 3420		retlw	0x20
+094C: 3420		retlw	0x20
+094D: 343F		retlw	0x3F
+094E: 3420		retlw	0x20
+094F: 3420		retlw	0x20
+0950: 3400		retlw	0x00
+0951: 3400		retlw	0x00
+0952: 3400		retlw	0x00
+0953: 3400		retlw	0x00
+0954: 3400		retlw	0x00
+0955: 3480		retlw	0x80
+0956: 3498		retlw	0x98
+0957: 3498		retlw	0x98
+0958: 3400		retlw	0x00
+0959: 3400		retlw	0x00
+095A: 3400		retlw	0x00
+095B: 34C0		retlw	0xC0
+095C: 3480		retlw	0x80
+095D: 3480		retlw	0x80
+095E: 3480		retlw	0x80
+095F: 347F		retlw	0x7F
+0960: 3400		retlw	0x00
+0961: 3400		retlw	0x00
+0962: 3408		retlw	0x08
+0963: 34F8		retlw	0xF8
+0964: 3400		retlw	0x00
+0965: 3400		retlw	0x00
+0966: 3480		retlw	0x80
+0967: 3480		retlw	0x80
+0968: 3480		retlw	0x80
+0969: 3400		retlw	0x00
+096A: 3420		retlw	0x20
+096B: 343F		retlw	0x3F
+096C: 3424		retlw	0x24
+096D: 3402		retlw	0x02
+096E: 342D		retlw	0x2D
+096F: 3430		retlw	0x30
+0970: 3420		retlw	0x20
+0971: 3400		retlw	0x00
+0972: 3400		retlw	0x00
+0973: 3408		retlw	0x08
+0974: 3408		retlw	0x08
+0975: 34F8		retlw	0xF8
+0976: 3400		retlw	0x00
+0977: 3400		retlw	0x00
+0978: 3400		retlw	0x00
+0979: 3400		retlw	0x00
+097A: 3400		retlw	0x00
+097B: 3420		retlw	0x20
+097C: 3420		retlw	0x20
+097D: 343F		retlw	0x3F
+097E: 3420		retlw	0x20
+097F: 3420		retlw	0x20
+0980: 3400		retlw	0x00
+0981: 3400		retlw	0x00
+0982: 3480		retlw	0x80
+0983: 3480		retlw	0x80
+0984: 3480		retlw	0x80
+0985: 3480		retlw	0x80
+0986: 3480		retlw	0x80
+0987: 3480		retlw	0x80
+0988: 3480		retlw	0x80
+0989: 3400		retlw	0x00
+098A: 3420		retlw	0x20
+098B: 343F		retlw	0x3F
+098C: 3420		retlw	0x20
+098D: 3400		retlw	0x00
+098E: 343F		retlw	0x3F
+098F: 3420		retlw	0x20
+0990: 3400		retlw	0x00
+0991: 343F		retlw	0x3F
+0992: 3480		retlw	0x80
+0993: 3480		retlw	0x80
+0994: 3400		retlw	0x00
+0995: 3480		retlw	0x80
+0996: 3480		retlw	0x80
+0997: 3480		retlw	0x80
+0998: 3400		retlw	0x00
+0999: 3400		retlw	0x00
+099A: 3420		retlw	0x20
+099B: 343F		retlw	0x3F
+099C: 3421		retlw	0x21
+099D: 3400		retlw	0x00
+099E: 3400		retlw	0x00
+099F: 3420		retlw	0x20
+09A0: 343F		retlw	0x3F
+09A1: 3420		retlw	0x20
+09A2: 3400		retlw	0x00
+09A3: 3400		retlw	0x00
+09A4: 3480		retlw	0x80
+09A5: 3480		retlw	0x80
+09A6: 3480		retlw	0x80
+09A7: 3480		retlw	0x80
+09A8: 3400		retlw	0x00
+09A9: 3400		retlw	0x00
+09AA: 3400		retlw	0x00
+09AB: 341F		retlw	0x1F
+09AC: 3420		retlw	0x20
+09AD: 3420		retlw	0x20
+09AE: 3420		retlw	0x20
+09AF: 3420		retlw	0x20
+09B0: 341F		retlw	0x1F
+09B1: 3400		retlw	0x00
+09B2: 3480		retlw	0x80
+09B3: 3480		retlw	0x80
+09B4: 3400		retlw	0x00
+09B5: 3480		retlw	0x80
+09B6: 3480		retlw	0x80
+09B7: 3400		retlw	0x00
+09B8: 3400		retlw	0x00
+09B9: 3400		retlw	0x00
+09BA: 3480		retlw	0x80
+09BB: 34FF		retlw	0xFF
+09BC: 34A1		retlw	0xA1
+09BD: 3420		retlw	0x20
+09BE: 3420		retlw	0x20
+09BF: 3411		retlw	0x11
+09C0: 340E		retlw	0x0E
+09C1: 3400		retlw	0x00
+09C2: 3400		retlw	0x00
+09C3: 3400		retlw	0x00
+09C4: 3400		retlw	0x00
+09C5: 3480		retlw	0x80
+09C6: 3480		retlw	0x80
+09C7: 3480		retlw	0x80
+09C8: 3480		retlw	0x80
+09C9: 3400		retlw	0x00
+09CA: 3400		retlw	0x00
+09CB: 340E		retlw	0x0E
+09CC: 3411		retlw	0x11
+09CD: 3420		retlw	0x20
+09CE: 3420		retlw	0x20
+09CF: 34A0		retlw	0xA0
+09D0: 34FF		retlw	0xFF
+09D1: 3480		retlw	0x80
+09D2: 3480		retlw	0x80
+09D3: 3480		retlw	0x80
+09D4: 3480		retlw	0x80
+09D5: 3400		retlw	0x00
+09D6: 3480		retlw	0x80
+09D7: 3480		retlw	0x80
+09D8: 3480		retlw	0x80
+09D9: 3400		retlw	0x00
+09DA: 3420		retlw	0x20
+09DB: 3420		retlw	0x20
+09DC: 343F		retlw	0x3F
+09DD: 3421		retlw	0x21
+09DE: 3420		retlw	0x20
+09DF: 3400		retlw	0x00
+09E0: 3401		retlw	0x01
+09E1: 3400		retlw	0x00
+09E2: 3400		retlw	0x00
+09E3: 3400		retlw	0x00
+09E4: 3480		retlw	0x80
+09E5: 3480		retlw	0x80
+09E6: 3480		retlw	0x80
+09E7: 3480		retlw	0x80
+09E8: 3480		retlw	0x80
+09E9: 3400		retlw	0x00
+09EA: 3400		retlw	0x00
+09EB: 3433		retlw	0x33
+09EC: 3424		retlw	0x24
+09ED: 3424		retlw	0x24
+09EE: 3424		retlw	0x24
+09EF: 3424		retlw	0x24
+09F0: 3419		retlw	0x19
+09F1: 3400		retlw	0x00
+09F2: 3400		retlw	0x00
+09F3: 3480		retlw	0x80
+09F4: 3480		retlw	0x80
+09F5: 34E0		retlw	0xE0
+09F6: 3480		retlw	0x80
+09F7: 3480		retlw	0x80
+09F8: 3400		retlw	0x00
+09F9: 3400		retlw	0x00
+09FA: 3400		retlw	0x00
+09FB: 3400		retlw	0x00
+09FC: 3400		retlw	0x00
+09FD: 341F		retlw	0x1F
+09FE: 3420		retlw	0x20
+09FF: 3420		retlw	0x20
+0A00: 3400		retlw	0x00
+0A01: 3400		retlw	0x00
+0A02: 3480		retlw	0x80
+0A03: 3480		retlw	0x80
+0A04: 3400		retlw	0x00
+0A05: 3400		retlw	0x00
+0A06: 3400		retlw	0x00
+0A07: 3480		retlw	0x80
+0A08: 3480		retlw	0x80
+0A09: 3400		retlw	0x00
+0A0A: 3400		retlw	0x00
+0A0B: 341F		retlw	0x1F
+0A0C: 3420		retlw	0x20
+0A0D: 3420		retlw	0x20
+0A0E: 3420		retlw	0x20
+0A0F: 3410		retlw	0x10
+0A10: 343F		retlw	0x3F
+0A11: 3420		retlw	0x20
+0A12: 3480		retlw	0x80
+0A13: 3480		retlw	0x80
+0A14: 3480		retlw	0x80
+0A15: 3400		retlw	0x00
+0A16: 3400		retlw	0x00
+0A17: 3480		retlw	0x80
+0A18: 3480		retlw	0x80
+0A19: 3480		retlw	0x80
+0A1A: 3400		retlw	0x00
+0A1B: 3401		retlw	0x01
+0A1C: 340E		retlw	0x0E
+0A1D: 3430		retlw	0x30
+0A1E: 3408		retlw	0x08
+0A1F: 3406		retlw	0x06
+0A20: 3401		retlw	0x01
+0A21: 3400		retlw	0x00
+0A22: 3480		retlw	0x80
+0A23: 3480		retlw	0x80
+0A24: 3400		retlw	0x00
+0A25: 3480		retlw	0x80
+0A26: 3400		retlw	0x00
+0A27: 3480		retlw	0x80
+0A28: 3480		retlw	0x80
+0A29: 3480		retlw	0x80
+0A2A: 340F		retlw	0x0F
+0A2B: 3430		retlw	0x30
+0A2C: 340C		retlw	0x0C
+0A2D: 3403		retlw	0x03
+0A2E: 340C		retlw	0x0C
+0A2F: 3430		retlw	0x30
+0A30: 340F		retlw	0x0F
+0A31: 3400		retlw	0x00
+0A32: 3400		retlw	0x00
+0A33: 3480		retlw	0x80
+0A34: 3480		retlw	0x80
+0A35: 3400		retlw	0x00
+0A36: 3480		retlw	0x80
+0A37: 3480		retlw	0x80
+0A38: 3480		retlw	0x80
+0A39: 3400		retlw	0x00
+0A3A: 3400		retlw	0x00
+0A3B: 3420		retlw	0x20
+0A3C: 3431		retlw	0x31
+0A3D: 342E		retlw	0x2E
+0A3E: 340E		retlw	0x0E
+0A3F: 3431		retlw	0x31
+0A40: 3420		retlw	0x20
+0A41: 3400		retlw	0x00
+0A42: 3480		retlw	0x80
+0A43: 3480		retlw	0x80
+0A44: 3480		retlw	0x80
+0A45: 3400		retlw	0x00
+0A46: 3400		retlw	0x00
+0A47: 3480		retlw	0x80
+0A48: 3480		retlw	0x80
+0A49: 3480		retlw	0x80
+0A4A: 3480		retlw	0x80
+0A4B: 3481		retlw	0x81
+0A4C: 348E		retlw	0x8E
+0A4D: 3470		retlw	0x70
+0A4E: 3418		retlw	0x18
+0A4F: 3406		retlw	0x06
+0A50: 3401		retlw	0x01
+0A51: 3400		retlw	0x00
+0A52: 3400		retlw	0x00
+0A53: 3480		retlw	0x80
+0A54: 3480		retlw	0x80
+0A55: 3480		retlw	0x80
+0A56: 3480		retlw	0x80
+0A57: 3480		retlw	0x80
+0A58: 3480		retlw	0x80
+0A59: 3400		retlw	0x00
+0A5A: 3400		retlw	0x00
+0A5B: 3421		retlw	0x21
+0A5C: 3430		retlw	0x30
+0A5D: 342C		retlw	0x2C
+0A5E: 3422		retlw	0x22
+0A5F: 3421		retlw	0x21
+0A60: 3430		retlw	0x30
+0A61: 3400		retlw	0x00
+0A62: 3400		retlw	0x00
+0A63: 3400		retlw	0x00
+0A64: 3400		retlw	0x00
+0A65: 3400		retlw	0x00
+0A66: 3480		retlw	0x80
+0A67: 347C		retlw	0x7C
+0A68: 3402		retlw	0x02
+0A69: 3402		retlw	0x02
+0A6A: 3400		retlw	0x00
+0A6B: 3400		retlw	0x00
+0A6C: 3400		retlw	0x00
+0A6D: 3400		retlw	0x00
+0A6E: 3400		retlw	0x00
+0A6F: 343F		retlw	0x3F
+0A70: 3440		retlw	0x40
+0A71: 3440		retlw	0x40
+0A72: 3400		retlw	0x00
+0A73: 3400		retlw	0x00
+0A74: 3400		retlw	0x00
+0A75: 3400		retlw	0x00
+0A76: 34FF		retlw	0xFF
+0A77: 3400		retlw	0x00
+0A78: 3400		retlw	0x00
+0A79: 3400		retlw	0x00
+0A7A: 3400		retlw	0x00
+0A7B: 3400		retlw	0x00
+0A7C: 3400		retlw	0x00
+0A7D: 3400		retlw	0x00
+0A7E: 34FF		retlw	0xFF
+0A7F: 3400		retlw	0x00
+0A80: 3400		retlw	0x00
+0A81: 3400		retlw	0x00
+0A82: 3400		retlw	0x00
+0A83: 3402		retlw	0x02
+0A84: 3402		retlw	0x02
+0A85: 347C		retlw	0x7C
+0A86: 3480		retlw	0x80
+0A87: 3400		retlw	0x00
+0A88: 3400		retlw	0x00
+0A89: 3400		retlw	0x00
+0A8A: 3400		retlw	0x00
+0A8B: 3440		retlw	0x40
+0A8C: 3440		retlw	0x40
+0A8D: 343F		retlw	0x3F
+0A8E: 3400		retlw	0x00
+0A8F: 3400		retlw	0x00
+0A90: 3400		retlw	0x00
+0A91: 3400		retlw	0x00
+0A92: 3400		retlw	0x00
+0A93: 3406		retlw	0x06
+0A94: 3401		retlw	0x01
+0A95: 3401		retlw	0x01
+0A96: 3402		retlw	0x02
+0A97: 3402		retlw	0x02
+0A98: 3404		retlw	0x04
+0A99: 3404		retlw	0x04
+0A9A: 3400		retlw	0x00
+0A9B: 3400		retlw	0x00
+0A9C: 3400		retlw	0x00
+0A9D: 3400		retlw	0x00
+0A9E: 3400		retlw	0x00
+0A9F: 3400		retlw	0x00
+0AA0: 3400		retlw	0x00
+0AA1: 3400		retlw	0x00
+          	(font.obj line#148, 552 words)
+          	FONT_6x8::
+0AA2: 3400		retlw	0x00
+0AA3: 3400		retlw	0x00
+0AA4: 3400		retlw	0x00
+0AA5: 3400		retlw	0x00
+0AA6: 3400		retlw	0x00
+0AA7: 3400		retlw	0x00
+0AA8: 3400		retlw	0x00
+0AA9: 3400		retlw	0x00
+0AAA: 3400		retlw	0x00
+0AAB: 342F		retlw	0x2F
+0AAC: 3400		retlw	0x00
+0AAD: 3400		retlw	0x00
+0AAE: 3400		retlw	0x00
+0AAF: 3400		retlw	0x00
+0AB0: 3407		retlw	0x07
+0AB1: 3400		retlw	0x00
+0AB2: 3407		retlw	0x07
+0AB3: 3400		retlw	0x00
+0AB4: 3400		retlw	0x00
+0AB5: 3414		retlw	0x14
+0AB6: 347F		retlw	0x7F
+0AB7: 3414		retlw	0x14
+0AB8: 347F		retlw	0x7F
+0AB9: 3414		retlw	0x14
+0ABA: 3400		retlw	0x00
+0ABB: 3424		retlw	0x24
+0ABC: 342A		retlw	0x2A
+0ABD: 347F		retlw	0x7F
+0ABE: 342A		retlw	0x2A
+0ABF: 3412		retlw	0x12
+0AC0: 3400		retlw	0x00
+0AC1: 3423		retlw	0x23
+0AC2: 3413		retlw	0x13
+0AC3: 3408		retlw	0x08
+0AC4: 3464		retlw	0x64
+0AC5: 3462		retlw	0x62
+0AC6: 3400		retlw	0x00
+0AC7: 3436		retlw	0x36
+0AC8: 3449		retlw	0x49
+0AC9: 3455		retlw	0x55
+0ACA: 3422		retlw	0x22
+0ACB: 3450		retlw	0x50
+0ACC: 3400		retlw	0x00
+0ACD: 3400		retlw	0x00
+0ACE: 3405		retlw	0x05
+0ACF: 3403		retlw	0x03
+0AD0: 3400		retlw	0x00
+0AD1: 3400		retlw	0x00
+0AD2: 3400		retlw	0x00
+0AD3: 3400		retlw	0x00
+0AD4: 341C		retlw	0x1C
+0AD5: 3422		retlw	0x22
+0AD6: 3441		retlw	0x41
+0AD7: 3400		retlw	0x00
+0AD8: 3400		retlw	0x00
+0AD9: 3400		retlw	0x00
+0ADA: 3441		retlw	0x41
+0ADB: 3422		retlw	0x22
+0ADC: 341C		retlw	0x1C
+0ADD: 3400		retlw	0x00
+0ADE: 3400		retlw	0x00
+0ADF: 3414		retlw	0x14
+0AE0: 3408		retlw	0x08
+0AE1: 343E		retlw	0x3E
+0AE2: 3408		retlw	0x08
+0AE3: 3414		retlw	0x14
+0AE4: 3400		retlw	0x00
+0AE5: 3408		retlw	0x08
+0AE6: 3408		retlw	0x08
+0AE7: 343E		retlw	0x3E
+0AE8: 3408		retlw	0x08
+0AE9: 3408		retlw	0x08
+0AEA: 3400		retlw	0x00
+0AEB: 3400		retlw	0x00
+0AEC: 3400		retlw	0x00
+0AED: 34A0		retlw	0xA0
+0AEE: 3460		retlw	0x60
+0AEF: 3400		retlw	0x00
+0AF0: 3400		retlw	0x00
+0AF1: 3408		retlw	0x08
+0AF2: 3408		retlw	0x08
+0AF3: 3408		retlw	0x08
+0AF4: 3408		retlw	0x08
+0AF5: 3408		retlw	0x08
+0AF6: 3400		retlw	0x00
+0AF7: 3400		retlw	0x00
+0AF8: 3460		retlw	0x60
+0AF9: 3460		retlw	0x60
+0AFA: 3400		retlw	0x00
+0AFB: 3400		retlw	0x00
+0AFC: 3400		retlw	0x00
+0AFD: 3420		retlw	0x20
+0AFE: 3410		retlw	0x10
+0AFF: 3408		retlw	0x08
+0B00: 3404		retlw	0x04
+0B01: 3402		retlw	0x02
+0B02: 3400		retlw	0x00
+0B03: 343E		retlw	0x3E
+0B04: 3451		retlw	0x51
+0B05: 3449		retlw	0x49
+0B06: 3445		retlw	0x45
+0B07: 343E		retlw	0x3E
+0B08: 3400		retlw	0x00
+0B09: 3400		retlw	0x00
+0B0A: 3442		retlw	0x42
+0B0B: 347F		retlw	0x7F
+0B0C: 3440		retlw	0x40
+0B0D: 3400		retlw	0x00
+0B0E: 3400		retlw	0x00
+0B0F: 3442		retlw	0x42
+0B10: 3461		retlw	0x61
+0B11: 3451		retlw	0x51
+0B12: 3449		retlw	0x49
+0B13: 3446		retlw	0x46
+0B14: 3400		retlw	0x00
+0B15: 3421		retlw	0x21
+0B16: 3441		retlw	0x41
+0B17: 3445		retlw	0x45
+0B18: 344B		retlw	0x4B
+0B19: 3431		retlw	0x31
+0B1A: 3400		retlw	0x00
+0B1B: 3418		retlw	0x18
+0B1C: 3414		retlw	0x14
+0B1D: 3412		retlw	0x12
+0B1E: 347F		retlw	0x7F
+0B1F: 3410		retlw	0x10
+0B20: 3400		retlw	0x00
+0B21: 3427		retlw	0x27
+0B22: 3445		retlw	0x45
+0B23: 3445		retlw	0x45
+0B24: 3445		retlw	0x45
+0B25: 3439		retlw	0x39
+0B26: 3400		retlw	0x00
+0B27: 343C		retlw	0x3C
+0B28: 344A		retlw	0x4A
+0B29: 3449		retlw	0x49
+0B2A: 3449		retlw	0x49
+0B2B: 3430		retlw	0x30
+0B2C: 3400		retlw	0x00
+0B2D: 3401		retlw	0x01
+0B2E: 3471		retlw	0x71
+0B2F: 3409		retlw	0x09
+0B30: 3405		retlw	0x05
+0B31: 3403		retlw	0x03
+0B32: 3400		retlw	0x00
+0B33: 3436		retlw	0x36
+0B34: 3449		retlw	0x49
+0B35: 3449		retlw	0x49
+0B36: 3449		retlw	0x49
+0B37: 3436		retlw	0x36
+0B38: 3400		retlw	0x00
+0B39: 3406		retlw	0x06
+0B3A: 3449		retlw	0x49
+0B3B: 3449		retlw	0x49
+0B3C: 3429		retlw	0x29
+0B3D: 341E		retlw	0x1E
+0B3E: 3400		retlw	0x00
+0B3F: 3400		retlw	0x00
+0B40: 3436		retlw	0x36
+0B41: 3436		retlw	0x36
+0B42: 3400		retlw	0x00
+0B43: 3400		retlw	0x00
+0B44: 3400		retlw	0x00
+0B45: 3400		retlw	0x00
+0B46: 3456		retlw	0x56
+0B47: 3436		retlw	0x36
+0B48: 3400		retlw	0x00
+0B49: 3400		retlw	0x00
+0B4A: 3400		retlw	0x00
+0B4B: 3408		retlw	0x08
+0B4C: 3414		retlw	0x14
+0B4D: 3422		retlw	0x22
+0B4E: 3441		retlw	0x41
+0B4F: 3400		retlw	0x00
+0B50: 3400		retlw	0x00
+0B51: 3414		retlw	0x14
+0B52: 3414		retlw	0x14
+0B53: 3414		retlw	0x14
+0B54: 3414		retlw	0x14
+0B55: 3414		retlw	0x14
+0B56: 3400		retlw	0x00
+0B57: 3400		retlw	0x00
+0B58: 3441		retlw	0x41
+0B59: 3422		retlw	0x22
+0B5A: 3414		retlw	0x14
+0B5B: 3408		retlw	0x08
+0B5C: 3400		retlw	0x00
+0B5D: 3402		retlw	0x02
+0B5E: 3401		retlw	0x01
+0B5F: 3451		retlw	0x51
+0B60: 3409		retlw	0x09
+0B61: 3406		retlw	0x06
+0B62: 3400		retlw	0x00
+0B63: 3432		retlw	0x32
+0B64: 3449		retlw	0x49
+0B65: 3459		retlw	0x59
+0B66: 3451		retlw	0x51
+0B67: 343E		retlw	0x3E
+0B68: 3400		retlw	0x00
+0B69: 347C		retlw	0x7C
+0B6A: 3412		retlw	0x12
+0B6B: 3411		retlw	0x11
+0B6C: 3412		retlw	0x12
+0B6D: 347C		retlw	0x7C
+0B6E: 3400		retlw	0x00
+0B6F: 347F		retlw	0x7F
+0B70: 3449		retlw	0x49
+0B71: 3449		retlw	0x49
+0B72: 3449		retlw	0x49
+0B73: 3436		retlw	0x36
+0B74: 3400		retlw	0x00
+0B75: 343E		retlw	0x3E
+0B76: 3441		retlw	0x41
+0B77: 3441		retlw	0x41
+0B78: 3441		retlw	0x41
+0B79: 3422		retlw	0x22
+0B7A: 3400		retlw	0x00
+0B7B: 347F		retlw	0x7F
+0B7C: 3441		retlw	0x41
+0B7D: 3441		retlw	0x41
+0B7E: 3422		retlw	0x22
+0B7F: 341C		retlw	0x1C
+0B80: 3400		retlw	0x00
+0B81: 347F		retlw	0x7F
+0B82: 3449		retlw	0x49
+0B83: 3449		retlw	0x49
+0B84: 3449		retlw	0x49
+0B85: 3441		retlw	0x41
+0B86: 3400		retlw	0x00
+0B87: 347F		retlw	0x7F
+0B88: 3409		retlw	0x09
+0B89: 3409		retlw	0x09
+0B8A: 3409		retlw	0x09
+0B8B: 3401		retlw	0x01
+0B8C: 3400		retlw	0x00
+0B8D: 343E		retlw	0x3E
+0B8E: 3441		retlw	0x41
+0B8F: 3449		retlw	0x49
+0B90: 3449		retlw	0x49
+0B91: 347A		retlw	0x7A
+0B92: 3400		retlw	0x00
+0B93: 347F		retlw	0x7F
+0B94: 3408		retlw	0x08
+0B95: 3408		retlw	0x08
+0B96: 3408		retlw	0x08
+0B97: 347F		retlw	0x7F
+0B98: 3400		retlw	0x00
+0B99: 3400		retlw	0x00
+0B9A: 3441		retlw	0x41
+0B9B: 347F		retlw	0x7F
+0B9C: 3441		retlw	0x41
+0B9D: 3400		retlw	0x00
+0B9E: 3400		retlw	0x00
+0B9F: 3420		retlw	0x20
+0BA0: 3440		retlw	0x40
+0BA1: 3441		retlw	0x41
+0BA2: 343F		retlw	0x3F
+0BA3: 3401		retlw	0x01
+0BA4: 3400		retlw	0x00
+0BA5: 347F		retlw	0x7F
+0BA6: 3408		retlw	0x08
+0BA7: 3414		retlw	0x14
+0BA8: 3422		retlw	0x22
+0BA9: 3441		retlw	0x41
+0BAA: 3400		retlw	0x00
+0BAB: 347F		retlw	0x7F
+0BAC: 3440		retlw	0x40
+0BAD: 3440		retlw	0x40
+0BAE: 3440		retlw	0x40
+0BAF: 3440		retlw	0x40
+0BB0: 3400		retlw	0x00
+0BB1: 347F		retlw	0x7F
+0BB2: 3402		retlw	0x02
+0BB3: 340C		retlw	0x0C
+0BB4: 3402		retlw	0x02
+0BB5: 347F		retlw	0x7F
+0BB6: 3400		retlw	0x00
+0BB7: 347F		retlw	0x7F
+0BB8: 3404		retlw	0x04
+0BB9: 3408		retlw	0x08
+0BBA: 3410		retlw	0x10
+0BBB: 347F		retlw	0x7F
+0BBC: 3400		retlw	0x00
+0BBD: 343E		retlw	0x3E
+0BBE: 3441		retlw	0x41
+0BBF: 3441		retlw	0x41
+0BC0: 3441		retlw	0x41
+0BC1: 343E		retlw	0x3E
+0BC2: 3400		retlw	0x00
+0BC3: 347F		retlw	0x7F
+0BC4: 3409		retlw	0x09
+0BC5: 3409		retlw	0x09
+0BC6: 3409		retlw	0x09
+0BC7: 3406		retlw	0x06
+0BC8: 3400		retlw	0x00
+0BC9: 343E		retlw	0x3E
+0BCA: 3441		retlw	0x41
+0BCB: 3451		retlw	0x51
+0BCC: 3421		retlw	0x21
+0BCD: 345E		retlw	0x5E
+0BCE: 3400		retlw	0x00
+0BCF: 347F		retlw	0x7F
+0BD0: 3409		retlw	0x09
+0BD1: 3419		retlw	0x19
+0BD2: 3429		retlw	0x29
+0BD3: 3446		retlw	0x46
+0BD4: 3400		retlw	0x00
+0BD5: 3446		retlw	0x46
+0BD6: 3449		retlw	0x49
+0BD7: 3449		retlw	0x49
+0BD8: 3449		retlw	0x49
+0BD9: 3431		retlw	0x31
+0BDA: 3400		retlw	0x00
+0BDB: 3401		retlw	0x01
+0BDC: 3401		retlw	0x01
+0BDD: 347F		retlw	0x7F
+0BDE: 3401		retlw	0x01
+0BDF: 3401		retlw	0x01
+0BE0: 3400		retlw	0x00
+0BE1: 343F		retlw	0x3F
+0BE2: 3440		retlw	0x40
+0BE3: 3440		retlw	0x40
+0BE4: 3440		retlw	0x40
+0BE5: 343F		retlw	0x3F
+0BE6: 3400		retlw	0x00
+0BE7: 341F		retlw	0x1F
+0BE8: 3420		retlw	0x20
+0BE9: 3440		retlw	0x40
+0BEA: 3420		retlw	0x20
+0BEB: 341F		retlw	0x1F
+0BEC: 3400		retlw	0x00
+0BED: 343F		retlw	0x3F
+0BEE: 3440		retlw	0x40
+0BEF: 3438		retlw	0x38
+0BF0: 3440		retlw	0x40
+0BF1: 343F		retlw	0x3F
+0BF2: 3400		retlw	0x00
+0BF3: 3463		retlw	0x63
+0BF4: 3414		retlw	0x14
+0BF5: 3408		retlw	0x08
+0BF6: 3414		retlw	0x14
+0BF7: 3463		retlw	0x63
+0BF8: 3400		retlw	0x00
+0BF9: 3407		retlw	0x07
+0BFA: 3408		retlw	0x08
+0BFB: 3470		retlw	0x70
+0BFC: 3408		retlw	0x08
+0BFD: 3407		retlw	0x07
+0BFE: 3400		retlw	0x00
+0BFF: 3461		retlw	0x61
+0C00: 3451		retlw	0x51
+0C01: 3449		retlw	0x49
+0C02: 3445		retlw	0x45
+0C03: 3443		retlw	0x43
+0C04: 3400		retlw	0x00
+0C05: 3400		retlw	0x00
+0C06: 347F		retlw	0x7F
+0C07: 3441		retlw	0x41
+0C08: 3441		retlw	0x41
+0C09: 3400		retlw	0x00
+0C0A: 3400		retlw	0x00
+0C0B: 3455		retlw	0x55
+0C0C: 342A		retlw	0x2A
+0C0D: 3455		retlw	0x55
+0C0E: 342A		retlw	0x2A
+0C0F: 3455		retlw	0x55
+0C10: 3400		retlw	0x00
+0C11: 3400		retlw	0x00
+0C12: 3441		retlw	0x41
+0C13: 3441		retlw	0x41
+0C14: 347F		retlw	0x7F
+0C15: 3400		retlw	0x00
+0C16: 3400		retlw	0x00
+0C17: 3404		retlw	0x04
+0C18: 3402		retlw	0x02
+0C19: 3401		retlw	0x01
+0C1A: 3402		retlw	0x02
+0C1B: 3404		retlw	0x04
+0C1C: 3400		retlw	0x00
+0C1D: 3440		retlw	0x40
+0C1E: 3440		retlw	0x40
+0C1F: 3440		retlw	0x40
+0C20: 3440		retlw	0x40
+0C21: 3440		retlw	0x40
+0C22: 3400		retlw	0x00
+0C23: 3400		retlw	0x00
+0C24: 3401		retlw	0x01
+0C25: 3402		retlw	0x02
+0C26: 3404		retlw	0x04
+0C27: 3400		retlw	0x00
+0C28: 3400		retlw	0x00
+0C29: 3420		retlw	0x20
+0C2A: 3454		retlw	0x54
+0C2B: 3454		retlw	0x54
+0C2C: 3454		retlw	0x54
+0C2D: 3478		retlw	0x78
+0C2E: 3400		retlw	0x00
+0C2F: 347F		retlw	0x7F
+0C30: 3448		retlw	0x48
+0C31: 3444		retlw	0x44
+0C32: 3444		retlw	0x44
+0C33: 3438		retlw	0x38
+0C34: 3400		retlw	0x00
+0C35: 3438		retlw	0x38
+0C36: 3444		retlw	0x44
+0C37: 3444		retlw	0x44
+0C38: 3444		retlw	0x44
+0C39: 3420		retlw	0x20
+0C3A: 3400		retlw	0x00
+0C3B: 3438		retlw	0x38
+0C3C: 3444		retlw	0x44
+0C3D: 3444		retlw	0x44
+0C3E: 3448		retlw	0x48
+0C3F: 347F		retlw	0x7F
+0C40: 3400		retlw	0x00
+0C41: 3438		retlw	0x38
+0C42: 3454		retlw	0x54
+0C43: 3454		retlw	0x54
+0C44: 3454		retlw	0x54
+0C45: 3418		retlw	0x18
+0C46: 3400		retlw	0x00
+0C47: 3408		retlw	0x08
+0C48: 347E		retlw	0x7E
+0C49: 3409		retlw	0x09
+0C4A: 3401		retlw	0x01
+0C4B: 3402		retlw	0x02
+0C4C: 3400		retlw	0x00
+0C4D: 3418		retlw	0x18
+0C4E: 34A4		retlw	0xA4
+0C4F: 34A4		retlw	0xA4
+0C50: 34A4		retlw	0xA4
+0C51: 347C		retlw	0x7C
+0C52: 3400		retlw	0x00
+0C53: 347F		retlw	0x7F
+0C54: 3408		retlw	0x08
+0C55: 3404		retlw	0x04
+0C56: 3404		retlw	0x04
+0C57: 3478		retlw	0x78
+0C58: 3400		retlw	0x00
+0C59: 3400		retlw	0x00
+0C5A: 3444		retlw	0x44
+0C5B: 347D		retlw	0x7D
+0C5C: 3440		retlw	0x40
+0C5D: 3400		retlw	0x00
+0C5E: 3400		retlw	0x00
+0C5F: 3440		retlw	0x40
+0C60: 3480		retlw	0x80
+0C61: 3484		retlw	0x84
+0C62: 347D		retlw	0x7D
+0C63: 3400		retlw	0x00
+0C64: 3400		retlw	0x00
+0C65: 347F		retlw	0x7F
+0C66: 3410		retlw	0x10
+0C67: 3428		retlw	0x28
+0C68: 3444		retlw	0x44
+0C69: 3400		retlw	0x00
+0C6A: 3400		retlw	0x00
+0C6B: 3400		retlw	0x00
+0C6C: 3441		retlw	0x41
+0C6D: 347F		retlw	0x7F
+0C6E: 3440		retlw	0x40
+0C6F: 3400		retlw	0x00
+0C70: 3400		retlw	0x00
+0C71: 347C		retlw	0x7C
+0C72: 3404		retlw	0x04
+0C73: 3418		retlw	0x18
+0C74: 3404		retlw	0x04
+0C75: 3478		retlw	0x78
+0C76: 3400		retlw	0x00
+0C77: 347C		retlw	0x7C
+0C78: 3408		retlw	0x08
+0C79: 3404		retlw	0x04
+0C7A: 3404		retlw	0x04
+0C7B: 3478		retlw	0x78
+0C7C: 3400		retlw	0x00
+0C7D: 3438		retlw	0x38
+0C7E: 3444		retlw	0x44
+0C7F: 3444		retlw	0x44
+0C80: 3444		retlw	0x44
+0C81: 3438		retlw	0x38
+0C82: 3400		retlw	0x00
+0C83: 34FC		retlw	0xFC
+0C84: 3424		retlw	0x24
+0C85: 3424		retlw	0x24
+0C86: 3424		retlw	0x24
+0C87: 3418		retlw	0x18
+0C88: 3400		retlw	0x00
+0C89: 3418		retlw	0x18
+0C8A: 3424		retlw	0x24
+0C8B: 3424		retlw	0x24
+0C8C: 3418		retlw	0x18
+0C8D: 34FC		retlw	0xFC
+0C8E: 3400		retlw	0x00
+0C8F: 347C		retlw	0x7C
+0C90: 3408		retlw	0x08
+0C91: 3404		retlw	0x04
+0C92: 3404		retlw	0x04
+0C93: 3408		retlw	0x08
+0C94: 3400		retlw	0x00
+0C95: 3448		retlw	0x48
+0C96: 3454		retlw	0x54
+0C97: 3454		retlw	0x54
+0C98: 3454		retlw	0x54
+0C99: 3420		retlw	0x20
+0C9A: 3400		retlw	0x00
+0C9B: 3404		retlw	0x04
+0C9C: 343F		retlw	0x3F
+0C9D: 3444		retlw	0x44
+0C9E: 3440		retlw	0x40
+0C9F: 3420		retlw	0x20
+0CA0: 3400		retlw	0x00
+0CA1: 343C		retlw	0x3C
+0CA2: 3440		retlw	0x40
+0CA3: 3440		retlw	0x40
+0CA4: 3420		retlw	0x20
+0CA5: 347C		retlw	0x7C
+0CA6: 3400		retlw	0x00
+0CA7: 341C		retlw	0x1C
+0CA8: 3420		retlw	0x20
+0CA9: 3440		retlw	0x40
+0CAA: 3420		retlw	0x20
+0CAB: 341C		retlw	0x1C
+0CAC: 3400		retlw	0x00
+0CAD: 343C		retlw	0x3C
+0CAE: 3440		retlw	0x40
+0CAF: 3430		retlw	0x30
+0CB0: 3440		retlw	0x40
+0CB1: 343C		retlw	0x3C
+0CB2: 3400		retlw	0x00
+0CB3: 3444		retlw	0x44
+0CB4: 3428		retlw	0x28
+0CB5: 3410		retlw	0x10
+0CB6: 3428		retlw	0x28
+0CB7: 3444		retlw	0x44
+0CB8: 3400		retlw	0x00
+0CB9: 341C		retlw	0x1C
+0CBA: 34A0		retlw	0xA0
+0CBB: 34A0		retlw	0xA0
+0CBC: 34A0		retlw	0xA0
+0CBD: 347C		retlw	0x7C
+0CBE: 3400		retlw	0x00
+0CBF: 3444		retlw	0x44
+0CC0: 3464		retlw	0x64
+0CC1: 3454		retlw	0x54
+0CC2: 344C		retlw	0x4C
+0CC3: 3444		retlw	0x44
+0CC4: 3414		retlw	0x14
+0CC5: 3414		retlw	0x14
+0CC6: 3414		retlw	0x14
+0CC7: 3414		retlw	0x14
+0CC8: 3414		retlw	0x14
+0CC9: 3414		retlw	0x14
+
+************ CALLING PATH ************
+[0]main
+[1] TMR0_init
+
+[0]main
+[1] OLED_init
+[2]  TMR0_delayMs
+
+[0]main
+[1] OLED_init
+[2]  OLED_fill
+[3]   I2C_command
+[4]    I2C_start
+[5]     I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_fill
+[3]   I2C_command
+[4]    I2C_start
+[5]     I2C_write
+[6]      I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_fill
+[3]   I2C_command
+[4]    I2C_end
+[5]     I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_fill
+[3]   I2C_command
+[4]    I2C_write
+[5]     I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_fill
+[3]   I2C_data
+[4]    I2C_start
+[5]     I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_fill
+[3]   I2C_data
+[4]    I2C_start
+[5]     I2C_write
+[6]      I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_fill
+[3]   I2C_data
+[4]    I2C_end
+[5]     I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_fill
+[3]   I2C_data
+[4]    I2C_write
+[5]     I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  I2C_command
+[3]   I2C_start
+[4]    I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  I2C_command
+[3]   I2C_start
+[4]    I2C_write
+[5]     I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  I2C_command
+[3]   I2C_end
+[4]    I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  I2C_command
+[3]   I2C_write
+[4]    I2C_delay
+
+[0]main
+[1] OLED_ShowStr
+[2]  OLED_setPos
+[3]   I2C_command
+[4]    I2C_start
+[5]     I2C_delay
+
+[0]main
+[1] OLED_ShowStr
+[2]  OLED_setPos
+[3]   I2C_command
+[4]    I2C_start
+[5]     I2C_write
+[6]      I2C_delay
+
+[0]main
+[1] OLED_ShowStr
+[2]  OLED_setPos
+[3]   I2C_command
+[4]    I2C_end
+[5]     I2C_delay
+
+[0]main
+[1] OLED_ShowStr
+[2]  OLED_setPos
+[3]   I2C_command
+[4]    I2C_write
+[5]     I2C_delay
+
+[0]main
+[1] OLED_ShowStr
+[2]  I2C_dataLength
+[3]   I2C_start
+[4]    I2C_delay
+
+[0]main
+[1] OLED_ShowStr
+[2]  I2C_dataLength
+[3]   I2C_start
+[4]    I2C_write
+[5]     I2C_delay
+
+[0]main
+[1] OLED_ShowStr
+[2]  I2C_dataLength
+[3]   I2C_end
+[4]    I2C_delay
+
+[0]main
+[1] OLED_ShowStr
+[2]  I2C_dataLength
+[3]   I2C_write
+[4]    I2C_delay
+
+[0]main
+[1] OLED_ShowStr
+[2]  I2C_dataLength
+[3]   _copyPar
+
+[0]main
+[1] OLED_ShowStr
+[2]  _copyPar
+
+[0]main
+[1] OLED_ShowStr
+[2]  _mul8
+
+[0]main
+[1] OLED_travelImg
+[2]  OLED_setPos
+[3]   I2C_command
+[4]    I2C_start
+[5]     I2C_delay
+
+[0]main
+[1] OLED_travelImg
+[2]  OLED_setPos
+[3]   I2C_command
+[4]    I2C_start
+[5]     I2C_write
+[6]      I2C_delay
+
+[0]main
+[1] OLED_travelImg
+[2]  OLED_setPos
+[3]   I2C_command
+[4]    I2C_end
+[5]     I2C_delay
+
+[0]main
+[1] OLED_travelImg
+[2]  OLED_setPos
+[3]   I2C_command
+[4]    I2C_write
+[5]     I2C_delay
+
+[0]main
+[1] OLED_travelImg
+[2]  I2C_data
+[3]   I2C_start
+[4]    I2C_delay
+
+[0]main
+[1] OLED_travelImg
+[2]  I2C_data
+[3]   I2C_start
+[4]    I2C_write
+[5]     I2C_delay
+
+[0]main
+[1] OLED_travelImg
+[2]  I2C_data
+[3]   I2C_end
+[4]    I2C_delay
+
+[0]main
+[1] OLED_travelImg
+[2]  I2C_data
+[3]   I2C_write
+[4]    I2C_delay
+
+[0]main
+[1] OLED_travelImg
+[2]  _mul8
+
+[0]main
+[1] I2C_init
+
+[0]main
+[1] _signedCmp
+
+

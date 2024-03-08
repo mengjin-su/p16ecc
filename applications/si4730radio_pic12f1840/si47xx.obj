@@ -1,0 +1,269 @@
+I "c:\p16ecc/include/pic16e"
+I "c:\p16ecc/include/p12f1840"
+P "p12f1840" 256 4096
+E _$$ 8432
+S CODE2 REL
+U SI47xx_write 3
+L SI47xx_write
+W 0x3000|((SI47xx_write_$data$+3)&255) 0x0084
+W 0x3000|(((SI47xx_write_$data$+3)>>8)&255) 0x0085 0x0023
+J SI47xx_write _copyPar
+W 0x2000|(_copyPar&2047)
+; "; :: si47xx.c #28: I2C_start(SI47xx_I2C_WR_ADDR);"
+W 0x30C6 0x001D
+J _copyPar I2C_start
+W 0x2000|(I2C_start&2047)
+J I2C_start _$L2
+L _$L2
+; "; :: si47xx.c #29: while ( length-- )"
+K SI47xx_write_$data$
+W 0x0380:(SI47xx_write_$data$+2) 0x0A00:(SI47xx_write_$data$+2)
+J _$L2 _$L4
+W 0x1903 0x2800|(_$L4&2047)
+; "; :: si47xx.c #29: I2C_writeByte(*buf);"
+W 0x0800:SI47xx_write_$data$ 0x0084 0x0800:(SI47xx_write_$data$+1) 0x0085 0x3F00
+W 0x001D
+J _$L4 I2C_writeByte
+W 0x2000|(I2C_writeByte&2047)
+; "; :: si47xx.c #29: buf++;"
+K SI47xx_write_$data$
+W 0x0A80:SI47xx_write_$data$ 0x1903 0x0A80:(SI47xx_write_$data$+1)
+J I2C_writeByte _$L2
+W 0x2800|(_$L2&2047)
+J _$L2 _$L4
+L _$L4
+; "; :: si47xx.c #30: I2C_end();"
+J _$L4 I2C_end
+W 0x2000|(I2C_end&2047)
+J I2C_end SI47xx_write
+W 0x0008
+F SI47xx_write I2C_end
+F SI47xx_write I2C_writeByte
+F SI47xx_write I2C_start
+F SI47xx_write _copyPar
+S CODE2 REL
+U SI47xx_read 3
+G SI47xx_read
+W 0x3000|((SI47xx_read_$data$+3)&255) 0x0084
+W 0x3000|(((SI47xx_read_$data$+3)>>8)&255) 0x0085 0x0023
+J SI47xx_read _copyPar
+W 0x2000|(_copyPar&2047)
+; "; :: si47xx.c #35: I2C_start(SI47xx_I2C_RD_ADDR);"
+W 0x30C7 0x001D
+J _copyPar I2C_start
+W 0x2000|(I2C_start&2047)
+J I2C_start _$L6
+L _$L6
+; "; :: si47xx.c #36: while ( length-- )"
+K SI47xx_read_$data$
+W 0x0380:(SI47xx_read_$data$+2) 0x0A00:(SI47xx_read_$data$+2)
+J _$L6 _$L8
+W 0x1903 0x2800|(_$L8&2047)
+; "; :: si47xx.c #36: *buf = I2C_readByte(length);"
+W 0x0800:(SI47xx_read_$data$+2) 0x001D
+J _$L8 I2C_readByte
+W 0x2000|(I2C_readByte&2047)
+K SI47xx_read_$data$
+W 0x0800:SI47xx_read_$data$ 0x0084 0x0800:(SI47xx_read_$data$+1) 0x0085 0x0870
+W 0x001A
+; "; :: si47xx.c #36: buf++;"
+W 0x0A80:SI47xx_read_$data$ 0x1903 0x0A80:(SI47xx_read_$data$+1)
+J I2C_readByte _$L6
+W 0x2800|(_$L6&2047)
+J _$L6 _$L8
+L _$L8
+; "; :: si47xx.c #37: I2C_end();"
+J _$L8 I2C_end
+W 0x2000|(I2C_end&2047)
+J I2C_end SI47xx_read
+W 0x0008
+F SI47xx_read I2C_end
+F SI47xx_read I2C_readByte
+F SI47xx_read I2C_start
+F SI47xx_read _copyPar
+S CODE2 REL
+U SI47xx_waitCTS 2
+L SI47xx_waitCTS
+W 0x3064
+K SI47xx_waitCTS_$data$
+W 0x0080:SI47xx_waitCTS_$data$
+J SI47xx_waitCTS _$L10
+L _$L10
+; "; :: si47xx.c #43: while ( counter-- )"
+K SI47xx_waitCTS_$data$
+W 0x0380:SI47xx_waitCTS_$data$ 0x0A00:SI47xx_waitCTS_$data$
+J _$L10 _$L12
+W 0x1903 0x2800|(_$L12&2047)
+; "; :: si47xx.c #45: SI47xx_read(&status, 1);"
+W 0x3000|((SI47xx_waitCTS_$data$+1)&255) 0x001D
+W 0x3000|(((SI47xx_waitCTS_$data$+1)>>8)&255) 0x001D 0x3001 0x001D
+J _$L12 SI47xx_read
+W 0x2000|(SI47xx_read&2047)
+; "; :: si47xx.c #46: if ( (status & CTS) )"
+K SI47xx_waitCTS_$data$
+J SI47xx_read _$L12
+W 0x1B80:(SI47xx_waitCTS_$data$+1) 0x2800|(_$L12&2047)
+; "; :: si47xx.c #46: break;"
+; "; :: si47xx.c #47: (1);"
+W 0x3001 0x001D
+J _$L12 TMR0_delayMs
+W 0x2000|(TMR0_delayMs&2047)
+J TMR0_delayMs _$L10
+W 0x2800|(_$L10&2047)
+J _$L10 _$L12
+L _$L12
+J _$L12 SI47xx_waitCTS
+W 0x0008
+F SI47xx_waitCTS TMR0_delayMs
+F SI47xx_waitCTS SI47xx_read
+S CODE2 REL
+U SI47xx_command 3
+L SI47xx_command
+W 0x3000|((SI47xx_command_$data$+3)&255) 0x0084
+W 0x3000|(((SI47xx_command_$data$+3)>>8)&255) 0x0085 0x0023
+J SI47xx_command _copyPar
+W 0x2000|(_copyPar&2047)
+; "; :: si47xx.c #53: SI47xx_waitCTS();"
+J _copyPar SI47xx_waitCTS
+W 0x2000|(SI47xx_waitCTS&2047)
+; "; :: si47xx.c #54: SI47xx_write(wbuf, wlength);"
+K SI47xx_command_$data$
+W 0x0800:SI47xx_command_$data$ 0x001D 0x0800:(SI47xx_command_$data$+1) 0x001D
+W 0x0800:(SI47xx_command_$data$+2) 0x001D
+J SI47xx_waitCTS SI47xx_write
+W 0x2000|(SI47xx_write&2047)
+; "; :: si47xx.c #55: SI47xx_waitCTS();"
+J SI47xx_write SI47xx_waitCTS
+W 0x2000|(SI47xx_waitCTS&2047)
+J SI47xx_waitCTS SI47xx_command
+W 0x0008
+F SI47xx_command SI47xx_write
+F SI47xx_command SI47xx_waitCTS
+F SI47xx_command _copyPar
+S CODE2 REL
+U SI47xx_property 10
+L SI47xx_property
+W 0x3000|((SI47xx_property_$data$+4)&255) 0x0084
+W 0x3000|(((SI47xx_property_$data$+4)>>8)&255) 0x0085 0x0024
+J SI47xx_property _copyPar
+W 0x2000|(_copyPar&2047)
+; "; :: si47xx.c #61: cmd[0] = SET_PROPERTY;"
+W 0x3012
+K 0 SI47xx_property_$data$
+W 0x0080:(SI47xx_property_$data$+4)
+; "; :: si47xx.c #62: cmd[1] = 0;"
+W 0x0180:((SI47xx_property_$data$+4)+1)
+; "; :: si47xx.c #63: cmd[2] = prop_num >> 8;"
+W 0x0800:(SI47xx_property_$data$+1) 0x0080:((SI47xx_property_$data$+4)+2)
+; "; :: si47xx.c #64: cmd[3] = prop_num;"
+W 0x0800:SI47xx_property_$data$ 0x0080:((SI47xx_property_$data$+4)+3)
+; "; :: si47xx.c #65: cmd[4] = prop_val >> 8;"
+W 0x0800:((SI47xx_property_$data$+2)+1) 0x0080:((SI47xx_property_$data$+4)+4)
+; "; :: si47xx.c #66: cmd[5] = prop_val;"
+W 0x0800:(SI47xx_property_$data$+2) 0x0080:((SI47xx_property_$data$+4)+5)
+; "; :: si47xx.c #67: SI47xx_command(cmd, 6);"
+W 0x3000|((SI47xx_property_$data$+4)&255) 0x001D
+W 0x3000|(((SI47xx_property_$data$+4)>>8)&255) 0x001D 0x3006 0x001D
+J _copyPar SI47xx_command
+W 0x2000|(SI47xx_command&2047)
+J SI47xx_command SI47xx_property
+W 0x0008
+F SI47xx_property SI47xx_command
+F SI47xx_property _copyPar
+S CODE2 REL
+U SI47xx_init 0
+G SI47xx_init
+; "; :: si47xx.c #77: if ( RADIO_mode == FM_MODE )"
+K RADIO_mode
+W 0x0800:RADIO_mode
+J SI47xx_init _$L20
+W 0x1D03 0x2800|(_$L20&2047)
+; "; :: si47xx.c #78: SI47xx_command(IS47xx_powerUpFM, sizeof(IS47xx_powerUpFM));"
+W 0x3000|(IS47xx_powerUpFM&255) 0x001D 0x3000|((IS47xx_powerUpFM>>8)&255) 0x001D
+W 0x3003 0x001D
+J _$L20 SI47xx_command
+W 0x2000|(SI47xx_command&2047)
+J SI47xx_command _$L21
+W 0x2800|(_$L21&2047)
+J _$L21 _$L20
+L _$L20
+; "; :: si47xx.c #80: else		SI47xx_command(IS47xx_powerUpAM, sizeof(IS47xx_powerUpFM));"
+W 0x3000|(IS47xx_powerUpAM&255) 0x001D 0x3000|((IS47xx_powerUpAM>>8)&255) 0x001D
+W 0x3003 0x001D
+J _$L20 SI47xx_command
+W 0x2000|(SI47xx_command&2047)
+J SI47xx_command _$L21
+L _$L21
+J _$L21 SI47xx_init
+W 0x0008
+F SI47xx_init SI47xx_command
+S CODE2 REL
+U SI47xx_setVolume 1
+G SI47xx_setVolume
+K SI47xx_setVolume_$data$
+W 0x0016 0x0080:SI47xx_setVolume_$data$
+; "; :: si47xx.c #85: SI47xx_property(RX_HARD_MUTE, 0);"
+W 0x3001 0x001D 0x3040 0x001D 0x3000 0x001D 0x001D
+J SI47xx_setVolume SI47xx_property
+W 0x2000|(SI47xx_property&2047)
+; "; :: si47xx.c #86: SI47xx_property(RX_VOLUME,    v);"
+W 0x3000 0x001D 0x3040 0x001D
+K SI47xx_setVolume_$data$
+W 0x0800:SI47xx_setVolume_$data$ 0x001D 0x3000 0x001D
+W 0x2000|(SI47xx_property&2047)
+J SI47xx_property SI47xx_setVolume
+W 0x0008
+F SI47xx_setVolume SI47xx_property
+S CODE2 REL
+U SI47xx_setFreq 8
+G SI47xx_setFreq
+K SI47xx_setFreq_$data$
+W 0x0016 0x0080:(SI47xx_setFreq_$data$+1) 0x0016 0x0080:SI47xx_setFreq_$data$
+; "; :: si47xx.c #93: cmd[1] = 0;"
+W 0x0180:((SI47xx_setFreq_$data$+2)+1)
+; "; :: si47xx.c #94: cmd[2] = freq >> 8;"
+W 0x0800:(SI47xx_setFreq_$data$+1) 0x0080:((SI47xx_setFreq_$data$+2)+2)
+; "; :: si47xx.c #95: cmd[3] = freq;"
+W 0x0800:SI47xx_setFreq_$data$ 0x0080:((SI47xx_setFreq_$data$+2)+3)
+; "; :: si47xx.c #96: cmd[4] = 0;"
+W 0x0180:((SI47xx_setFreq_$data$+2)+4)
+; "; :: si47xx.c #98: if ( RADIO_mode == FM_MODE )"
+K SI47xx_setFreq_$data$ RADIO_mode
+W 0x0800:RADIO_mode
+J SI47xx_setFreq _$L25
+W 0x1D03 0x2800|(_$L25&2047)
+; "; :: si47xx.c #100: cmd[0] = FM_TUNE_FREQ;"
+W 0x3020
+K RADIO_mode SI47xx_setFreq_$data$
+W 0x0080:(SI47xx_setFreq_$data$+2)
+; "; :: si47xx.c #101: SI47xx_command(cmd, 5);"
+W 0x3000|((SI47xx_setFreq_$data$+2)&255) 0x001D
+W 0x3000|(((SI47xx_setFreq_$data$+2)>>8)&255) 0x001D 0x3005 0x001D
+J _$L25 SI47xx_command
+W 0x2000|(SI47xx_command&2047)
+J SI47xx_command _$L26
+W 0x2800|(_$L26&2047)
+J _$L26 _$L25
+L _$L25
+; "; :: si47xx.c #105: else			cmd[0] = AM_TUNE_FREQ;"
+W 0x3040
+K SI47xx_setFreq_$data$
+W 0x0080:(SI47xx_setFreq_$data$+2)
+; "; :: si47xx.c #106: cmd[5] = 0;"
+W 0x0180:((SI47xx_setFreq_$data$+2)+5)
+; "; :: si47xx.c #107: SI47xx_command(cmd, 6);"
+W 0x3000|((SI47xx_setFreq_$data$+2)&255) 0x001D
+W 0x3000|(((SI47xx_setFreq_$data$+2)>>8)&255) 0x001D 0x3006 0x001D
+J _$L25 SI47xx_command
+W 0x2000|(SI47xx_command&2047)
+J SI47xx_command _$L26
+L _$L26
+J _$L26 SI47xx_setFreq
+W 0x0008
+F SI47xx_setFreq SI47xx_command
+S CONSTi REL
+G IS47xx_powerUpFM
+W 0x3401 0x34D0 0x3405
+S CONSTi REL
+G IS47xx_powerUpAM
+W 0x3401 0x34D1 0x3405

@@ -1,0 +1,63 @@
+I "c:\p16ecc/include/pic16e"
+I "c:\p16ecc/include/p12f1840"
+P "p12f1840" 256 4096
+E _$$ 8432
+S BANKi REL
+G tmr0Count
+R 1
+S CODE2 REL
+U TMR0_init 1
+G TMR0_init
+; "; :: timer0.c #7: OPTION_REG = (OPTION_REG & 0xC0) | (0xD4 & 0x3F);"
+W 0x0021 0x0815 0x39C0
+K 149 TMR0_init_$data$
+W 0x0080:TMR0_init_$data$ 0x0800:TMR0_init_$data$ 0x3814
+K TMR0_init_$data$ 149
+W 0x0095
+; "; :: timer0.c #9: TMR0IF = 0;"
+W 0x110B
+; "; :: timer0.c #10: TMR0IE = 1;"
+W 0x168B 0x0008
+S CODE2 REL
+U TMR0_delayMs 3
+G TMR0_delayMs
+K TMR0_delayMs_$data$
+W 0x0016 0x0080:TMR0_delayMs_$data$
+K TMR0_delayMs_$data$ tmr0Count
+W 0x0800:tmr0Count
+K tmr0Count TMR0_delayMs_$data$
+W 0x0080:(TMR0_delayMs_$data$+1)
+J TMR0_delayMs _$L3
+L _$L3
+; "; :: timer0.c #16: while ( (unsigned char)(tmr0Count - t) < ms )"
+K TMR0_delayMs_$data$
+W 0x0800:(TMR0_delayMs_$data$+1)
+K TMR0_delayMs_$data$ tmr0Count
+W 0x0200:tmr0Count
+K tmr0Count TMR0_delayMs_$data$
+W 0x0080:(TMR0_delayMs_$data$+2) 0x0800:TMR0_delayMs_$data$
+W 0x0200:(TMR0_delayMs_$data$+2) 0x1C03 0x2800|(_$L3&2047)
+; "; :: timer0.c #16: ;"
+J _$L3 TMR0_delayMs
+W 0x0008
+S CODE1 REL
+U tmr0_isr 0
+J 0 _$L8
+W 0x1D0B 0x2800|(_$L8&2047)
+; "; :: timer0.c #23: TMR0 = 6;"
+W 0x3006 0x0020 0x0095
+; "; :: timer0.c #24: TMR0IF = 0;"
+W 0x110B
+; "; :: timer0.c #25: tmr0Count++;"
+K 21 tmr0Count
+W 0x0A80:tmr0Count
+; "; :: timer0.c #26: KEY_scan();"
+J _$L8 KEY_scan
+W 0x2000|(KEY_scan&2047)
+J KEY_scan _$L8
+L _$L8
+J _$L8 0
+F tmr0_isr KEY_scan
+S CODEi REL
+K tmr0Count
+W 0x0180:tmr0Count

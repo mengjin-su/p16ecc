@@ -1,0 +1,247 @@
+I "c:\p16ecc/include/pic16e"
+I "c:\p16ecc/include/p12f1840"
+P "p12f1840" 256 4096
+E _$$ 8432
+S BANKi REL
+L keyValue
+R 1
+S BANKi REL
+L keyTimer
+R 1
+S BANKi REL
+L keyState
+R 1
+S BANKi REL
+L keyRead
+R 1
+S BANKi REL
+L keyLast
+R 1
+S BANKi REL
+L keyElapse
+R 2
+S CODE2 REL
+U KEY_init 0
+G KEY_init
+; "; :: key.c #14: WPUEN    = 0;"
+W 0x0021 0x1395
+; "; :: key.c #15: WPUA    |= KEY_MASK;"
+W 0x3031
+K 149 524
+W 0x048C
+; "; :: key.c #16: TRISA   |= KEY_MASK;"
+K 524 140
+W 0x048C
+; "; :: key.c #17: keyValue = 0;"
+K 140 keyValue
+W 0x0180:keyValue
+; "; :: key.c #18: keyState = KEY_IDLE;"
+K keyValue keyState
+W 0x0180:keyState 0x0008
+S CODE2 REL
+U KEY_scan 2
+G KEY_scan
+W 0x0020 0x080C 0x3931
+K 12 KEY_scan_$data$
+W 0x0080:KEY_scan_$data$
+; "; :: key.c #25: switch ( keyState )	"
+; "; :: key.c #26: case KEY_IDLE:"
+K KEY_scan_$data$ keyState
+W 0x0800:keyState
+J KEY_scan _$L4
+W 0x1903 0x2800|(_$L4&2047)
+; "; :: key.c #35: case KEY_WAIT:"
+W 0x3A01
+J _$L4 _$L5
+W 0x1903 0x2800|(_$L5&2047)
+; "; :: key.c #50: case KEY_DONE:"
+W 0x0800:keyState 0x3A02
+J _$L5 _$L6
+W 0x1903 0x2800|(_$L6&2047)
+J _$L6 _$L3
+W 0x2800|(_$L3&2047)
+J _$L3 _$L4
+L _$L4
+; "; :: key.c #27: if ( ANY_KEY(key) )"
+K KEY_scan_$data$
+W 0x0800:KEY_scan_$data$ 0x3A31
+J _$L4 _$L3
+W 0x1903 0x2800|(_$L3&2047)
+; "; :: key.c #29: keyRead  = key;"
+W 0x0800:KEY_scan_$data$
+K KEY_scan_$data$ keyRead
+W 0x0080:keyRead
+; "; :: key.c #30: keyState = KEY_WAIT;"
+W 0x3001
+K keyRead keyState
+W 0x0080:keyState
+; "; :: key.c #31: keyTimer = tmr0Count;"
+K keyState tmr0Count
+W 0x0800:tmr0Count
+K tmr0Count keyTimer
+W 0x0080:keyTimer
+; "; :: key.c #33: break;"
+W 0x2800|(_$L3&2047)
+J _$L3 _$L5
+L _$L5
+; "; :: key.c #36: if ( keyRead != key )"
+K keyRead
+W 0x0800:keyRead
+K keyRead KEY_scan_$data$
+W 0x0600:KEY_scan_$data$
+J _$L5 _$L11
+W 0x1903 0x2800|(_$L11&2047)
+; "; :: key.c #37: keyState = KEY_IDLE;"
+K KEY_scan_$data$ keyState
+W 0x0180:keyState
+J _$L11 _$L3
+W 0x2800|(_$L3&2047)
+J _$L3 _$L11
+L _$L11
+; "; :: key.c #38: else if ( (unsigned char)(tmr0Count - keyTimer) >= 20 )"
+K keyTimer
+W 0x0800:keyTimer
+K keyTimer tmr0Count
+W 0x0200:tmr0Count
+K tmr0Count KEY_scan_$data$
+W 0x0080:(KEY_scan_$data$+1) 0x3014 0x0200:(KEY_scan_$data$+1)
+J _$L11 _$L3
+W 0x1C03 0x2800|(_$L3&2047)
+; "; :: key.c #40: if ( KEY1_IN(keyRead) )"
+K KEY_scan_$data$ keyRead
+J _$L3 _$L17
+W 0x1A80:keyRead 0x2800|(_$L17&2047)
+; "; :: key.c #40: keyValue = KEY1;"
+W 0x3001
+K keyRead keyValue
+W 0x0080:keyValue
+L _$L17
+; "; :: key.c #41: ( KEY2_IN(keyRead) )"
+K keyRead
+J _$L17 _$L20
+W 0x1A00:keyRead 0x2800|(_$L20&2047)
+; "; :: key.c #41: keyValue = KEY2;"
+W 0x3002
+K keyRead keyValue
+W 0x0080:keyValue
+L _$L20
+; "; :: key.c #42: ( KEY3_IN(keyRead) )"
+K keyRead
+J _$L20 _$L23
+W 0x1800:keyRead 0x2800|(_$L23&2047)
+; "; :: key.c #42: keyValue = KEY3;"
+W 0x3003
+K keyRead keyValue
+W 0x0080:keyValue
+L _$L23
+; "; :: key.c #43: = KEY_DONE;"
+W 0x3002
+K keyState
+W 0x0080:keyState
+; "; :: key.c #44: keyTimer = tmr0Count;"
+K keyState tmr0Count
+W 0x0800:tmr0Count
+K tmr0Count keyTimer
+W 0x0080:keyTimer
+; "; :: key.c #45: keyElapse= 600;"
+W 0x3058
+K keyTimer keyElapse
+W 0x0080:keyElapse 0x3002
+K keyElapse (keyElapse+1)
+W 0x0080:(keyElapse+1)
+; "; :: key.c #46: keyLast  = keyValue;"
+K (keyElapse+1) keyValue
+W 0x0800:keyValue
+K keyValue keyLast
+W 0x0080:keyLast
+; "; :: key.c #48: break;"
+J _$L23 _$L3
+W 0x2800|(_$L3&2047)
+J _$L3 _$L6
+L _$L6
+; "; :: key.c #51: if ( ANY_KEY(key) )"
+K KEY_scan_$data$
+W 0x0800:KEY_scan_$data$ 0x3A31
+J _$L6 _$L26
+W 0x1903 0x2800|(_$L26&2047)
+; "; :: key.c #53: keyTimer = tmr0Count;"
+K KEY_scan_$data$ tmr0Count
+W 0x0800:tmr0Count
+K tmr0Count keyTimer
+W 0x0080:keyTimer
+; "; :: key.c #54: if ( keyElapse )"
+K keyTimer keyElapse
+W 0x0800:keyElapse
+K keyElapse (keyElapse+1)
+W 0x0400:(keyElapse+1)
+J _$L26 _$L29
+W 0x1903 0x2800|(_$L29&2047)
+; "; :: key.c #54: keyElapse--;"
+W 0x30FF
+K (keyElapse+1) keyElapse
+W 0x0780:keyElapse
+K keyElapse (keyElapse+1)
+W 0x3D80:(keyElapse+1)
+L _$L29
+; "; :: key.c #55: ( keyElapse == 0 && keyLast != KEY1 )"
+K keyElapse
+W 0x0800:keyElapse
+K keyElapse (keyElapse+1)
+W 0x0400:(keyElapse+1)
+J _$L29 _$L3
+W 0x1D03 0x2800|(_$L3&2047)
+K (keyElapse+1) keyLast
+W 0x0800:keyLast 0x3A01 0x1903 0x2800|(_$L3&2047)
+; "; :: key.c #58: keyElapse= 100;"
+W 0x3064
+K keyLast keyElapse
+W 0x0080:keyElapse
+K keyElapse (keyElapse+1)
+W 0x0180:(keyElapse+1)
+; "; :: key.c #60: if ( keyLast == KEY2 )"
+K (keyElapse+1) keyLast
+W 0x0800:keyLast 0x3A02
+J _$L3 _$L36
+W 0x1D03 0x2800|(_$L36&2047)
+; "; :: key.c #61: keyValue = FAST_INC;"
+W 0x3004
+K keyLast keyValue
+W 0x0080:keyValue
+J _$L36 _$L3
+W 0x2800|(_$L3&2047)
+J _$L3 _$L36
+L _$L36
+; "; :: key.c #63: else						keyValue = FAST_DEC;"
+W 0x3005
+K keyValue
+W 0x0080:keyValue
+J _$L36 _$L3
+W 0x2800|(_$L3&2047)
+J _$L3 _$L26
+L _$L26
+; "; :: key.c #66: else if ( (unsigned char)(tmr0Count - keyTimer) >= 20 )"
+K keyTimer
+W 0x0800:keyTimer
+K keyTimer tmr0Count
+W 0x0200:tmr0Count
+K tmr0Count KEY_scan_$data$
+W 0x0080:(KEY_scan_$data$+1) 0x3014 0x0200:(KEY_scan_$data$+1)
+J _$L26 _$L3
+W 0x1C03 0x2800|(_$L3&2047)
+; "; :: key.c #67: keyState = KEY_IDLE;"
+K KEY_scan_$data$ keyState
+W 0x0180:keyState
+; "; :: key.c #68: break;"
+L _$L3
+J _$L3 KEY_scan
+W 0x0008
+S CODE2 REL
+U KEY_read 0
+G KEY_read
+; "; :: key.c #74: WREG = keyValue;"
+K keyValue
+W 0x0800:keyValue
+; "; :: key.c #75: keyValue = 0;"
+W 0x0180:keyValue
+; "; :: key.c #76: return WREG;"
+W 0x00F0 0x0008

@@ -1,0 +1,6639 @@
+>>>>>>>>>>>> MAP OUTPUT <<<<<<<<<<<<
+
+- DATA MEMORY 55 bytes(22.92%) used
+timer0.obj  tmr0Count (1): 0x2000 [0:0x20]
+key.obj  keyValue (1): 0x2001 [0:0x21]
+key.obj  keyTimer (1): 0x2002 [0:0x22]
+key.obj  keyState (1): 0x2003 [0:0x23]
+key.obj  keyRead (1): 0x2004 [0:0x24]
+key.obj  keyLast (1): 0x2005 [0:0x25]
+key.obj  keyElapse (2): 0x2006 [0:0x26]
+radio.obj  RADIO_mode (1): 0x2008 [0:0x28]
+radio.obj  RADIO_volume (1): 0x2009 [0:0x29]
+radio.obj  RADIO_fmFreq (2): 0x200A [0:0x2A]
+radio.obj  RADIO_amFreq (2): 0x200C [0:0x2C]
+timer0.obj  TMR0_init_$data$ (1): 0x200E [0:0x2E]
+timer0.obj  TMR0_delayMs_$data$ (3): 0x200E [0:0x2E]
+i2c.obj  I2C_delay_$data$ (1): 0x200E [0:0x2E]
+i2c.obj  I2C_start_$data$ (1): 0x2011 [0:0x31]
+i2c.obj  I2C_readByte_$data$ (3): 0x2011 [0:0x31]
+i2c.obj  I2C_writeByte_$data$ (2): 0x2014 [0:0x34]
+oled.obj  OLED_setPos_$data$ (3): 0x2016 [0:0x36]
+oled.obj  OLED_clr_$data$ (4): 0x2016 [0:0x36]
+si47xx.obj  SI47xx_write_$data$ (3): 0x2016 [0:0x36]
+si47xx.obj  SI47xx_read_$data$ (3): 0x2016 [0:0x36]
+oled.obj  OLED_init_$data$ (3): 0x201A [0:0x3A]
+oled.obj  OLED_displayChar_8x6_str_$data$ (6): 0x201A [0:0x3A]
+oled.obj  OLED_displayChar_32x19_$data$ (5): 0x201A [0:0x3A]
+oled.obj  OLED_displayChar_16_$data$ (7): 0x201A [0:0x3A]
+si47xx.obj  SI47xx_waitCTS_$data$ (2): 0x201A [0:0x3A]
+oled.obj  OLED_command_$data$ (1): 0x2021 [0:0x41]
+oled.obj  OLED_data_$data$ (5): 0x2021 [0:0x41]
+si47xx.obj  SI47xx_command_$data$ (3): 0x2021 [0:0x41]
+key.obj  KEY_scan_$data$ (2): 0x2026 [0:0x46]
+radio.obj  RADIO_poll_$data$ (4): 0x2028 [0:0x48]
+radio.obj  RADIO_dispFreq_$data$ (8): 0x202C [0:0x4C]
+si47xx.obj  SI47xx_property_$data$ (10): 0x202C [0:0x4C]
+si47xx.obj  SI47xx_setFreq_$data$ (8): 0x202C [0:0x4C]
+si47xx.obj  SI47xx_setVolume_$data$ (1): 0x2036 [0:0x56]
+
+- MEMORY MAP   'X'=forbidden, '+'=used, '.'=unused
+0000: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX++++++++++++++++++++++++++++++++
+0040: +++++++++++++++++++++++.........................XXXXXXXXXXXXXXXX
+0080: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+00C0: ................................................XXXXXXXXXXXXXXXX
+0100: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX................................
+0140: ................................................XXXXXXXXXXXXXXXX
+
+
+- CODE MEMORY 3424 words(83.59%) used
+          	(main.obj line#10, 3 words)
+0000: 0000		nop
+0001: 3180		movlp	0x00
+0002: 2812		goto	0x012
+          	(main.obj line#17, 3 words)
+0004: 018A		clrf	PCLATH
+0005: 0870		movf	0x70, W
+0006: 001D		movwi	[--FSR1]
+          	(timer0.obj line#43, 8 words)
+0007: 1D0B		btfss	INTCON, 2
+0008: 280F		goto	0x00F
+          		; :: timer0.c #23: TMR0 = 6;
+0009: 3006		movlw	0x06
+000A: 0020		movlb	0x00
+000B: 0095		movwf	0x15
+          		; :: timer0.c #24: TMR0IF = 0;
+000C: 110B		bcf	INTCON, 2
+          		; :: timer0.c #25: tmr0Count++;
+000D: 0AA0		incf	0x20, F
+          		; :: timer0.c #26: KEY_scan();
+000E: 21DF		call	0x1DF
+          	_$L8:
+          	(main.obj line#19, 3 words)
+000F: 0016		moviw	[FSR1++]
+0010: 00F0		movwf	0x70
+0011: 0009		retfie
+          	(main.obj line#21, 25 words)
+          	main::
+0012: 2673		call	0x673
+0013: 30F0		movlw	0xF0
+0014: 0086		movwf	FSR1L
+0015: 3020		movlw	0x20
+0016: 0087		movwf	FSR1H
+          		; :: main.c #12: OSCCON = 0x70;
+0017: 3070		movlw	0x70
+0018: 0021		movlb	0x01
+0019: 0099		movwf	0x19
+          		; :: main.c #13: OSCTUNE = 0x00;
+001A: 0198		clrf	0x18
+          		; :: main.c #14: BORCON = 0x00;
+001B: 0022		movlb	0x02
+001C: 0196		clrf	0x16
+          	_$L2:
+          		; :: main.c #15: while( !(OSCSTAT & (1 << 6)) )
+001D: 0021		movlb	0x01
+001E: 1F1A		btfss	0x1A, 6
+001F: 281D		goto	0x01D
+          		; :: main.c #15: ;
+          		; :: main.c #17: GIE = 1;
+0020: 178B		bsf	INTCON, 7
+          		; :: main.c #18: ANSELA = 0;
+0021: 0023		movlb	0x03
+0022: 018C		clrf	0x0C
+          		; :: main.c #20: TMR0_init();
+0023: 202B		call	0x02B
+          		; :: main.c #21: I2C_init();
+0024: 2045		call	0x045
+          		; :: main.c #22: OLED_init();
+0025: 2100		call	0x100
+          		; :: main.c #23: KEY_init();
+0026: 21D4		call	0x1D4
+          		; :: main.c #24: RADIO_init();
+0027: 2257		call	0x257
+          	_$L5:
+          		; :: main.c #28: RADIO_poll();
+0028: 22D4		call	0x2D4
+0029: 2828		goto	0x028
+002A: 0008		return
+          	(timer0.obj line#8, 12 words)
+          	TMR0_init::
+          		; :: timer0.c #7: OPTION_REG = (OPTION_REG & 0xC0) | (0xD4 & 0x3F);
+002B: 0021		movlb	0x01
+002C: 0815		movf	0x15, W
+002D: 39C0		andlw	0xC0
+002E: 0020		movlb	0x00
+002F: 00AE		movwf	0x2E
+0030: 082E		movf	0x2E, W
+0031: 3814		iorlw	0x14
+0032: 0021		movlb	0x01
+0033: 0095		movwf	0x15
+          		; :: timer0.c #9: TMR0IF = 0;
+0034: 110B		bcf	INTCON, 2
+          		; :: timer0.c #10: TMR0IE = 1;
+0035: 168B		bsf	INTCON, 5
+0036: 0008		return
+          	(timer0.obj line#21, 14 words)
+          	TMR0_delayMs::
+0037: 0020		movlb	0x00
+0038: 0016		moviw	[FSR1++]
+0039: 00AE		movwf	0x2E
+003A: 0820		movf	0x20, W
+003B: 00AF		movwf	0x2F
+          	_$L3:
+          		; :: timer0.c #16: while ( (unsigned char)(tmr0Count - t) < ms )
+003C: 0020		movlb	0x00
+003D: 082F		movf	0x2F, W
+003E: 0220		subwf	0x20, W
+003F: 00B0		movwf	0x30
+0040: 082E		movf	0x2E, W
+0041: 0230		subwf	0x30, W
+0042: 1C03		btfss	STATUS, 0
+0043: 283C		goto	0x03C
+          		; :: timer0.c #16: ;
+0044: 0008		return
+          	(i2c.obj line#5, 7 words)
+          	I2C_init::
+          		; :: i2c.c #5: TRISA |= ((1 << SCL_PIN) | (1 << SDA_PIN));
+0045: 3006		movlw	0x06
+0046: 0021		movlb	0x01
+0047: 048C		iorwf	0x0C, F
+          		; :: i2c.c #6: LATA &= ~((1 << SCL_PIN) | (1 << SDA_PIN));
+0048: 30F9		movlw	0xF9
+0049: 0022		movlb	0x02
+004A: 058C		andwf	0x0C, F
+004B: 0008		return
+          	(i2c.obj line#14, 7 words)
+          	I2C_delay:
+004C: 3002		movlw	0x02
+004D: 0020		movlb	0x00
+004E: 00AE		movwf	0x2E
+          	_$L3:
+          		; :: i2c.c #12: while ( --n )
+004F: 0020		movlb	0x00
+0050: 0BAE		decfsz	0x2E, F
+0051: 284F		goto	0x04F
+          		; :: i2c.c #12: ;
+0052: 0008		return
+          	(i2c.obj line#28, 16 words)
+          	I2C_start::
+0053: 0020		movlb	0x00
+0054: 0016		moviw	[FSR1++]
+0055: 00B1		movwf	0x31
+          		; :: i2c.c #17: SDA_LO;
+0056: 0021		movlb	0x01
+0057: 110C		bcf	0x0C, 2
+          		; :: i2c.c #17: asm(" nop");
+0058: 0000		nop
+          		; :: i2c.c #17: asm(" nop");
+0059: 0000		nop
+          		; :: i2c.c #17: asm(" nop");
+005A: 0000		nop
+          		; :: i2c.c #17: asm(" nop");
+005B: 0000		nop
+          		; :: i2c.c #18: SCL_LO;
+005C: 108C		bcf	0x0C, 1
+          		; :: i2c.c #18: I2C_delay();
+005D: 204C		call	0x04C
+          		; :: i2c.c #19: I2C_writeByte(addr);
+005E: 0020		movlb	0x00
+005F: 0831		movf	0x31, W
+0060: 001D		movwi	[--FSR1]
+0061: 206F		call	0x06F
+0062: 0008		return
+          	(i2c.obj line#59, 12 words)
+          	I2C_end::
+          		; :: i2c.c #24: SDA_LO;
+0063: 0021		movlb	0x01
+0064: 110C		bcf	0x0C, 2
+          		; :: i2c.c #24: I2C_delay();
+0065: 204C		call	0x04C
+          		; :: i2c.c #25: SCL_HI;
+0066: 0021		movlb	0x01
+0067: 148C		bsf	0x0C, 1
+          		; :: i2c.c #25: asm(" nop");
+0068: 0000		nop
+          		; :: i2c.c #25: asm(" nop");
+0069: 0000		nop
+          		; :: i2c.c #25: asm(" nop");
+006A: 0000		nop
+          		; :: i2c.c #25: asm(" nop");
+006B: 0000		nop
+          		; :: i2c.c #26: SDA_HI;
+006C: 150C		bsf	0x0C, 2
+          		; :: i2c.c #26: I2C_delay();
+006D: 204C		call	0x04C
+006E: 0008		return
+          	(i2c.obj line#85, 39 words)
+          	I2C_writeByte::
+006F: 0020		movlb	0x00
+0070: 0016		moviw	[FSR1++]
+0071: 00B4		movwf	0x34
+0072: 3008		movlw	0x08
+0073: 00B5		movwf	0x35
+          	_$L9:
+          		; :: i2c.c #33: if ( data & 0x80 )
+0074: 0020		movlb	0x00
+0075: 1FB4		btfss	0x34, 7
+0076: 287A		goto	0x07A
+          		; :: i2c.c #33: SDA_HI;
+0077: 0021		movlb	0x01
+0078: 150C		bsf	0x0C, 2
+0079: 287C		goto	0x07C
+          	_$L13:
+          		; :: i2c.c #34: else			   SDA_LO;
+007A: 0021		movlb	0x01
+007B: 110C		bcf	0x0C, 2
+          	_$L14:
+          		; :: i2c.c #35: I2C_delay();
+007C: 204C		call	0x04C
+          		; :: i2c.c #35: SCL_HI;
+007D: 0021		movlb	0x01
+007E: 148C		bsf	0x0C, 1
+          		; :: i2c.c #36: I2C_delay();
+007F: 204C		call	0x04C
+          		; :: i2c.c #36: SCL_LO;
+0080: 0021		movlb	0x01
+0081: 108C		bcf	0x0C, 1
+          		; :: i2c.c #37: data <<= 1;
+0082: 0020		movlb	0x00
+0083: 35B4		lslf	0x34, F
+          		; :: i2c.c #38: while ( --cnt )
+0084: 0BB5		decfsz	0x35, F
+0085: 2874		goto	0x074
+          		; :: i2c.c #40: SDA_HI;
+0086: 0021		movlb	0x01
+0087: 150C		bsf	0x0C, 2
+          		; :: i2c.c #40: I2C_delay();
+0088: 204C		call	0x04C
+          		; :: i2c.c #41: SCL_HI;
+0089: 0021		movlb	0x01
+008A: 148C		bsf	0x0C, 1
+          		; :: i2c.c #41: I2C_delay();
+008B: 204C		call	0x04C
+          		; :: i2c.c #42: if ( I2C_READ )
+008C: 0020		movlb	0x00
+008D: 1D0C		btfss	0x0C, 2
+008E: 2890		goto	0x090
+          		; :: i2c.c #42: cnt++;
+008F: 0AB5		incf	0x35, F
+          	_$L16:
+          		; :: i2c.c #43: ;
+0090: 0021		movlb	0x01
+0091: 108C		bcf	0x0C, 1
+          		; :: i2c.c #44: return cnt;
+0092: 0020		movlb	0x00
+0093: 0835		movf	0x35, W
+0094: 00F0		movwf	0x70
+0095: 0008		return
+          	(i2c.obj line#148, 35 words)
+          	I2C_readByte::
+0096: 0020		movlb	0x00
+0097: 0016		moviw	[FSR1++]
+0098: 00B1		movwf	0x31
+0099: 3008		movlw	0x08
+009A: 00B2		movwf	0x32
+          	_$L19:
+          		; :: i2c.c #52: I2C_delay();
+009B: 204C		call	0x04C
+          		; :: i2c.c #53: SCL_HI;
+009C: 0021		movlb	0x01
+009D: 148C		bsf	0x0C, 1
+          		; :: i2c.c #54: I2C_delay();
+009E: 204C		call	0x04C
+          		; :: i2c.c #55: data <<= 1;
+009F: 0020		movlb	0x00
+00A0: 35B3		lslf	0x33, F
+          		; :: i2c.c #56: if ( I2C_READ )
+00A1: 1D0C		btfss	0x0C, 2
+00A2: 28A4		goto	0x0A4
+          		; :: i2c.c #56: data++;
+00A3: 0AB3		incf	0x33, F
+          	_$L23:
+          		; :: i2c.c #57: ;
+00A4: 0021		movlb	0x01
+00A5: 108C		bcf	0x0C, 1
+          		; :: i2c.c #58: while ( --cnt )
+00A6: 0020		movlb	0x00
+00A7: 0BB2		decfsz	0x32, F
+00A8: 289B		goto	0x09B
+          		; :: i2c.c #60: if ( more_bytes )
+00A9: 0831		movf	0x31, W
+00AA: 1903		btfsc	STATUS, 2
+00AB: 28B5		goto	0x0B5
+          		; :: i2c.c #62: SDA_LO;
+00AC: 0021		movlb	0x01
+00AD: 110C		bcf	0x0C, 2
+          		; :: i2c.c #62: I2C_delay();
+00AE: 204C		call	0x04C
+          		; :: i2c.c #63: SCL_HI;
+00AF: 0021		movlb	0x01
+00B0: 148C		bsf	0x0C, 1
+          		; :: i2c.c #63: I2C_delay();
+00B1: 204C		call	0x04C
+          		; :: i2c.c #64: SCL_LO;
+00B2: 0021		movlb	0x01
+00B3: 108C		bcf	0x0C, 1
+          		; :: i2c.c #64: SDA_HI;
+00B4: 150C		bsf	0x0C, 2
+          	_$L26:
+          		; :: i2c.c #66: data;
+00B5: 0020		movlb	0x00
+00B6: 0833		movf	0x33, W
+00B7: 00F0		movwf	0x70
+00B8: 0008		return
+          	(oled.obj line#5, 30 words)
+          	OLED_setPos::
+00B9: 0020		movlb	0x00
+00BA: 0016		moviw	[FSR1++]
+00BB: 00B7		movwf	0x37
+00BC: 0016		moviw	[FSR1++]
+00BD: 00B6		movwf	0x36
+          		; :: oled.c #19: OLED_command(0xb0+y);
+00BE: 30B0		movlw	0xB0
+00BF: 0737		addwf	0x37, W
+00C0: 00B8		movwf	0x38
+00C1: 0838		movf	0x38, W
+00C2: 001D		movwi	[--FSR1]
+00C3: 211F		call	0x11F
+          		; :: oled.c #20: OLED_command((x >> 4)|0x10);
+00C4: 0020		movlb	0x00
+00C5: 0836		movf	0x36, W
+00C6: 00B8		movwf	0x38
+00C7: 0EB8		swapf	0x38, F
+00C8: 300F		movlw	0x0F
+00C9: 05B8		andwf	0x38, F
+00CA: 1638		bsf	0x38, 4
+00CB: 0838		movf	0x38, W
+00CC: 001D		movwi	[--FSR1]
+00CD: 211F		call	0x11F
+          		; :: oled.c #21: OLED_command((x&0x0f)|0x01);
+00CE: 0020		movlb	0x00
+00CF: 0836		movf	0x36, W
+00D0: 390F		andlw	0x0F
+00D1: 00B8		movwf	0x38
+00D2: 1438		bsf	0x38, 0
+00D3: 0838		movf	0x38, W
+00D4: 001D		movwi	[--FSR1]
+00D5: 211F		call	0x11F
+00D6: 0008		return
+          	(oled.obj line#29, 41 words)
+          	OLED_clr::
+00D7: 0020		movlb	0x00
+00D8: 01B8		clrf	0x38
+          		; :: oled.c #34: for (y = 0;
+00D9: 01B6		clrf	0x36
+          	_$L3:
+          		; :: oled.c #34: y < OLED_HEIGHT/8;
+00DA: 3004		movlw	0x04
+00DB: 0020		movlb	0x00
+00DC: 0236		subwf	0x36, W
+00DD: 1803		btfsc	STATUS, 0
+00DE: 28FF		goto	0x0FF
+          		; :: oled.c #36: OLED_command(0xb0+y);
+00DF: 30B0		movlw	0xB0
+00E0: 0736		addwf	0x36, W
+00E1: 00B9		movwf	0x39
+00E2: 0839		movf	0x39, W
+00E3: 001D		movwi	[--FSR1]
+00E4: 211F		call	0x11F
+          		; :: oled.c #37: OLED_command(0x01);
+00E5: 3001		movlw	0x01
+00E6: 001D		movwi	[--FSR1]
+00E7: 211F		call	0x11F
+          		; :: oled.c #38: OLED_command(0x10);
+00E8: 3010		movlw	0x10
+00E9: 001D		movwi	[--FSR1]
+00EA: 211F		call	0x11F
+          		; :: oled.c #40: for (x = 0;
+00EB: 0020		movlb	0x00
+00EC: 01B7		clrf	0x37
+          	_$L7:
+          		; :: oled.c #40: x < OLED_WIDTH;
+00ED: 3080		movlw	0x80
+00EE: 0020		movlb	0x00
+00EF: 0237		subwf	0x37, W
+00F0: 1803		btfsc	STATUS, 0
+00F1: 28FC		goto	0x0FC
+          		; :: oled.c #41: OLED_data(&c, 1);
+00F2: 3018		movlw	0x18
+00F3: 001D		movwi	[--FSR1]
+00F4: 3020		movlw	0x20
+00F5: 001D		movwi	[--FSR1]
+00F6: 3001		movlw	0x01
+00F7: 001D		movwi	[--FSR1]
+00F8: 212E		call	0x12E
+          		; :: oled.c #40: x++)
+00F9: 0020		movlb	0x00
+00FA: 0AB7		incf	0x37, F
+00FB: 28ED		goto	0x0ED
+          	_$L9:
+          		; :: oled.c #34: y++)
+00FC: 0020		movlb	0x00
+00FD: 0AB6		incf	0x36, F
+00FE: 28DA		goto	0x0DA
+          	_$L5:
+00FF: 0008		return
+          	(oled.obj line#87, 31 words)
+          	OLED_init::
+          		; :: oled.c #57: TMR0_delayMs(100);
+0100: 3064		movlw	0x64
+0101: 001D		movwi	[--FSR1]
+0102: 2037		call	0x037
+          		; :: oled.c #59: for (i = 0;
+0103: 0020		movlb	0x00
+0104: 01BA		clrf	0x3A
+          	_$L12:
+          		; :: oled.c #59: i < sizeof(oledInitCmdList);
+0105: 301E		movlw	0x1E
+0106: 0020		movlb	0x00
+0107: 023A		subwf	0x3A, W
+0108: 1803		btfsc	STATUS, 0
+0109: 291A		goto	0x11A
+          		; :: oled.c #60: OLED_command(oledInitCmdList[i]);
+010A: 3035		movlw	0x35
+010B: 073A		addwf	0x3A, W
+010C: 00BB		movwf	0x3B
+010D: 308D		movlw	0x8D
+010E: 3D7F		addwfc	0x7F, W
+010F: 00BC		movwf	0x3C
+0110: 083B		movf	0x3B, W
+0111: 0084		movwf	FSR0L
+0112: 083C		movf	0x3C, W
+0113: 0085		movwf	FSR0H
+0114: 3F00		moviw	0[FSR0]
+0115: 001D		movwi	[--FSR1]
+0116: 211F		call	0x11F
+          		; :: oled.c #59: i++)
+0117: 0020		movlb	0x00
+0118: 0ABA		incf	0x3A, F
+0119: 2905		goto	0x105
+          	_$L14:
+          		; :: oled.c #62: TMR0_delayMs(100);
+011A: 3064		movlw	0x64
+011B: 001D		movwi	[--FSR1]
+011C: 2037		call	0x037
+          		; :: oled.c #64: OLED_clr();
+011D: 20D7		call	0x0D7
+011E: 0008		return
+          	(oled.obj line#131, 15 words)
+          	OLED_command::
+011F: 0020		movlb	0x00
+0120: 0016		moviw	[FSR1++]
+0121: 00C1		movwf	0x41
+          		; :: oled.c #70: I2C_start(SSD1306_IIC_ADDR);
+0122: 3078		movlw	0x78
+0123: 001D		movwi	[--FSR1]
+0124: 2053		call	0x053
+          		; :: oled.c #71: I2C_writeByte(SSD1306_IIC_CMD_MASK);
+0125: 3000		movlw	0x00
+0126: 001D		movwi	[--FSR1]
+0127: 206F		call	0x06F
+          		; :: oled.c #72: I2C_writeByte(cmd);
+0128: 0020		movlb	0x00
+0129: 0841		movf	0x41, W
+012A: 001D		movwi	[--FSR1]
+012B: 206F		call	0x06F
+          		; :: oled.c #73: I2C_end();
+012C: 2063		call	0x063
+012D: 0008		return
+          	(oled.obj line#155, 34 words)
+          	OLED_data::
+012E: 3024		movlw	0x24
+012F: 0084		movwf	FSR0L
+0130: 3020		movlw	0x20
+0131: 0085		movwf	FSR0H
+0132: 0023		movlb	0x03
+0133: 260D		call	0x60D
+          		; :: oled.c #78: I2C_start(SSD1306_IIC_ADDR);
+0134: 3078		movlw	0x78
+0135: 001D		movwi	[--FSR1]
+0136: 2053		call	0x053
+          		; :: oled.c #79: I2C_writeByte(SSD1306_IIC_DAT_MASK);
+0137: 3040		movlw	0x40
+0138: 001D		movwi	[--FSR1]
+0139: 206F		call	0x06F
+          	_$L18:
+          		; :: oled.c #80: while ( length-- )
+013A: 0020		movlb	0x00
+013B: 03C3		decf	0x43, F
+013C: 0A43		incf	0x43, W
+013D: 1903		btfsc	STATUS, 2
+013E: 294E		goto	0x14E
+          		; :: oled.c #80: I2C_writeByte(*dat++);
+013F: 0841		movf	0x41, W
+0140: 00C4		movwf	0x44
+0141: 0842		movf	0x42, W
+0142: 00C5		movwf	0x45
+0143: 0AC1		incf	0x41, F
+0144: 1903		btfsc	STATUS, 2
+0145: 0AC2		incf	0x42, F
+0146: 0844		movf	0x44, W
+0147: 0084		movwf	FSR0L
+0148: 0845		movf	0x45, W
+0149: 0085		movwf	FSR0H
+014A: 3F00		moviw	0[FSR0]
+014B: 001D		movwi	[--FSR1]
+014C: 206F		call	0x06F
+014D: 293A		goto	0x13A
+          	_$L20:
+          		; :: oled.c #81: I2C_end();
+014E: 2063		call	0x063
+014F: 0008		return
+          	(oled.obj line#198, 63 words)
+          	OLED_displayChar_8x6_str::
+0150: 301E		movlw	0x1E
+0151: 0084		movwf	FSR0L
+0152: 3020		movlw	0x20
+0153: 0085		movwf	FSR0H
+0154: 0024		movlb	0x04
+0155: 260D		call	0x60D
+          	_$L22:
+          		; :: oled.c #126: while ( *sp )
+0156: 0020		movlb	0x00
+0157: 083C		movf	0x3C, W
+0158: 0084		movwf	FSR0L
+0159: 083D		movf	0x3D, W
+015A: 0085		movwf	FSR0H
+015B: 3F00		moviw	0[FSR0]
+015C: 1903		btfsc	STATUS, 2
+015D: 298E		goto	0x18E
+          		; :: oled.c #128: OLED_setPos(x, y);
+015E: 083A		movf	0x3A, W
+015F: 001D		movwi	[--FSR1]
+0160: 083B		movf	0x3B, W
+0161: 001D		movwi	[--FSR1]
+0162: 20B9		call	0x0B9
+          		; :: oled.c #129: OLED_data(FONT_6x8[*sp++ - 32], 6);
+0163: 0020		movlb	0x00
+0164: 083C		movf	0x3C, W
+0165: 00BE		movwf	0x3E
+0166: 083D		movf	0x3D, W
+0167: 00BF		movwf	0x3F
+0168: 0ABC		incf	0x3C, F
+0169: 1903		btfsc	STATUS, 2
+016A: 0ABD		incf	0x3D, F
+016B: 083E		movf	0x3E, W
+016C: 0084		movwf	FSR0L
+016D: 083F		movf	0x3F, W
+016E: 0085		movwf	FSR0H
+016F: 3020		movlw	0x20
+0170: 0200		subwf	INDF0, W
+0171: 00BE		movwf	0x3E
+0172: 3101		addfsr	FSR0, 1
+0173: 0100		clrw
+0174: 3B7F		subwfb	0x7F, W
+0175: 00BF		movwf	0x3F
+0176: 3006		movlw	0x06
+0177: 001D		movwi	[--FSR1]
+0178: 3000		movlw	0x00
+0179: 001D		movwi	[--FSR1]
+017A: 301E		movlw	0x1E
+017B: 0084		movwf	FSR0L
+017C: 3020		movlw	0x20
+017D: 0085		movwf	FSR0H
+017E: 261F		call	0x61F
+017F: 300D		movlw	0x0D
+0180: 07BE		addwf	0x3E, F
+0181: 308B		movlw	0x8B
+0182: 3DBF		addwfc	0x3F, F
+0183: 083E		movf	0x3E, W
+0184: 001D		movwi	[--FSR1]
+0185: 083F		movf	0x3F, W
+0186: 001D		movwi	[--FSR1]
+0187: 3006		movlw	0x06
+0188: 001D		movwi	[--FSR1]
+0189: 212E		call	0x12E
+          		; :: oled.c #130: x += 6;
+018A: 3006		movlw	0x06
+018B: 0020		movlb	0x00
+018C: 07BA		addwf	0x3A, F
+018D: 2956		goto	0x156
+          	_$L24:
+018E: 0008		return
+          	(oled.obj line#254, 33 words)
+          	OLED_displayChar_32x19::
+018F: 301D		movlw	0x1D
+0190: 0084		movwf	FSR0L
+0191: 3020		movlw	0x20
+0192: 0085		movwf	FSR0H
+0193: 0023		movlb	0x03
+0194: 260D		call	0x60D
+          		; :: oled.c #137: for (y = 0;
+0195: 01BE		clrf	0x3E
+          	_$L26:
+          		; :: oled.c #137: y < 4;
+0196: 3004		movlw	0x04
+0197: 0020		movlb	0x00
+0198: 023E		subwf	0x3E, W
+0199: 1803		btfsc	STATUS, 0
+019A: 29AF		goto	0x1AF
+          		; :: oled.c #139: OLED_setPos(x, y);
+019B: 083A		movf	0x3A, W
+019C: 001D		movwi	[--FSR1]
+019D: 083E		movf	0x3E, W
+019E: 001D		movwi	[--FSR1]
+019F: 20B9		call	0x0B9
+          		; :: oled.c #140: OLED_data(fp, 19);
+01A0: 0020		movlb	0x00
+01A1: 083B		movf	0x3B, W
+01A2: 001D		movwi	[--FSR1]
+01A3: 083C		movf	0x3C, W
+01A4: 001D		movwi	[--FSR1]
+01A5: 3013		movlw	0x13
+01A6: 001D		movwi	[--FSR1]
+01A7: 212E		call	0x12E
+          		; :: oled.c #141: fp += 19;
+01A8: 3013		movlw	0x13
+01A9: 0020		movlb	0x00
+01AA: 07BB		addwf	0x3B, F
+01AB: 3000		movlw	0x00
+01AC: 3DBC		addwfc	0x3C, F
+          		; :: oled.c #137: y++)
+01AD: 0ABE		incf	0x3E, F
+01AE: 2996		goto	0x196
+          	_$L28:
+01AF: 0008		return
+          	(oled.obj line#344, 36 words)
+          	OLED_displayChar_16::
+01B0: 301F		movlw	0x1F
+01B1: 0084		movwf	FSR0L
+01B2: 3020		movlw	0x20
+01B3: 0085		movwf	FSR0H
+01B4: 0025		movlb	0x05
+01B5: 260D		call	0x60D
+          		; :: oled.c #159: for (row = 0;
+01B6: 01BF		clrf	0x3F
+          	_$L36:
+          		; :: oled.c #159: row < 2;
+01B7: 3002		movlw	0x02
+01B8: 0020		movlb	0x00
+01B9: 023F		subwf	0x3F, W
+01BA: 1803		btfsc	STATUS, 0
+01BB: 29D3		goto	0x1D3
+          		; :: oled.c #161: OLED_setPos(x, y+row);
+01BC: 083A		movf	0x3A, W
+01BD: 001D		movwi	[--FSR1]
+01BE: 083F		movf	0x3F, W
+01BF: 073B		addwf	0x3B, W
+01C0: 00C0		movwf	0x40
+01C1: 0840		movf	0x40, W
+01C2: 001D		movwi	[--FSR1]
+01C3: 20B9		call	0x0B9
+          		; :: oled.c #162: OLED_data(fp, width);
+01C4: 0020		movlb	0x00
+01C5: 083C		movf	0x3C, W
+01C6: 001D		movwi	[--FSR1]
+01C7: 083D		movf	0x3D, W
+01C8: 001D		movwi	[--FSR1]
+01C9: 083E		movf	0x3E, W
+01CA: 001D		movwi	[--FSR1]
+01CB: 212E		call	0x12E
+          		; :: oled.c #163: fp += width;
+01CC: 0020		movlb	0x00
+01CD: 083E		movf	0x3E, W
+01CE: 07BC		addwf	0x3C, F
+01CF: 3000		movlw	0x00
+01D0: 3DBD		addwfc	0x3D, F
+          		; :: oled.c #159: row++)
+01D1: 0ABF		incf	0x3F, F
+01D2: 29B7		goto	0x1B7
+          	_$L38:
+01D3: 0008		return
+          	(key.obj line#23, 11 words)
+          	KEY_init::
+          		; :: key.c #14: WPUEN    = 0;
+01D4: 0021		movlb	0x01
+01D5: 1395		bcf	0x15, 7
+          		; :: key.c #15: WPUA    |= KEY_MASK;
+01D6: 3031		movlw	0x31
+01D7: 0024		movlb	0x04
+01D8: 048C		iorwf	0x0C, F
+          		; :: key.c #16: TRISA   |= KEY_MASK;
+01D9: 0021		movlb	0x01
+01DA: 048C		iorwf	0x0C, F
+          		; :: key.c #17: keyValue = 0;
+01DB: 0020		movlb	0x00
+01DC: 01A1		clrf	0x21
+          		; :: key.c #18: keyState = KEY_IDLE;
+01DD: 01A3		clrf	0x23
+01DE: 0008		return
+          	(key.obj line#41, 115 words)
+          	KEY_scan::
+01DF: 0020		movlb	0x00
+01E0: 080C		movf	0x0C, W
+01E1: 3931		andlw	0x31
+01E2: 00C6		movwf	0x46
+          		; :: key.c #25: switch ( keyState )	
+          		; :: key.c #26: case KEY_IDLE:
+01E3: 0823		movf	0x23, W
+01E4: 1903		btfsc	STATUS, 2
+01E5: 29EE		goto	0x1EE
+          		; :: key.c #35: case KEY_WAIT:
+01E6: 3A01		xorlw	0x01
+01E7: 1903		btfsc	STATUS, 2
+01E8: 29FA		goto	0x1FA
+          		; :: key.c #50: case KEY_DONE:
+01E9: 0823		movf	0x23, W
+01EA: 3A02		xorlw	0x02
+01EB: 1903		btfsc	STATUS, 2
+01EC: 2A23		goto	0x223
+01ED: 2A51		goto	0x251
+          	_$L4:
+          		; :: key.c #27: if ( ANY_KEY(key) )
+01EE: 0020		movlb	0x00
+01EF: 0846		movf	0x46, W
+01F0: 3A31		xorlw	0x31
+01F1: 1903		btfsc	STATUS, 2
+01F2: 2A51		goto	0x251
+          		; :: key.c #29: keyRead  = key;
+01F3: 0846		movf	0x46, W
+01F4: 00A4		movwf	0x24
+          		; :: key.c #30: keyState = KEY_WAIT;
+01F5: 3001		movlw	0x01
+01F6: 00A3		movwf	0x23
+          		; :: key.c #31: keyTimer = tmr0Count;
+01F7: 0820		movf	0x20, W
+01F8: 00A2		movwf	0x22
+          		; :: key.c #33: break;
+01F9: 2A51		goto	0x251
+          	_$L5:
+          		; :: key.c #36: if ( keyRead != key )
+01FA: 0020		movlb	0x00
+01FB: 0824		movf	0x24, W
+01FC: 0646		xorwf	0x46, W
+01FD: 1903		btfsc	STATUS, 2
+01FE: 2A01		goto	0x201
+          		; :: key.c #37: keyState = KEY_IDLE;
+01FF: 01A3		clrf	0x23
+0200: 2A51		goto	0x251
+          	_$L11:
+          		; :: key.c #38: else if ( (unsigned char)(tmr0Count - keyTimer) >= 20 )
+0201: 0020		movlb	0x00
+0202: 0822		movf	0x22, W
+0203: 0220		subwf	0x20, W
+0204: 00C7		movwf	0x47
+0205: 3014		movlw	0x14
+0206: 0247		subwf	0x47, W
+0207: 1C03		btfss	STATUS, 0
+0208: 2A51		goto	0x251
+          		; :: key.c #40: if ( KEY1_IN(keyRead) )
+0209: 1AA4		btfsc	0x24, 5
+020A: 2A0D		goto	0x20D
+          		; :: key.c #40: keyValue = KEY1;
+020B: 3001		movlw	0x01
+020C: 00A1		movwf	0x21
+          	_$L17:
+          		; :: key.c #41: ( KEY2_IN(keyRead) )
+020D: 0020		movlb	0x00
+020E: 1A24		btfsc	0x24, 4
+020F: 2A12		goto	0x212
+          		; :: key.c #41: keyValue = KEY2;
+0210: 3002		movlw	0x02
+0211: 00A1		movwf	0x21
+          	_$L20:
+          		; :: key.c #42: ( KEY3_IN(keyRead) )
+0212: 0020		movlb	0x00
+0213: 1824		btfsc	0x24, 0
+0214: 2A17		goto	0x217
+          		; :: key.c #42: keyValue = KEY3;
+0215: 3003		movlw	0x03
+0216: 00A1		movwf	0x21
+          	_$L23:
+          		; :: key.c #43: = KEY_DONE;
+0217: 3002		movlw	0x02
+0218: 0020		movlb	0x00
+0219: 00A3		movwf	0x23
+          		; :: key.c #44: keyTimer = tmr0Count;
+021A: 0820		movf	0x20, W
+021B: 00A2		movwf	0x22
+          		; :: key.c #45: keyElapse= 600;
+021C: 3058		movlw	0x58
+021D: 00A6		movwf	0x26
+021E: 3002		movlw	0x02
+021F: 00A7		movwf	0x27
+          		; :: key.c #46: keyLast  = keyValue;
+0220: 0821		movf	0x21, W
+0221: 00A5		movwf	0x25
+          		; :: key.c #48: break;
+0222: 2A51		goto	0x251
+          	_$L6:
+          		; :: key.c #51: if ( ANY_KEY(key) )
+0223: 0020		movlb	0x00
+0224: 0846		movf	0x46, W
+0225: 3A31		xorlw	0x31
+0226: 1903		btfsc	STATUS, 2
+0227: 2A48		goto	0x248
+          		; :: key.c #53: keyTimer = tmr0Count;
+0228: 0820		movf	0x20, W
+0229: 00A2		movwf	0x22
+          		; :: key.c #54: if ( keyElapse )
+022A: 0826		movf	0x26, W
+022B: 0427		iorwf	0x27, W
+022C: 1903		btfsc	STATUS, 2
+022D: 2A31		goto	0x231
+          		; :: key.c #54: keyElapse--;
+022E: 30FF		movlw	0xFF
+022F: 07A6		addwf	0x26, F
+0230: 3DA7		addwfc	0x27, F
+          	_$L29:
+          		; :: key.c #55: ( keyElapse == 0 && keyLast != KEY1 )
+0231: 0020		movlb	0x00
+0232: 0826		movf	0x26, W
+0233: 0427		iorwf	0x27, W
+0234: 1D03		btfss	STATUS, 2
+0235: 2A51		goto	0x251
+0236: 0825		movf	0x25, W
+0237: 3A01		xorlw	0x01
+0238: 1903		btfsc	STATUS, 2
+0239: 2A51		goto	0x251
+          		; :: key.c #58: keyElapse= 100;
+023A: 3064		movlw	0x64
+023B: 00A6		movwf	0x26
+023C: 01A7		clrf	0x27
+          		; :: key.c #60: if ( keyLast == KEY2 )
+023D: 0825		movf	0x25, W
+023E: 3A02		xorlw	0x02
+023F: 1D03		btfss	STATUS, 2
+0240: 2A44		goto	0x244
+          		; :: key.c #61: keyValue = FAST_INC;
+0241: 3004		movlw	0x04
+0242: 00A1		movwf	0x21
+0243: 2A51		goto	0x251
+          	_$L36:
+          		; :: key.c #63: else						keyValue = FAST_DEC;
+0244: 3005		movlw	0x05
+0245: 0020		movlb	0x00
+0246: 00A1		movwf	0x21
+0247: 2A51		goto	0x251
+          	_$L26:
+          		; :: key.c #66: else if ( (unsigned char)(tmr0Count - keyTimer) >= 20 )
+0248: 0020		movlb	0x00
+0249: 0822		movf	0x22, W
+024A: 0220		subwf	0x20, W
+024B: 00C7		movwf	0x47
+024C: 3014		movlw	0x14
+024D: 0247		subwf	0x47, W
+024E: 1C03		btfss	STATUS, 0
+024F: 2A51		goto	0x251
+          		; :: key.c #67: keyState = KEY_IDLE;
+0250: 01A3		clrf	0x23
+          		; :: key.c #68: break;
+          	_$L3:
+0251: 0008		return
+          	(key.obj line#238, 5 words)
+          	KEY_read::
+          		; :: key.c #74: WREG = keyValue;
+0252: 0020		movlb	0x00
+0253: 0821		movf	0x21, W
+          		; :: key.c #75: keyValue = 0;
+0254: 01A1		clrf	0x21
+          		; :: key.c #76: return WREG;
+0255: 00F0		movwf	0x70
+0256: 0008		return
+          	(radio.obj line#18, 15 words)
+          	RADIO_init::
+          		; :: radio.c #14: LATA  &= ~(1 << 5);
+0257: 0022		movlb	0x02
+0258: 128C		bcf	0x0C, 5
+          		; :: radio.c #15: TRISA &= ~(1 << 5);
+0259: 0021		movlb	0x01
+025A: 128C		bcf	0x0C, 5
+          		; :: radio.c #16: TMR0_delayMs(100);
+025B: 3064		movlw	0x64
+025C: 001D		movwi	[--FSR1]
+025D: 2037		call	0x037
+          		; :: radio.c #17: TRISA |= (1 << 5);
+025E: 0021		movlb	0x01
+025F: 168C		bsf	0x0C, 5
+          		; :: radio.c #18: TMR0_delayMs(100);
+0260: 3064		movlw	0x64
+0261: 001D		movwi	[--FSR1]
+0262: 2037		call	0x037
+          		; :: radio.c #20: startFM();
+0263: 2266		call	0x266
+          		; :: radio.c #21: startFM();
+0264: 2266		call	0x266
+0265: 0008		return
+          	(radio.obj line#43, 55 words)
+          	startFM::
+          	_$L3:
+          		; :: radio.c #26: while ( MODE_KEY_HOLD )
+0266: 0020		movlb	0x00
+0267: 1A8C		btfsc	0x0C, 5
+0268: 2A6D		goto	0x26D
+          		; :: radio.c #26: TMR0_delayMs(5);
+0269: 3005		movlw	0x05
+026A: 001D		movwi	[--FSR1]
+026B: 2037		call	0x037
+026C: 2A66		goto	0x266
+          	_$L5:
+          		; :: radio.c #27: KEY_read();
+026D: 2252		call	0x252
+          		; :: radio.c #29: RADIO_mode = FM_MODE;
+026E: 0020		movlb	0x00
+026F: 01A8		clrf	0x28
+          		; :: radio.c #30: SI47xx_init();
+0270: 25BF		call	0x5BF
+          		; :: radio.c #31: SI47xx_setVolume(RADIO_volume = 63);
+0271: 303F		movlw	0x3F
+0272: 0020		movlb	0x00
+0273: 00A9		movwf	0x29
+0274: 001D		movwi	[--FSR1]
+0275: 25D3		call	0x5D3
+          		; :: radio.c #32: SI47xx_setFreq(RADIO_fmFreq);
+0276: 0020		movlb	0x00
+0277: 082A		movf	0x2A, W
+0278: 001D		movwi	[--FSR1]
+0279: 082B		movf	0x2B, W
+027A: 001D		movwi	[--FSR1]
+027B: 25E9		call	0x5E9
+          		; :: radio.c #34: RADIO_dispFreq();
+027C: 23DC		call	0x3DC
+          		; :: radio.c #36: OLED_displayChar_16( 7-2, 0, verdana_16x11ptBitmaps_F, 11);
+027D: 3005		movlw	0x05
+027E: 001D		movwi	[--FSR1]
+027F: 3000		movlw	0x00
+0280: 001D		movwi	[--FSR1]
+0281: 30D7		movlw	0xD7
+0282: 001D		movwi	[--FSR1]
+0283: 308A		movlw	0x8A
+0284: 001D		movwi	[--FSR1]
+0285: 300B		movlw	0x0B
+0286: 001D		movwi	[--FSR1]
+0287: 21B0		call	0x1B0
+          		; :: radio.c #37: OLED_displayChar_16(20-2, 0, verdana_16x16ptBitmaps_M, 16);
+0288: 3012		movlw	0x12
+0289: 001D		movwi	[--FSR1]
+028A: 3000		movlw	0x00
+028B: 001D		movwi	[--FSR1]
+028C: 30ED		movlw	0xED
+028D: 001D		movwi	[--FSR1]
+028E: 308A		movlw	0x8A
+028F: 001D		movwi	[--FSR1]
+0290: 3010		movlw	0x10
+0291: 001D		movwi	[--FSR1]
+0292: 21B0		call	0x1B0
+          		; :: radio.c #39: OLED_displayChar_8x6_str(12-2, 3, "MHz");
+0293: 300A		movlw	0x0A
+0294: 001D		movwi	[--FSR1]
+0295: 3003		movlw	0x03
+0296: 001D		movwi	[--FSR1]
+0297: 3053		movlw	0x53
+0298: 001D		movwi	[--FSR1]
+0299: 308D		movlw	0x8D
+029A: 001D		movwi	[--FSR1]
+029B: 2150		call	0x150
+029C: 0008		return
+          	(radio.obj line#109, 55 words)
+          	startAM::
+          	_$L7:
+          		; :: radio.c #44: while ( MODE_KEY_HOLD )
+029D: 0020		movlb	0x00
+029E: 1A8C		btfsc	0x0C, 5
+029F: 2AA4		goto	0x2A4
+          		; :: radio.c #44: TMR0_delayMs(5);
+02A0: 3005		movlw	0x05
+02A1: 001D		movwi	[--FSR1]
+02A2: 2037		call	0x037
+02A3: 2A9D		goto	0x29D
+          	_$L9:
+          		; :: radio.c #45: KEY_read();
+02A4: 2252		call	0x252
+          		; :: radio.c #47: RADIO_mode = AM_MODE;
+02A5: 3001		movlw	0x01
+02A6: 0020		movlb	0x00
+02A7: 00A8		movwf	0x28
+          		; :: radio.c #48: SI47xx_init();
+02A8: 25BF		call	0x5BF
+          		; :: radio.c #49: SI47xx_setVolume(RADIO_volume = 63);
+02A9: 303F		movlw	0x3F
+02AA: 0020		movlb	0x00
+02AB: 00A9		movwf	0x29
+02AC: 001D		movwi	[--FSR1]
+02AD: 25D3		call	0x5D3
+          		; :: radio.c #50: SI47xx_setFreq(RADIO_amFreq);
+02AE: 0020		movlb	0x00
+02AF: 082C		movf	0x2C, W
+02B0: 001D		movwi	[--FSR1]
+02B1: 082D		movf	0x2D, W
+02B2: 001D		movwi	[--FSR1]
+02B3: 25E9		call	0x5E9
+          		; :: radio.c #52: RADIO_dispFreq();
+02B4: 23DC		call	0x3DC
+          		; :: radio.c #54: OLED_displayChar_16( 2-2, 0, verdana_16x16ptBitmaps_A, 16);
+02B5: 3000		movlw	0x00
+02B6: 001D		movwi	[--FSR1]
+02B7: 001D		movwi	[--FSR1]
+02B8: 30B7		movlw	0xB7
+02B9: 001D		movwi	[--FSR1]
+02BA: 308A		movlw	0x8A
+02BB: 001D		movwi	[--FSR1]
+02BC: 3010		movlw	0x10
+02BD: 001D		movwi	[--FSR1]
+02BE: 21B0		call	0x1B0
+          		; :: radio.c #55: OLED_displayChar_16(20-2, 0, verdana_16x16ptBitmaps_M, 16);
+02BF: 3012		movlw	0x12
+02C0: 001D		movwi	[--FSR1]
+02C1: 3000		movlw	0x00
+02C2: 001D		movwi	[--FSR1]
+02C3: 30ED		movlw	0xED
+02C4: 001D		movwi	[--FSR1]
+02C5: 308A		movlw	0x8A
+02C6: 001D		movwi	[--FSR1]
+02C7: 3010		movlw	0x10
+02C8: 001D		movwi	[--FSR1]
+02C9: 21B0		call	0x1B0
+          		; :: radio.c #57: OLED_displayChar_8x6_str(12-2, 3, "KHz");
+02CA: 300A		movlw	0x0A
+02CB: 001D		movwi	[--FSR1]
+02CC: 3003		movlw	0x03
+02CD: 001D		movwi	[--FSR1]
+02CE: 3057		movlw	0x57
+02CF: 001D		movwi	[--FSR1]
+02D0: 308D		movlw	0x8D
+02D1: 001D		movwi	[--FSR1]
+02D2: 2150		call	0x150
+02D3: 0008		return
+          	(radio.obj line#176, 264 words)
+          	RADIO_poll::
+02D4: 2252		call	0x252
+02D5: 0870		movf	0x70, W
+02D6: 0020		movlb	0x00
+02D7: 00C8		movwf	0x48
+          		; :: radio.c #66: switch ( key )	
+          		; :: radio.c #67: case MODE_KEY:
+02D8: 0848		movf	0x48, W
+02D9: 3A01		xorlw	0x01
+02DA: 1903		btfsc	STATUS, 2
+02DB: 2AED		goto	0x2ED
+          		; :: radio.c #75: case INC_KEY:
+02DC: 0848		movf	0x48, W
+02DD: 3A02		xorlw	0x02
+02DE: 1903		btfsc	STATUS, 2
+02DF: 2AF6		goto	0x2F6
+          		; :: radio.c #76: case FAST_INC:
+02E0: 0848		movf	0x48, W
+02E1: 3A04		xorlw	0x04
+02E2: 1903		btfsc	STATUS, 2
+02E3: 2AF6		goto	0x2F6
+          		; :: radio.c #108: case DEC_KEY:
+02E4: 0848		movf	0x48, W
+02E5: 3A03		xorlw	0x03
+02E6: 1903		btfsc	STATUS, 2
+02E7: 2B68		goto	0x368
+          		; :: radio.c #109: case FAST_DEC:
+02E8: 0848		movf	0x48, W
+02E9: 3A05		xorlw	0x05
+02EA: 1903		btfsc	STATUS, 2
+02EB: 2B68		goto	0x368
+02EC: 2BDB		goto	0x3DB
+          	_$L12:
+          		; :: radio.c #68: OLED_clr();
+02ED: 20D7		call	0x0D7
+          		; :: radio.c #69: if ( RADIO_mode == FM_MODE )
+02EE: 0020		movlb	0x00
+02EF: 0828		movf	0x28, W
+02F0: 1D03		btfss	STATUS, 2
+02F1: 2AF4		goto	0x2F4
+          		; :: radio.c #70: startAM();
+02F2: 229D		call	0x29D
+02F3: 2BDB		goto	0x3DB
+          	_$L18:
+          		; :: radio.c #72: else				startFM();
+02F4: 2266		call	0x266
+          		; :: radio.c #73: break;
+02F5: 2BDB		goto	0x3DB
+          	_$L13:
+          		; :: radio.c #77: if ( RADIO_mode == FM_MODE )
+02F6: 0020		movlb	0x00
+02F7: 0828		movf	0x28, W
+02F8: 1D03		btfss	STATUS, 2
+02F9: 2B31		goto	0x331
+          		; :: radio.c #79: delta = RADIO_fmFreq % 50;
+02FA: 3032		movlw	0x32
+02FB: 001D		movwi	[--FSR1]
+02FC: 3000		movlw	0x00
+02FD: 001D		movwi	[--FSR1]
+02FE: 082A		movf	0x2A, W
+02FF: 00F0		movwf	0x70
+0300: 082B		movf	0x2B, W
+0301: 00F1		movwf	0x71
+0302: 3001		movlw	0x01
+0303: 2634		call	0x634
+0304: 0870		movf	0x70, W
+0305: 00C9		movwf	0x49
+          		; :: radio.c #80: if ( key == FAST_INC )
+0306: 0848		movf	0x48, W
+0307: 3A04		xorlw	0x04
+0308: 1D03		btfss	STATUS, 2
+0309: 2B15		goto	0x315
+          		; :: radio.c #81: RADIO_fmFreq += 50 - delta;
+030A: 0849		movf	0x49, W
+030B: 3C32		sublw	0x32
+030C: 00CA		movwf	0x4A
+030D: 3000		movlw	0x00
+030E: 3B7F		subwfb	0x7F, W
+030F: 00CB		movwf	0x4B
+0310: 084A		movf	0x4A, W
+0311: 07AA		addwf	0x2A, F
+0312: 084B		movf	0x4B, W
+0313: 3DAB		addwfc	0x2B, F
+0314: 2B1A		goto	0x31A
+          	_$L24:
+          		; :: radio.c #83: else					RADIO_fmFreq += 10;
+0315: 300A		movlw	0x0A
+0316: 0020		movlb	0x00
+0317: 07AA		addwf	0x2A, F
+0318: 3000		movlw	0x00
+0319: 3DAB		addwfc	0x2B, F
+          	_$L25:
+          		; :: radio.c #85: if ( RADIO_fmFreq > 10850 )
+031A: 3062		movlw	0x62
+031B: 0020		movlb	0x00
+031C: 022A		subwf	0x2A, W
+031D: 00F0		movwf	0x70
+031E: 302A		movlw	0x2A
+031F: 3B2B		subwfb	0x2B, W
+0320: 04F0		iorwf	0x70, F
+0321: 1903		btfsc	STATUS, 2
+0322: 1003		bcf	STATUS, 0
+0323: 1C03		btfss	STATUS, 0
+0324: 2B29		goto	0x329
+          		; :: radio.c #86: RADIO_fmFreq = 10850;
+0325: 3062		movlw	0x62
+0326: 00AA		movwf	0x2A
+0327: 302A		movlw	0x2A
+0328: 00AB		movwf	0x2B
+          	_$L27:
+          		; :: radio.c #88: (RADIO_fmFreq);
+0329: 0020		movlb	0x00
+032A: 082A		movf	0x2A, W
+032B: 001D		movwi	[--FSR1]
+032C: 082B		movf	0x2B, W
+032D: 001D		movwi	[--FSR1]
+032E: 25E9		call	0x5E9
+          		; :: radio.c #89: RADIO_dispFreq();
+032F: 23DC		call	0x3DC
+0330: 2BDB		goto	0x3DB
+          	_$L21:
+          		; :: radio.c #93: else							delta = RADIO_amFreq % 10;
+0331: 300A		movlw	0x0A
+0332: 001D		movwi	[--FSR1]
+0333: 3000		movlw	0x00
+0334: 001D		movwi	[--FSR1]
+0335: 0020		movlb	0x00
+0336: 082C		movf	0x2C, W
+0337: 00F0		movwf	0x70
+0338: 082D		movf	0x2D, W
+0339: 00F1		movwf	0x71
+033A: 3001		movlw	0x01
+033B: 2634		call	0x634
+033C: 0870		movf	0x70, W
+033D: 00C9		movwf	0x49
+          		; :: radio.c #94: if ( key == FAST_INC )
+033E: 0848		movf	0x48, W
+033F: 3A04		xorlw	0x04
+0340: 1D03		btfss	STATUS, 2
+0341: 2B4D		goto	0x34D
+          		; :: radio.c #96: RADIO_amFreq += 10 - delta;
+0342: 0849		movf	0x49, W
+0343: 3C0A		sublw	0x0A
+0344: 00CA		movwf	0x4A
+0345: 3000		movlw	0x00
+0346: 3B7F		subwfb	0x7F, W
+0347: 00CB		movwf	0x4B
+0348: 084A		movf	0x4A, W
+0349: 07AC		addwf	0x2C, F
+034A: 084B		movf	0x4B, W
+034B: 3DAD		addwfc	0x2D, F
+034C: 2B51		goto	0x351
+          	_$L30:
+          		; :: radio.c #99: else					RADIO_amFreq++;
+034D: 0020		movlb	0x00
+034E: 0AAC		incf	0x2C, F
+034F: 1903		btfsc	STATUS, 2
+0350: 0AAD		incf	0x2D, F
+          	_$L31:
+          		; :: radio.c #101: if ( RADIO_amFreq > 1650 )
+0351: 3072		movlw	0x72
+0352: 0020		movlb	0x00
+0353: 022C		subwf	0x2C, W
+0354: 00F0		movwf	0x70
+0355: 3006		movlw	0x06
+0356: 3B2D		subwfb	0x2D, W
+0357: 04F0		iorwf	0x70, F
+0358: 1903		btfsc	STATUS, 2
+0359: 1003		bcf	STATUS, 0
+035A: 1C03		btfss	STATUS, 0
+035B: 2B60		goto	0x360
+          		; :: radio.c #102: RADIO_amFreq = 1650;
+035C: 3072		movlw	0x72
+035D: 00AC		movwf	0x2C
+035E: 3006		movlw	0x06
+035F: 00AD		movwf	0x2D
+          	_$L33:
+          		; :: radio.c #104: (RADIO_amFreq);
+0360: 0020		movlb	0x00
+0361: 082C		movf	0x2C, W
+0362: 001D		movwi	[--FSR1]
+0363: 082D		movf	0x2D, W
+0364: 001D		movwi	[--FSR1]
+0365: 25E9		call	0x5E9
+          		; :: radio.c #105: RADIO_dispFreq();
+0366: 23DC		call	0x3DC
+          		; :: radio.c #107: break;
+0367: 2BDB		goto	0x3DB
+          	_$L15:
+          		; :: radio.c #110: if ( RADIO_mode == FM_MODE )
+0368: 0020		movlb	0x00
+0369: 0828		movf	0x28, W
+036A: 1D03		btfss	STATUS, 2
+036B: 2BA4		goto	0x3A4
+          		; :: radio.c #112: delta = RADIO_fmFreq % 50;
+036C: 3032		movlw	0x32
+036D: 001D		movwi	[--FSR1]
+036E: 3000		movlw	0x00
+036F: 001D		movwi	[--FSR1]
+0370: 082A		movf	0x2A, W
+0371: 00F0		movwf	0x70
+0372: 082B		movf	0x2B, W
+0373: 00F1		movwf	0x71
+0374: 3001		movlw	0x01
+0375: 2634		call	0x634
+0376: 0870		movf	0x70, W
+0377: 00C9		movwf	0x49
+          		; :: radio.c #114: if ( key == FAST_DEC )
+0378: 0848		movf	0x48, W
+0379: 3A05		xorlw	0x05
+037A: 1D03		btfss	STATUS, 2
+037B: 2B8C		goto	0x38C
+          		; :: radio.c #115: RADIO_fmFreq -= delta? delta: 50;
+037C: 0849		movf	0x49, W
+037D: 1903		btfsc	STATUS, 2
+037E: 2B81		goto	0x381
+037F: 00CA		movwf	0x4A
+0380: 2B84		goto	0x384
+          	_$L42:
+0381: 3032		movlw	0x32
+0382: 0020		movlb	0x00
+0383: 00CA		movwf	0x4A
+          	_$L43:
+0384: 0020		movlb	0x00
+0385: 084A		movf	0x4A, W
+0386: 02AA		subwf	0x2A, F
+0387: 3980		andlw	0x80
+0388: 1D03		btfss	STATUS, 2
+0389: 30FF		movlw	0xFF
+038A: 3BAB		subwfb	0x2B, F
+038B: 2B91		goto	0x391
+          	_$L39:
+          		; :: radio.c #117: else					RADIO_fmFreq -= 10;
+038C: 30F6		movlw	0xF6
+038D: 0020		movlb	0x00
+038E: 07AA		addwf	0x2A, F
+038F: 30FF		movlw	0xFF
+0390: 3DAB		addwfc	0x2B, F
+          	_$L40:
+          		; :: radio.c #119: if ( RADIO_fmFreq < 8750 )
+0391: 302E		movlw	0x2E
+0392: 0020		movlb	0x00
+0393: 022A		subwf	0x2A, W
+0394: 3022		movlw	0x22
+0395: 3B2B		subwfb	0x2B, W
+0396: 1803		btfsc	STATUS, 0
+0397: 2B9C		goto	0x39C
+          		; :: radio.c #120: RADIO_fmFreq = 8750;
+0398: 302E		movlw	0x2E
+0399: 00AA		movwf	0x2A
+039A: 3022		movlw	0x22
+039B: 00AB		movwf	0x2B
+          	_$L45:
+          		; :: radio.c #122: (RADIO_fmFreq);
+039C: 0020		movlb	0x00
+039D: 082A		movf	0x2A, W
+039E: 001D		movwi	[--FSR1]
+039F: 082B		movf	0x2B, W
+03A0: 001D		movwi	[--FSR1]
+03A1: 25E9		call	0x5E9
+          		; :: radio.c #123: RADIO_dispFreq();
+03A2: 23DC		call	0x3DC
+03A3: 2BDB		goto	0x3DB
+          	_$L36:
+          		; :: radio.c #127: else							delta = RADIO_amFreq % 10;
+03A4: 300A		movlw	0x0A
+03A5: 001D		movwi	[--FSR1]
+03A6: 3000		movlw	0x00
+03A7: 001D		movwi	[--FSR1]
+03A8: 0020		movlb	0x00
+03A9: 082C		movf	0x2C, W
+03AA: 00F0		movwf	0x70
+03AB: 082D		movf	0x2D, W
+03AC: 00F1		movwf	0x71
+03AD: 3001		movlw	0x01
+03AE: 2634		call	0x634
+03AF: 0870		movf	0x70, W
+03B0: 00C9		movwf	0x49
+          		; :: radio.c #129: if ( key == FAST_DEC )
+03B1: 0848		movf	0x48, W
+03B2: 3A05		xorlw	0x05
+03B3: 1D03		btfss	STATUS, 2
+03B4: 2BC5		goto	0x3C5
+          		; :: radio.c #130: RADIO_amFreq -= delta? delta: 10;
+03B5: 0849		movf	0x49, W
+03B6: 1903		btfsc	STATUS, 2
+03B7: 2BBA		goto	0x3BA
+03B8: 00CA		movwf	0x4A
+03B9: 2BBD		goto	0x3BD
+          	_$L51:
+03BA: 300A		movlw	0x0A
+03BB: 0020		movlb	0x00
+03BC: 00CA		movwf	0x4A
+          	_$L52:
+03BD: 0020		movlb	0x00
+03BE: 084A		movf	0x4A, W
+03BF: 02AC		subwf	0x2C, F
+03C0: 3980		andlw	0x80
+03C1: 1D03		btfss	STATUS, 2
+03C2: 30FF		movlw	0xFF
+03C3: 3BAD		subwfb	0x2D, F
+03C4: 2BC9		goto	0x3C9
+          	_$L48:
+          		; :: radio.c #132: else					RADIO_amFreq--;
+03C5: 30FF		movlw	0xFF
+03C6: 0020		movlb	0x00
+03C7: 07AC		addwf	0x2C, F
+03C8: 3DAD		addwfc	0x2D, F
+          	_$L49:
+          		; :: radio.c #134: if ( RADIO_amFreq < 535 )
+03C9: 3017		movlw	0x17
+03CA: 0020		movlb	0x00
+03CB: 022C		subwf	0x2C, W
+03CC: 3002		movlw	0x02
+03CD: 3B2D		subwfb	0x2D, W
+03CE: 1803		btfsc	STATUS, 0
+03CF: 2BD4		goto	0x3D4
+          		; :: radio.c #135: RADIO_amFreq = 535;
+03D0: 3017		movlw	0x17
+03D1: 00AC		movwf	0x2C
+03D2: 3002		movlw	0x02
+03D3: 00AD		movwf	0x2D
+          	_$L54:
+          		; :: radio.c #137: (RADIO_amFreq);
+03D4: 0020		movlb	0x00
+03D5: 082C		movf	0x2C, W
+03D6: 001D		movwi	[--FSR1]
+03D7: 082D		movf	0x2D, W
+03D8: 001D		movwi	[--FSR1]
+03D9: 25E9		call	0x5E9
+          		; :: radio.c #138: RADIO_dispFreq();
+03DA: 23DC		call	0x3DC
+          		; :: radio.c #140: break;
+          	_$L11:
+03DB: 0008		return
+          	(radio.obj line#521, 360 words)
+          	RADIO_dispFreq::
+          		; :: radio.c #146: if ( RADIO_mode == FM_MODE )
+03DC: 0020		movlb	0x00
+03DD: 0828		movf	0x28, W
+03DE: 1D03		btfss	STATUS, 2
+03DF: 2C9D		goto	0x49D
+03E0: 082A		movf	0x2A, W
+03E1: 00CC		movwf	0x4C
+03E2: 082B		movf	0x2B, W
+03E3: 00CD		movwf	0x4D
+03E4: 3010		movlw	0x10
+03E5: 001D		movwi	[--FSR1]
+03E6: 3027		movlw	0x27
+03E7: 001D		movwi	[--FSR1]
+03E8: 084C		movf	0x4C, W
+03E9: 00F0		movwf	0x70
+03EA: 084D		movf	0x4D, W
+03EB: 00F1		movwf	0x71
+03EC: 3000		movlw	0x00
+03ED: 2634		call	0x634
+03EE: 0870		movf	0x70, W
+03EF: 00CE		movwf	0x4E
+          		; :: radio.c #149: freq %= 10000;
+03F0: 3010		movlw	0x10
+03F1: 001D		movwi	[--FSR1]
+03F2: 3027		movlw	0x27
+03F3: 001D		movwi	[--FSR1]
+03F4: 084C		movf	0x4C, W
+03F5: 00F0		movwf	0x70
+03F6: 084D		movf	0x4D, W
+03F7: 00F1		movwf	0x71
+03F8: 3001		movlw	0x01
+03F9: 2634		call	0x634
+03FA: 0870		movf	0x70, W
+03FB: 00CC		movwf	0x4C
+03FC: 0871		movf	0x71, W
+03FD: 00CD		movwf	0x4D
+03FE: 30E8		movlw	0xE8
+03FF: 001D		movwi	[--FSR1]
+0400: 3003		movlw	0x03
+0401: 001D		movwi	[--FSR1]
+0402: 084C		movf	0x4C, W
+0403: 00F0		movwf	0x70
+0404: 084D		movf	0x4D, W
+0405: 00F1		movwf	0x71
+0406: 3000		movlw	0x00
+0407: 2634		call	0x634
+0408: 0870		movf	0x70, W
+0409: 00CF		movwf	0x4F
+          		; :: radio.c #150: freq %= 1000;
+040A: 30E8		movlw	0xE8
+040B: 001D		movwi	[--FSR1]
+040C: 3003		movlw	0x03
+040D: 001D		movwi	[--FSR1]
+040E: 084C		movf	0x4C, W
+040F: 00F0		movwf	0x70
+0410: 084D		movf	0x4D, W
+0411: 00F1		movwf	0x71
+0412: 3001		movlw	0x01
+0413: 2634		call	0x634
+0414: 0870		movf	0x70, W
+0415: 00CC		movwf	0x4C
+0416: 0871		movf	0x71, W
+0417: 00CD		movwf	0x4D
+0418: 3064		movlw	0x64
+0419: 001D		movwi	[--FSR1]
+041A: 3000		movlw	0x00
+041B: 001D		movwi	[--FSR1]
+041C: 084C		movf	0x4C, W
+041D: 00F0		movwf	0x70
+041E: 084D		movf	0x4D, W
+041F: 00F1		movwf	0x71
+0420: 3000		movlw	0x00
+0421: 2634		call	0x634
+0422: 0870		movf	0x70, W
+0423: 00D0		movwf	0x50
+          		; :: radio.c #151: freq %= 100;
+0424: 3064		movlw	0x64
+0425: 001D		movwi	[--FSR1]
+0426: 3000		movlw	0x00
+0427: 001D		movwi	[--FSR1]
+0428: 084C		movf	0x4C, W
+0429: 00F0		movwf	0x70
+042A: 084D		movf	0x4D, W
+042B: 00F1		movwf	0x71
+042C: 3001		movlw	0x01
+042D: 2634		call	0x634
+042E: 0870		movf	0x70, W
+042F: 00CC		movwf	0x4C
+0430: 0871		movf	0x71, W
+0431: 00CD		movwf	0x4D
+0432: 300A		movlw	0x0A
+0433: 001D		movwi	[--FSR1]
+0434: 3000		movlw	0x00
+0435: 001D		movwi	[--FSR1]
+0436: 084C		movf	0x4C, W
+0437: 00F0		movwf	0x70
+0438: 084D		movf	0x4D, W
+0439: 00F1		movwf	0x71
+043A: 3000		movlw	0x00
+043B: 2634		call	0x634
+043C: 0870		movf	0x70, W
+043D: 00D1		movwf	0x51
+          		; :: radio.c #154: OLED_displayChar_16(106, 2, &arial_16x11ptBitmaps[10*22],    11);
+043E: 306A		movlw	0x6A
+043F: 001D		movwi	[--FSR1]
+0440: 3002		movlw	0x02
+0441: 001D		movwi	[--FSR1]
+0442: 30A1		movlw	0xA1
+0443: 001D		movwi	[--FSR1]
+0444: 308A		movlw	0x8A
+0445: 001D		movwi	[--FSR1]
+0446: 300B		movlw	0x0B
+0447: 001D		movwi	[--FSR1]
+0448: 21B0		call	0x1B0
+          		; :: radio.c #155: OLED_displayChar_16(117, 2, &arial_16x11ptBitmaps[freq3*22], 11);
+0449: 3075		movlw	0x75
+044A: 001D		movwi	[--FSR1]
+044B: 3002		movlw	0x02
+044C: 001D		movwi	[--FSR1]
+044D: 0020		movlb	0x00
+044E: 0851		movf	0x51, W
+044F: 00F0		movwf	0x70
+0450: 3016		movlw	0x16
+0451: 2612		call	0x612
+0452: 0870		movf	0x70, W
+0453: 00D2		movwf	0x52
+0454: 0871		movf	0x71, W
+0455: 00D3		movwf	0x53
+0456: 30C5		movlw	0xC5
+0457: 07D2		addwf	0x52, F
+0458: 3089		movlw	0x89
+0459: 3DD3		addwfc	0x53, F
+045A: 0852		movf	0x52, W
+045B: 001D		movwi	[--FSR1]
+045C: 0853		movf	0x53, W
+045D: 001D		movwi	[--FSR1]
+045E: 300B		movlw	0x0B
+045F: 001D		movwi	[--FSR1]
+0460: 21B0		call	0x1B0
+          		; :: radio.c #157: if ( freq0 )
+0461: 0020		movlb	0x00
+0462: 084E		movf	0x4E, W
+0463: 1903		btfsc	STATUS, 2
+0464: 2C6D		goto	0x46D
+          		; :: radio.c #158: OLED_displayChar_32x19(46, &arialNarrow_32x19_Bitmaps[(4*19)]);
+0465: 302E		movlw	0x2E
+0466: 001D		movwi	[--FSR1]
+0467: 30CD		movlw	0xCD
+0468: 001D		movwi	[--FSR1]
+0469: 3086		movlw	0x86
+046A: 001D		movwi	[--FSR1]
+046B: 218F		call	0x18F
+046C: 2C74		goto	0x474
+          	_$L61:
+          		; :: radio.c #160: else			OLED_displayChar_32x19(46, arialNarrow_32x19_Blank);
+046D: 302E		movlw	0x2E
+046E: 001D		movwi	[--FSR1]
+046F: 3079		movlw	0x79
+0470: 001D		movwi	[--FSR1]
+0471: 3089		movlw	0x89
+0472: 001D		movwi	[--FSR1]
+0473: 218F		call	0x18F
+          	_$L62:
+          		; :: radio.c #162: OLED_displayChar_32x19(66, &arialNarrow_32x19_Bitmaps[freq1*(4*19)]);
+0474: 3042		movlw	0x42
+0475: 001D		movwi	[--FSR1]
+0476: 0020		movlb	0x00
+0477: 084F		movf	0x4F, W
+0478: 00F0		movwf	0x70
+0479: 304C		movlw	0x4C
+047A: 2612		call	0x612
+047B: 0870		movf	0x70, W
+047C: 00D2		movwf	0x52
+047D: 0871		movf	0x71, W
+047E: 00D3		movwf	0x53
+047F: 3081		movlw	0x81
+0480: 07D2		addwf	0x52, F
+0481: 3086		movlw	0x86
+0482: 3DD3		addwfc	0x53, F
+0483: 0852		movf	0x52, W
+0484: 001D		movwi	[--FSR1]
+0485: 0853		movf	0x53, W
+0486: 001D		movwi	[--FSR1]
+0487: 218F		call	0x18F
+          		; :: radio.c #163: OLED_displayChar_32x19(86, &arialNarrow_32x19_Bitmaps[freq2*(4*19)]);
+0488: 3056		movlw	0x56
+0489: 001D		movwi	[--FSR1]
+048A: 0020		movlb	0x00
+048B: 0850		movf	0x50, W
+048C: 00F0		movwf	0x70
+048D: 304C		movlw	0x4C
+048E: 2612		call	0x612
+048F: 0870		movf	0x70, W
+0490: 00D2		movwf	0x52
+0491: 0871		movf	0x71, W
+0492: 00D3		movwf	0x53
+0493: 3081		movlw	0x81
+0494: 07D2		addwf	0x52, F
+0495: 3086		movlw	0x86
+0496: 3DD3		addwfc	0x53, F
+0497: 0852		movf	0x52, W
+0498: 001D		movwi	[--FSR1]
+0499: 0853		movf	0x53, W
+049A: 001D		movwi	[--FSR1]
+049B: 218F		call	0x18F
+049C: 2D43		goto	0x543
+          	_$L58:
+049D: 0020		movlb	0x00
+049E: 082C		movf	0x2C, W
+049F: 00CC		movwf	0x4C
+04A0: 082D		movf	0x2D, W
+04A1: 00CD		movwf	0x4D
+04A2: 30E8		movlw	0xE8
+04A3: 001D		movwi	[--FSR1]
+04A4: 3003		movlw	0x03
+04A5: 001D		movwi	[--FSR1]
+04A6: 084C		movf	0x4C, W
+04A7: 00F0		movwf	0x70
+04A8: 084D		movf	0x4D, W
+04A9: 00F1		movwf	0x71
+04AA: 3000		movlw	0x00
+04AB: 2634		call	0x634
+04AC: 0870		movf	0x70, W
+04AD: 00CE		movwf	0x4E
+          		; :: radio.c #168: freq %= 1000;
+04AE: 30E8		movlw	0xE8
+04AF: 001D		movwi	[--FSR1]
+04B0: 3003		movlw	0x03
+04B1: 001D		movwi	[--FSR1]
+04B2: 084C		movf	0x4C, W
+04B3: 00F0		movwf	0x70
+04B4: 084D		movf	0x4D, W
+04B5: 00F1		movwf	0x71
+04B6: 3001		movlw	0x01
+04B7: 2634		call	0x634
+04B8: 0870		movf	0x70, W
+04B9: 00CC		movwf	0x4C
+04BA: 0871		movf	0x71, W
+04BB: 00CD		movwf	0x4D
+04BC: 3064		movlw	0x64
+04BD: 001D		movwi	[--FSR1]
+04BE: 3000		movlw	0x00
+04BF: 001D		movwi	[--FSR1]
+04C0: 084C		movf	0x4C, W
+04C1: 00F0		movwf	0x70
+04C2: 084D		movf	0x4D, W
+04C3: 00F1		movwf	0x71
+04C4: 3000		movlw	0x00
+04C5: 2634		call	0x634
+04C6: 0870		movf	0x70, W
+04C7: 00CF		movwf	0x4F
+          		; :: radio.c #169: freq %= 100;
+04C8: 3064		movlw	0x64
+04C9: 001D		movwi	[--FSR1]
+04CA: 3000		movlw	0x00
+04CB: 001D		movwi	[--FSR1]
+04CC: 084C		movf	0x4C, W
+04CD: 00F0		movwf	0x70
+04CE: 084D		movf	0x4D, W
+04CF: 00F1		movwf	0x71
+04D0: 3001		movlw	0x01
+04D1: 2634		call	0x634
+04D2: 0870		movf	0x70, W
+04D3: 00CC		movwf	0x4C
+04D4: 0871		movf	0x71, W
+04D5: 00CD		movwf	0x4D
+04D6: 300A		movlw	0x0A
+04D7: 001D		movwi	[--FSR1]
+04D8: 3000		movlw	0x00
+04D9: 001D		movwi	[--FSR1]
+04DA: 084C		movf	0x4C, W
+04DB: 00F0		movwf	0x70
+04DC: 084D		movf	0x4D, W
+04DD: 00F1		movwf	0x71
+04DE: 3000		movlw	0x00
+04DF: 2634		call	0x634
+04E0: 0870		movf	0x70, W
+04E1: 00D0		movwf	0x50
+          		; :: radio.c #170: freq %= 10;
+04E2: 300A		movlw	0x0A
+04E3: 001D		movwi	[--FSR1]
+04E4: 3000		movlw	0x00
+04E5: 001D		movwi	[--FSR1]
+04E6: 084C		movf	0x4C, W
+04E7: 00F0		movwf	0x70
+04E8: 084D		movf	0x4D, W
+04E9: 00F1		movwf	0x71
+04EA: 3001		movlw	0x01
+04EB: 2634		call	0x634
+04EC: 0870		movf	0x70, W
+04ED: 00CC		movwf	0x4C
+04EE: 0871		movf	0x71, W
+04EF: 00CD		movwf	0x4D
+          		; :: radio.c #172: if ( freq0 )
+04F0: 084E		movf	0x4E, W
+04F1: 1903		btfsc	STATUS, 2
+04F2: 2CFB		goto	0x4FB
+          		; :: radio.c #173: OLED_displayChar_32x19(46, &arialNarrow_32x19_Bitmaps[(4*19)]);
+04F3: 302E		movlw	0x2E
+04F4: 001D		movwi	[--FSR1]
+04F5: 30CD		movlw	0xCD
+04F6: 001D		movwi	[--FSR1]
+04F7: 3086		movlw	0x86
+04F8: 001D		movwi	[--FSR1]
+04F9: 218F		call	0x18F
+04FA: 2D02		goto	0x502
+          	_$L64:
+          		; :: radio.c #175: else            OLED_displayChar_32x19(46, arialNarrow_32x19_Blank);
+04FB: 302E		movlw	0x2E
+04FC: 001D		movwi	[--FSR1]
+04FD: 3079		movlw	0x79
+04FE: 001D		movwi	[--FSR1]
+04FF: 3089		movlw	0x89
+0500: 001D		movwi	[--FSR1]
+0501: 218F		call	0x18F
+          	_$L65:
+          		; :: radio.c #177: OLED_displayChar_32x19( 66, &arialNarrow_32x19_Bitmaps[freq1*(4*19)]);
+0502: 3042		movlw	0x42
+0503: 001D		movwi	[--FSR1]
+0504: 0020		movlb	0x00
+0505: 084F		movf	0x4F, W
+0506: 00F0		movwf	0x70
+0507: 304C		movlw	0x4C
+0508: 2612		call	0x612
+0509: 0870		movf	0x70, W
+050A: 00D2		movwf	0x52
+050B: 0871		movf	0x71, W
+050C: 00D3		movwf	0x53
+050D: 3081		movlw	0x81
+050E: 07D2		addwf	0x52, F
+050F: 3086		movlw	0x86
+0510: 3DD3		addwfc	0x53, F
+0511: 0852		movf	0x52, W
+0512: 001D		movwi	[--FSR1]
+0513: 0853		movf	0x53, W
+0514: 001D		movwi	[--FSR1]
+0515: 218F		call	0x18F
+          		; :: radio.c #178: OLED_displayChar_32x19( 86, &arialNarrow_32x19_Bitmaps[freq2*(4*19)]);
+0516: 3056		movlw	0x56
+0517: 001D		movwi	[--FSR1]
+0518: 0020		movlb	0x00
+0519: 0850		movf	0x50, W
+051A: 00F0		movwf	0x70
+051B: 304C		movlw	0x4C
+051C: 2612		call	0x612
+051D: 0870		movf	0x70, W
+051E: 00D2		movwf	0x52
+051F: 0871		movf	0x71, W
+0520: 00D3		movwf	0x53
+0521: 3081		movlw	0x81
+0522: 07D2		addwf	0x52, F
+0523: 3086		movlw	0x86
+0524: 3DD3		addwfc	0x53, F
+0525: 0852		movf	0x52, W
+0526: 001D		movwi	[--FSR1]
+0527: 0853		movf	0x53, W
+0528: 001D		movwi	[--FSR1]
+0529: 218F		call	0x18F
+          		; :: radio.c #179: OLED_displayChar_32x19(106, &arialNarrow_32x19_Bitmaps[freq *(4*19)]);
+052A: 306A		movlw	0x6A
+052B: 001D		movwi	[--FSR1]
+052C: 0020		movlb	0x00
+052D: 084C		movf	0x4C, W
+052E: 00D2		movwf	0x52
+052F: 084D		movf	0x4D, W
+0530: 00D3		movwf	0x53
+0531: 304C		movlw	0x4C
+0532: 001D		movwi	[--FSR1]
+0533: 3000		movlw	0x00
+0534: 001D		movwi	[--FSR1]
+0535: 3032		movlw	0x32
+0536: 0084		movwf	FSR0L
+0537: 3020		movlw	0x20
+0538: 0085		movwf	FSR0H
+0539: 261F		call	0x61F
+053A: 3081		movlw	0x81
+053B: 07D2		addwf	0x52, F
+053C: 3086		movlw	0x86
+053D: 3DD3		addwfc	0x53, F
+053E: 0852		movf	0x52, W
+053F: 001D		movwi	[--FSR1]
+0540: 0853		movf	0x53, W
+0541: 001D		movwi	[--FSR1]
+0542: 218F		call	0x18F
+          	_$L59:
+0543: 0008		return
+          	(si47xx.obj line#5, 28 words)
+          	SI47xx_write:
+0544: 3019		movlw	0x19
+0545: 0084		movwf	FSR0L
+0546: 3020		movlw	0x20
+0547: 0085		movwf	FSR0H
+0548: 0023		movlb	0x03
+0549: 260D		call	0x60D
+          		; :: si47xx.c #28: I2C_start(SI47xx_I2C_WR_ADDR);
+054A: 30C6		movlw	0xC6
+054B: 001D		movwi	[--FSR1]
+054C: 2053		call	0x053
+          	_$L2:
+          		; :: si47xx.c #29: while ( length-- )
+054D: 0020		movlb	0x00
+054E: 03B8		decf	0x38, F
+054F: 0A38		incf	0x38, W
+0550: 1903		btfsc	STATUS, 2
+0551: 2D5E		goto	0x55E
+          		; :: si47xx.c #29: I2C_writeByte(*buf);
+0552: 0836		movf	0x36, W
+0553: 0084		movwf	FSR0L
+0554: 0837		movf	0x37, W
+0555: 0085		movwf	FSR0H
+0556: 3F00		moviw	0[FSR0]
+0557: 001D		movwi	[--FSR1]
+0558: 206F		call	0x06F
+          		; :: si47xx.c #29: buf++;
+0559: 0020		movlb	0x00
+055A: 0AB6		incf	0x36, F
+055B: 1903		btfsc	STATUS, 2
+055C: 0AB7		incf	0x37, F
+055D: 2D4D		goto	0x54D
+          	_$L4:
+          		; :: si47xx.c #30: I2C_end();
+055E: 2063		call	0x063
+055F: 0008		return
+          	(si47xx.obj line#44, 30 words)
+          	SI47xx_read::
+0560: 3019		movlw	0x19
+0561: 0084		movwf	FSR0L
+0562: 3020		movlw	0x20
+0563: 0085		movwf	FSR0H
+0564: 0023		movlb	0x03
+0565: 260D		call	0x60D
+          		; :: si47xx.c #35: I2C_start(SI47xx_I2C_RD_ADDR);
+0566: 30C7		movlw	0xC7
+0567: 001D		movwi	[--FSR1]
+0568: 2053		call	0x053
+          	_$L6:
+          		; :: si47xx.c #36: while ( length-- )
+0569: 0020		movlb	0x00
+056A: 03B8		decf	0x38, F
+056B: 0A38		incf	0x38, W
+056C: 1903		btfsc	STATUS, 2
+056D: 2D7C		goto	0x57C
+          		; :: si47xx.c #36: *buf = I2C_readByte(length);
+056E: 0838		movf	0x38, W
+056F: 001D		movwi	[--FSR1]
+0570: 2096		call	0x096
+0571: 0020		movlb	0x00
+0572: 0836		movf	0x36, W
+0573: 0084		movwf	FSR0L
+0574: 0837		movf	0x37, W
+0575: 0085		movwf	FSR0H
+0576: 0870		movf	0x70, W
+0577: 001A		movwi	[FSR0++]
+          		; :: si47xx.c #36: buf++;
+0578: 0AB6		incf	0x36, F
+0579: 1903		btfsc	STATUS, 2
+057A: 0AB7		incf	0x37, F
+057B: 2D69		goto	0x569
+          	_$L8:
+          		; :: si47xx.c #37: I2C_end();
+057C: 2063		call	0x063
+057D: 0008		return
+          	(si47xx.obj line#84, 23 words)
+          	SI47xx_waitCTS:
+057E: 3064		movlw	0x64
+057F: 0020		movlb	0x00
+0580: 00BA		movwf	0x3A
+          	_$L10:
+          		; :: si47xx.c #43: while ( counter-- )
+0581: 0020		movlb	0x00
+0582: 03BA		decf	0x3A, F
+0583: 0A3A		incf	0x3A, W
+0584: 1903		btfsc	STATUS, 2
+0585: 2D94		goto	0x594
+          		; :: si47xx.c #45: SI47xx_read(&status, 1);
+0586: 301B		movlw	0x1B
+0587: 001D		movwi	[--FSR1]
+0588: 3020		movlw	0x20
+0589: 001D		movwi	[--FSR1]
+058A: 3001		movlw	0x01
+058B: 001D		movwi	[--FSR1]
+058C: 2560		call	0x560
+          		; :: si47xx.c #46: if ( (status & CTS) )
+058D: 0020		movlb	0x00
+058E: 1BBB		btfsc	0x3B, 7
+058F: 2D94		goto	0x594
+          		; :: si47xx.c #46: break;
+          		; :: si47xx.c #47: (1);
+0590: 3001		movlw	0x01
+0591: 001D		movwi	[--FSR1]
+0592: 2037		call	0x037
+0593: 2D81		goto	0x581
+          	_$L12:
+0594: 0008		return
+          	(si47xx.obj line#119, 17 words)
+          	SI47xx_command:
+0595: 3024		movlw	0x24
+0596: 0084		movwf	FSR0L
+0597: 3020		movlw	0x20
+0598: 0085		movwf	FSR0H
+0599: 0023		movlb	0x03
+059A: 260D		call	0x60D
+          		; :: si47xx.c #53: SI47xx_waitCTS();
+059B: 257E		call	0x57E
+          		; :: si47xx.c #54: SI47xx_write(wbuf, wlength);
+059C: 0020		movlb	0x00
+059D: 0841		movf	0x41, W
+059E: 001D		movwi	[--FSR1]
+059F: 0842		movf	0x42, W
+05A0: 001D		movwi	[--FSR1]
+05A1: 0843		movf	0x43, W
+05A2: 001D		movwi	[--FSR1]
+05A3: 2544		call	0x544
+          		; :: si47xx.c #55: SI47xx_waitCTS();
+05A4: 257E		call	0x57E
+05A5: 0008		return
+          	(si47xx.obj line#143, 25 words)
+          	SI47xx_property:
+05A6: 3030		movlw	0x30
+05A7: 0084		movwf	FSR0L
+05A8: 3020		movlw	0x20
+05A9: 0085		movwf	FSR0H
+05AA: 0024		movlb	0x04
+05AB: 260D		call	0x60D
+          		; :: si47xx.c #61: cmd[0] = SET_PROPERTY;
+05AC: 3012		movlw	0x12
+05AD: 00D0		movwf	0x50
+          		; :: si47xx.c #62: cmd[1] = 0;
+05AE: 01D1		clrf	0x51
+          		; :: si47xx.c #63: cmd[2] = prop_num >> 8;
+05AF: 084D		movf	0x4D, W
+05B0: 00D2		movwf	0x52
+          		; :: si47xx.c #64: cmd[3] = prop_num;
+05B1: 084C		movf	0x4C, W
+05B2: 00D3		movwf	0x53
+          		; :: si47xx.c #65: cmd[4] = prop_val >> 8;
+05B3: 084F		movf	0x4F, W
+05B4: 00D4		movwf	0x54
+          		; :: si47xx.c #66: cmd[5] = prop_val;
+05B5: 084E		movf	0x4E, W
+05B6: 00D5		movwf	0x55
+          		; :: si47xx.c #67: SI47xx_command(cmd, 6);
+05B7: 3030		movlw	0x30
+05B8: 001D		movwi	[--FSR1]
+05B9: 3020		movlw	0x20
+05BA: 001D		movwi	[--FSR1]
+05BB: 3006		movlw	0x06
+05BC: 001D		movwi	[--FSR1]
+05BD: 2595		call	0x595
+05BE: 0008		return
+          	(si47xx.obj line#173, 20 words)
+          	SI47xx_init::
+          		; :: si47xx.c #77: if ( RADIO_mode == FM_MODE )
+05BF: 0020		movlb	0x00
+05C0: 0828		movf	0x28, W
+05C1: 1D03		btfss	STATUS, 2
+05C2: 2DCB		goto	0x5CB
+          		; :: si47xx.c #78: SI47xx_command(IS47xx_powerUpFM, sizeof(IS47xx_powerUpFM));
+05C3: 305B		movlw	0x5B
+05C4: 001D		movwi	[--FSR1]
+05C5: 308D		movlw	0x8D
+05C6: 001D		movwi	[--FSR1]
+05C7: 3003		movlw	0x03
+05C8: 001D		movwi	[--FSR1]
+05C9: 2595		call	0x595
+05CA: 2DD2		goto	0x5D2
+          	_$L20:
+          		; :: si47xx.c #80: else		SI47xx_command(IS47xx_powerUpAM, sizeof(IS47xx_powerUpFM));
+05CB: 305E		movlw	0x5E
+05CC: 001D		movwi	[--FSR1]
+05CD: 308D		movlw	0x8D
+05CE: 001D		movwi	[--FSR1]
+05CF: 3003		movlw	0x03
+05D0: 001D		movwi	[--FSR1]
+05D1: 2595		call	0x595
+          	_$L21:
+05D2: 0008		return
+          	(si47xx.obj line#200, 22 words)
+          	SI47xx_setVolume::
+05D3: 0020		movlb	0x00
+05D4: 0016		moviw	[FSR1++]
+05D5: 00D6		movwf	0x56
+          		; :: si47xx.c #85: SI47xx_property(RX_HARD_MUTE, 0);
+05D6: 3001		movlw	0x01
+05D7: 001D		movwi	[--FSR1]
+05D8: 3040		movlw	0x40
+05D9: 001D		movwi	[--FSR1]
+05DA: 3000		movlw	0x00
+05DB: 001D		movwi	[--FSR1]
+05DC: 001D		movwi	[--FSR1]
+05DD: 25A6		call	0x5A6
+          		; :: si47xx.c #86: SI47xx_property(RX_VOLUME,    v);
+05DE: 3000		movlw	0x00
+05DF: 001D		movwi	[--FSR1]
+05E0: 3040		movlw	0x40
+05E1: 001D		movwi	[--FSR1]
+05E2: 0020		movlb	0x00
+05E3: 0856		movf	0x56, W
+05E4: 001D		movwi	[--FSR1]
+05E5: 3000		movlw	0x00
+05E6: 001D		movwi	[--FSR1]
+05E7: 25A6		call	0x5A6
+05E8: 0008		return
+          	(si47xx.obj line#217, 36 words)
+          	SI47xx_setFreq::
+05E9: 0020		movlb	0x00
+05EA: 0016		moviw	[FSR1++]
+05EB: 00CD		movwf	0x4D
+05EC: 0016		moviw	[FSR1++]
+05ED: 00CC		movwf	0x4C
+          		; :: si47xx.c #93: cmd[1] = 0;
+05EE: 01CF		clrf	0x4F
+          		; :: si47xx.c #94: cmd[2] = freq >> 8;
+05EF: 084D		movf	0x4D, W
+05F0: 00D0		movwf	0x50
+          		; :: si47xx.c #95: cmd[3] = freq;
+05F1: 084C		movf	0x4C, W
+05F2: 00D1		movwf	0x51
+          		; :: si47xx.c #96: cmd[4] = 0;
+05F3: 01D2		clrf	0x52
+          		; :: si47xx.c #98: if ( RADIO_mode == FM_MODE )
+05F4: 0828		movf	0x28, W
+05F5: 1D03		btfss	STATUS, 2
+05F6: 2E01		goto	0x601
+          		; :: si47xx.c #100: cmd[0] = FM_TUNE_FREQ;
+05F7: 3020		movlw	0x20
+05F8: 00CE		movwf	0x4E
+          		; :: si47xx.c #101: SI47xx_command(cmd, 5);
+05F9: 302E		movlw	0x2E
+05FA: 001D		movwi	[--FSR1]
+05FB: 3020		movlw	0x20
+05FC: 001D		movwi	[--FSR1]
+05FD: 3005		movlw	0x05
+05FE: 001D		movwi	[--FSR1]
+05FF: 2595		call	0x595
+0600: 2E0C		goto	0x60C
+          	_$L25:
+          		; :: si47xx.c #105: else			cmd[0] = AM_TUNE_FREQ;
+0601: 3040		movlw	0x40
+0602: 0020		movlb	0x00
+0603: 00CE		movwf	0x4E
+          		; :: si47xx.c #106: cmd[5] = 0;
+0604: 01D3		clrf	0x53
+          		; :: si47xx.c #107: SI47xx_command(cmd, 6);
+0605: 302E		movlw	0x2E
+0606: 001D		movwi	[--FSR1]
+0607: 3020		movlw	0x20
+0608: 001D		movwi	[--FSR1]
+0609: 3006		movlw	0x06
+060A: 001D		movwi	[--FSR1]
+060B: 2595		call	0x595
+          	_$L26:
+060C: 0008		return
+          	(c:\p16ecc\lib/crt0.lib line#12, 5 words)
+          	_copyPar::
+          	_$L3:
+060D: 0016		moviw	[FSR1++]
+060E: 0019		movwi	[--FSR0]
+060F: 0B88		decfsz	BSR, F
+0610: 2E0D		goto	0x60D
+0611: 0008		return
+          	(c:\p16ecc\lib/crt0.lib line#25, 13 words)
+          	_mul8::
+0612: 0184		clrf	FSR0L
+0613: 0185		clrf	FSR0H
+0614: 1585		bsf	FSR0H, 3
+          	_$L7:
+0615: 1003		bcf	STATUS, 0
+0616: 1870		btfsc	0x70, 0
+0617: 0784		addwf	FSR0L, F
+0618: 0C84		rrf	FSR0L, F
+0619: 0CF0		rrf	0x70, F
+061A: 0B85		decfsz	FSR0H, F
+061B: 2E15		goto	0x615
+061C: 0804		movf	FSR0L, W
+061D: 00F1		movwf	0x71
+061E: 0008		return
+          	(c:\p16ecc\lib/crt0.lib line#224, 21 words)
+          	_mul16indf::
+061F: 01F0		clrf	0x70
+0620: 01F1		clrf	0x71
+0621: 3010		movlw	0x10
+0622: 001D		movwi	[--FSR1]
+          	_$L32:
+0623: 1003		bcf	STATUS, 0
+0624: 1C00		btfss	INDF0, 0
+0625: 2E2A		goto	0x62A
+0626: 3F42		moviw	2[FSR1]
+0627: 07F0		addwf	0x70, F
+0628: 3F41		moviw	1[FSR1]
+0629: 3DF1		addwfc	0x71, F
+          	_$L36:
+062A: 0CF1		rrf	0x71, F
+062B: 0CF0		rrf	0x70, F
+062C: 3F01		moviw	1[FSR0]
+062D: 0C89		rrf	WREG, F
+062E: 3F81		movwi	1[FSR0]
+062F: 0C80		rrf	INDF0, F
+0630: 0B81		decfsz	INDF1, F
+0631: 2E23		goto	0x623
+0632: 3143		addfsr	FSR1, 3
+0633: 0008		return
+          	(c:\p16ecc\lib/crt0.lib line#472, 63 words)
+          	_divmod16::
+0634: 001D		movwi	[--FSR1]
+0635: 1D01		btfss	INDF1, 2
+0636: 2E40		goto	0x640
+0637: 1FF1		btfss	0x71, 7
+0638: 2E3F		goto	0x63F
+0639: 09F0		comf	0x70, F
+063A: 09F1		comf	0x71, F
+063B: 0AF0		incf	0x70, F
+063C: 1903		btfsc	STATUS, 2
+063D: 0AF1		incf	0x71, F
+063E: 2E40		goto	0x640
+          	_$L82:
+063F: 1101		bcf	INDF1, 2
+          	_$L83:
+0640: 0184		clrf	FSR0L
+0641: 0185		clrf	FSR0H
+0642: 1C81		btfss	INDF1, 1
+0643: 2E4F		goto	0x64F
+0644: 3F41		moviw	1[FSR1]
+0645: 1F89		btfss	WREG, 7
+0646: 2E4F		goto	0x64F
+0647: 3004		movlw	0x04
+0648: 0681		xorwf	INDF1, F
+0649: 3F42		moviw	2[FSR1]
+064A: 0204		subwf	FSR0L, W
+064B: 3FC2		movwi	2[FSR1]
+064C: 3F41		moviw	1[FSR1]
+064D: 3B05		subwfb	FSR0H, W
+064E: 3FC1		movwi	1[FSR1]
+          	_$L88:
+064F: 3010		movlw	0x10
+0650: 001D		movwi	[--FSR1]
+          	_$L90:
+0651: 1403		bsf	STATUS, 0
+0652: 0DF0		rlf	0x70, F
+0653: 0DF1		rlf	0x71, F
+0654: 0D84		rlf	FSR0L, F
+0655: 0D85		rlf	FSR0H, F
+0656: 3F43		moviw	3[FSR1]
+0657: 0284		subwf	FSR0L, F
+0658: 3F42		moviw	2[FSR1]
+0659: 3B85		subwfb	FSR0H, F
+065A: 1803		btfsc	STATUS, 0
+065B: 2E61		goto	0x661
+065C: 3F43		moviw	3[FSR1]
+065D: 0784		addwf	FSR0L, F
+065E: 3F42		moviw	2[FSR1]
+065F: 3D85		addwfc	FSR0H, F
+0660: 1070		bcf	0x70, 0
+          	_$L94:
+0661: 0B81		decfsz	INDF1, F
+0662: 2E51		goto	0x651
+0663: 3141		addfsr	FSR1, 1
+0664: 1C01		btfss	INDF1, 0
+0665: 2E6A		goto	0x66A
+0666: 0804		movf	FSR0L, W
+0667: 00F0		movwf	0x70
+0668: 0805		movf	FSR0H, W
+0669: 00F1		movwf	0x71
+          	_$L97:
+066A: 1D01		btfss	INDF1, 2
+066B: 2E71		goto	0x671
+066C: 09F0		comf	0x70, F
+066D: 09F1		comf	0x71, F
+066E: 0AF0		incf	0x70, F
+066F: 1903		btfsc	STATUS, 2
+0670: 0AF1		incf	0x71, F
+          	_$L100:
+0671: 3143		addfsr	FSR1, 3
+0672: 0008		return
+          	(main.obj line#12, 2 words)
+          	_$init$::
+0673: 01FF		clrf	0x7F
+0674: 01FE		clrf	0x7E
+          	(timer0.obj line#61, 2 words)
+0675: 0020		movlb	0x00
+0676: 01A0		clrf	0x20
+          	(radio.obj line#725, 9 words)
+0677: 3006		movlw	0x06
+0678: 0020		movlb	0x00
+0679: 00AA		movwf	0x2A
+067A: 3027		movlw	0x27
+067B: 00AB		movwf	0x2B
+067C: 3026		movlw	0x26
+067D: 00AC		movwf	0x2C
+067E: 3002		movlw	0x02
+067F: 00AD		movwf	0x2D
+          	(main.obj line#15, 1 words)
+0680: 0008		return
+          	(font.obj line#2, 760 words)
+          	arialNarrow_32x19_Bitmaps::
+0681: 3400		retlw	0x00
+0682: 3400		retlw	0x00
+0683: 34E0		retlw	0xE0
+0684: 34F8		retlw	0xF8
+0685: 34FC		retlw	0xFC
+0686: 34FE		retlw	0xFE
+0687: 34FE		retlw	0xFE
+0688: 343F		retlw	0x3F
+0689: 341F		retlw	0x1F
+068A: 341F		retlw	0x1F
+068B: 341F		retlw	0x1F
+068C: 343F		retlw	0x3F
+068D: 34FE		retlw	0xFE
+068E: 34FE		retlw	0xFE
+068F: 34FC		retlw	0xFC
+0690: 34F8		retlw	0xF8
+0691: 34E0		retlw	0xE0
+0692: 3400		retlw	0x00
+0693: 3400		retlw	0x00
+0694: 3400		retlw	0x00
+0695: 34FE		retlw	0xFE
+0696: 34FF		retlw	0xFF
+0697: 34FF		retlw	0xFF
+0698: 34FF		retlw	0xFF
+0699: 34FF		retlw	0xFF
+069A: 3400		retlw	0x00
+069B: 3400		retlw	0x00
+069C: 3400		retlw	0x00
+069D: 3400		retlw	0x00
+069E: 3400		retlw	0x00
+069F: 3400		retlw	0x00
+06A0: 3400		retlw	0x00
+06A1: 34FF		retlw	0xFF
+06A2: 34FF		retlw	0xFF
+06A3: 34FF		retlw	0xFF
+06A4: 34FF		retlw	0xFF
+06A5: 34FE		retlw	0xFE
+06A6: 3400		retlw	0x00
+06A7: 3400		retlw	0x00
+06A8: 347F		retlw	0x7F
+06A9: 34FF		retlw	0xFF
+06AA: 34FF		retlw	0xFF
+06AB: 34FF		retlw	0xFF
+06AC: 34FF		retlw	0xFF
+06AD: 3400		retlw	0x00
+06AE: 3400		retlw	0x00
+06AF: 3400		retlw	0x00
+06B0: 3400		retlw	0x00
+06B1: 3400		retlw	0x00
+06B2: 3400		retlw	0x00
+06B3: 3400		retlw	0x00
+06B4: 34FF		retlw	0xFF
+06B5: 34FF		retlw	0xFF
+06B6: 34FF		retlw	0xFF
+06B7: 34FF		retlw	0xFF
+06B8: 347F		retlw	0x7F
+06B9: 3400		retlw	0x00
+06BA: 3400		retlw	0x00
+06BB: 3400		retlw	0x00
+06BC: 3407		retlw	0x07
+06BD: 341F		retlw	0x1F
+06BE: 343F		retlw	0x3F
+06BF: 347F		retlw	0x7F
+06C0: 347F		retlw	0x7F
+06C1: 34FC		retlw	0xFC
+06C2: 34F8		retlw	0xF8
+06C3: 34F8		retlw	0xF8
+06C4: 34F8		retlw	0xF8
+06C5: 34FC		retlw	0xFC
+06C6: 347F		retlw	0x7F
+06C7: 347F		retlw	0x7F
+06C8: 343F		retlw	0x3F
+06C9: 341F		retlw	0x1F
+06CA: 3407		retlw	0x07
+06CB: 3400		retlw	0x00
+06CC: 3400		retlw	0x00
+06CD: 3400		retlw	0x00
+06CE: 3400		retlw	0x00
+06CF: 3400		retlw	0x00
+06D0: 3400		retlw	0x00
+06D1: 3480		retlw	0x80
+06D2: 3480		retlw	0x80
+06D3: 34C0		retlw	0xC0
+06D4: 34F0		retlw	0xF0
+06D5: 34F8		retlw	0xF8
+06D6: 34FE		retlw	0xFE
+06D7: 34FF		retlw	0xFF
+06D8: 34FF		retlw	0xFF
+06D9: 34FF		retlw	0xFF
+06DA: 34FF		retlw	0xFF
+06DB: 3400		retlw	0x00
+06DC: 3400		retlw	0x00
+06DD: 3400		retlw	0x00
+06DE: 3400		retlw	0x00
+06DF: 3400		retlw	0x00
+06E0: 3400		retlw	0x00
+06E1: 3400		retlw	0x00
+06E2: 343E		retlw	0x3E
+06E3: 341F		retlw	0x1F
+06E4: 341F		retlw	0x1F
+06E5: 340F		retlw	0x0F
+06E6: 3407		retlw	0x07
+06E7: 3407		retlw	0x07
+06E8: 3403		retlw	0x03
+06E9: 34FF		retlw	0xFF
+06EA: 34FF		retlw	0xFF
+06EB: 34FF		retlw	0xFF
+06EC: 34FF		retlw	0xFF
+06ED: 34FF		retlw	0xFF
+06EE: 3400		retlw	0x00
+06EF: 3400		retlw	0x00
+06F0: 3400		retlw	0x00
+06F1: 3400		retlw	0x00
+06F2: 3400		retlw	0x00
+06F3: 3400		retlw	0x00
+06F4: 3400		retlw	0x00
+06F5: 3400		retlw	0x00
+06F6: 3400		retlw	0x00
+06F7: 3400		retlw	0x00
+06F8: 3400		retlw	0x00
+06F9: 3400		retlw	0x00
+06FA: 3400		retlw	0x00
+06FB: 3400		retlw	0x00
+06FC: 34FF		retlw	0xFF
+06FD: 34FF		retlw	0xFF
+06FE: 34FF		retlw	0xFF
+06FF: 34FF		retlw	0xFF
+0700: 34FF		retlw	0xFF
+0701: 3400		retlw	0x00
+0702: 3400		retlw	0x00
+0703: 3400		retlw	0x00
+0704: 3400		retlw	0x00
+0705: 3400		retlw	0x00
+0706: 3400		retlw	0x00
+0707: 3400		retlw	0x00
+0708: 3400		retlw	0x00
+0709: 3400		retlw	0x00
+070A: 3400		retlw	0x00
+070B: 3400		retlw	0x00
+070C: 3400		retlw	0x00
+070D: 3400		retlw	0x00
+070E: 3400		retlw	0x00
+070F: 34FF		retlw	0xFF
+0710: 34FF		retlw	0xFF
+0711: 34FF		retlw	0xFF
+0712: 34FF		retlw	0xFF
+0713: 34FF		retlw	0xFF
+0714: 3400		retlw	0x00
+0715: 3400		retlw	0x00
+0716: 3400		retlw	0x00
+0717: 3400		retlw	0x00
+0718: 3400		retlw	0x00
+0719: 3400		retlw	0x00
+071A: 34C0		retlw	0xC0
+071B: 34F0		retlw	0xF0
+071C: 34FC		retlw	0xFC
+071D: 34FC		retlw	0xFC
+071E: 34FE		retlw	0xFE
+071F: 347F		retlw	0x7F
+0720: 343F		retlw	0x3F
+0721: 341F		retlw	0x1F
+0722: 341F		retlw	0x1F
+0723: 341F		retlw	0x1F
+0724: 343F		retlw	0x3F
+0725: 347F		retlw	0x7F
+0726: 34FE		retlw	0xFE
+0727: 34FE		retlw	0xFE
+0728: 34FC		retlw	0xFC
+0729: 34F0		retlw	0xF0
+072A: 34C0		retlw	0xC0
+072B: 3400		retlw	0x00
+072C: 3400		retlw	0x00
+072D: 3401		retlw	0x01
+072E: 3401		retlw	0x01
+072F: 3403		retlw	0x03
+0730: 3403		retlw	0x03
+0731: 3403		retlw	0x03
+0732: 3400		retlw	0x00
+0733: 3400		retlw	0x00
+0734: 3400		retlw	0x00
+0735: 3400		retlw	0x00
+0736: 3480		retlw	0x80
+0737: 34C0		retlw	0xC0
+0738: 34F0		retlw	0xF0
+0739: 34FF		retlw	0xFF
+073A: 34FF		retlw	0xFF
+073B: 34FF		retlw	0xFF
+073C: 347F		retlw	0x7F
+073D: 341F		retlw	0x1F
+073E: 3400		retlw	0x00
+073F: 3400		retlw	0x00
+0740: 3400		retlw	0x00
+0741: 3400		retlw	0x00
+0742: 3480		retlw	0x80
+0743: 34C0		retlw	0xC0
+0744: 34E0		retlw	0xE0
+0745: 34F8		retlw	0xF8
+0746: 34FC		retlw	0xFC
+0747: 34FE		retlw	0xFE
+0748: 34FF		retlw	0xFF
+0749: 347F		retlw	0x7F
+074A: 343F		retlw	0x3F
+074B: 341F		retlw	0x1F
+074C: 340F		retlw	0x0F
+074D: 3407		retlw	0x07
+074E: 3401		retlw	0x01
+074F: 3400		retlw	0x00
+0750: 3400		retlw	0x00
+0751: 3400		retlw	0x00
+0752: 34E0		retlw	0xE0
+0753: 34FC		retlw	0xFC
+0754: 34FE		retlw	0xFE
+0755: 34FF		retlw	0xFF
+0756: 34FF		retlw	0xFF
+0757: 34FF		retlw	0xFF
+0758: 34FF		retlw	0xFF
+0759: 34FF		retlw	0xFF
+075A: 34FB		retlw	0xFB
+075B: 34F8		retlw	0xF8
+075C: 34F8		retlw	0xF8
+075D: 34F8		retlw	0xF8
+075E: 34F8		retlw	0xF8
+075F: 34F8		retlw	0xF8
+0760: 34F8		retlw	0xF8
+0761: 34F8		retlw	0xF8
+0762: 34F8		retlw	0xF8
+0763: 34F8		retlw	0xF8
+0764: 3400		retlw	0x00
+0765: 3400		retlw	0x00
+0766: 34C0		retlw	0xC0
+0767: 34F0		retlw	0xF0
+0768: 34FC		retlw	0xFC
+0769: 34FE		retlw	0xFE
+076A: 34FE		retlw	0xFE
+076B: 347F		retlw	0x7F
+076C: 343F		retlw	0x3F
+076D: 341F		retlw	0x1F
+076E: 341F		retlw	0x1F
+076F: 341F		retlw	0x1F
+0770: 343F		retlw	0x3F
+0771: 34FE		retlw	0xFE
+0772: 34FE		retlw	0xFE
+0773: 34FC		retlw	0xFC
+0774: 34F8		retlw	0xF8
+0775: 34E0		retlw	0xE0
+0776: 3400		retlw	0x00
+0777: 3400		retlw	0x00
+0778: 3400		retlw	0x00
+0779: 3400		retlw	0x00
+077A: 3400		retlw	0x00
+077B: 3401		retlw	0x01
+077C: 3401		retlw	0x01
+077D: 3401		retlw	0x01
+077E: 3400		retlw	0x00
+077F: 34F0		retlw	0xF0
+0780: 34F0		retlw	0xF0
+0781: 34F0		retlw	0xF0
+0782: 34F8		retlw	0xF8
+0783: 34FC		retlw	0xFC
+0784: 34FF		retlw	0xFF
+0785: 34BF		retlw	0xBF
+0786: 34BF		retlw	0xBF
+0787: 340F		retlw	0x0F
+0788: 3407		retlw	0x07
+0789: 3400		retlw	0x00
+078A: 3400		retlw	0x00
+078B: 3400		retlw	0x00
+078C: 3480		retlw	0x80
+078D: 3480		retlw	0x80
+078E: 34C0		retlw	0xC0
+078F: 34C0		retlw	0xC0
+0790: 34C0		retlw	0xC0
+0791: 3400		retlw	0x00
+0792: 3401		retlw	0x01
+0793: 3401		retlw	0x01
+0794: 3401		retlw	0x01
+0795: 3401		retlw	0x01
+0796: 3403		retlw	0x03
+0797: 3407		retlw	0x07
+0798: 34FF		retlw	0xFF
+0799: 34FF		retlw	0xFF
+079A: 34FF		retlw	0xFF
+079B: 34FE		retlw	0xFE
+079C: 34F8		retlw	0xF8
+079D: 3400		retlw	0x00
+079E: 3400		retlw	0x00
+079F: 3403		retlw	0x03
+07A0: 340F		retlw	0x0F
+07A1: 341F		retlw	0x1F
+07A2: 343F		retlw	0x3F
+07A3: 347F		retlw	0x7F
+07A4: 347F		retlw	0x7F
+07A5: 34FC		retlw	0xFC
+07A6: 34F8		retlw	0xF8
+07A7: 34F8		retlw	0xF8
+07A8: 34F8		retlw	0xF8
+07A9: 34FC		retlw	0xFC
+07AA: 347E		retlw	0x7E
+07AB: 347F		retlw	0x7F
+07AC: 343F		retlw	0x3F
+07AD: 341F		retlw	0x1F
+07AE: 340F		retlw	0x0F
+07AF: 3403		retlw	0x03
+07B0: 3400		retlw	0x00
+07B1: 3400		retlw	0x00
+07B2: 3400		retlw	0x00
+07B3: 3400		retlw	0x00
+07B4: 3400		retlw	0x00
+07B5: 3400		retlw	0x00
+07B6: 3400		retlw	0x00
+07B7: 3400		retlw	0x00
+07B8: 3480		retlw	0x80
+07B9: 34C0		retlw	0xC0
+07BA: 34F0		retlw	0xF0
+07BB: 34FC		retlw	0xFC
+07BC: 34FF		retlw	0xFF
+07BD: 34FF		retlw	0xFF
+07BE: 34FF		retlw	0xFF
+07BF: 34FF		retlw	0xFF
+07C0: 34FF		retlw	0xFF
+07C1: 3400		retlw	0x00
+07C2: 3400		retlw	0x00
+07C3: 3400		retlw	0x00
+07C4: 3400		retlw	0x00
+07C5: 3400		retlw	0x00
+07C6: 3400		retlw	0x00
+07C7: 3480		retlw	0x80
+07C8: 34E0		retlw	0xE0
+07C9: 34F8		retlw	0xF8
+07CA: 34FE		retlw	0xFE
+07CB: 34FF		retlw	0xFF
+07CC: 343F		retlw	0x3F
+07CD: 340F		retlw	0x0F
+07CE: 3407		retlw	0x07
+07CF: 34FF		retlw	0xFF
+07D0: 34FF		retlw	0xFF
+07D1: 34FF		retlw	0xFF
+07D2: 34FF		retlw	0xFF
+07D3: 34FF		retlw	0xFF
+07D4: 3400		retlw	0x00
+07D5: 3400		retlw	0x00
+07D6: 3400		retlw	0x00
+07D7: 34F0		retlw	0xF0
+07D8: 34FC		retlw	0xFC
+07D9: 34FE		retlw	0xFE
+07DA: 34FF		retlw	0xFF
+07DB: 34FF		retlw	0xFF
+07DC: 34EF		retlw	0xEF
+07DD: 34E3		retlw	0xE3
+07DE: 34E0		retlw	0xE0
+07DF: 34E0		retlw	0xE0
+07E0: 34E0		retlw	0xE0
+07E1: 34E0		retlw	0xE0
+07E2: 34FF		retlw	0xFF
+07E3: 34FF		retlw	0xFF
+07E4: 34FF		retlw	0xFF
+07E5: 34FF		retlw	0xFF
+07E6: 34FF		retlw	0xFF
+07E7: 34E0		retlw	0xE0
+07E8: 34E0		retlw	0xE0
+07E9: 34E0		retlw	0xE0
+07EA: 3403		retlw	0x03
+07EB: 3403		retlw	0x03
+07EC: 3403		retlw	0x03
+07ED: 3403		retlw	0x03
+07EE: 3403		retlw	0x03
+07EF: 3403		retlw	0x03
+07F0: 3403		retlw	0x03
+07F1: 3403		retlw	0x03
+07F2: 3403		retlw	0x03
+07F3: 3403		retlw	0x03
+07F4: 3403		retlw	0x03
+07F5: 34FF		retlw	0xFF
+07F6: 34FF		retlw	0xFF
+07F7: 34FF		retlw	0xFF
+07F8: 34FF		retlw	0xFF
+07F9: 34FF		retlw	0xFF
+07FA: 3403		retlw	0x03
+07FB: 3403		retlw	0x03
+07FC: 3403		retlw	0x03
+07FD: 3400		retlw	0x00
+07FE: 3400		retlw	0x00
+07FF: 3400		retlw	0x00
+0800: 3480		retlw	0x80
+0801: 34FC		retlw	0xFC
+0802: 34FF		retlw	0xFF
+0803: 34FF		retlw	0xFF
+0804: 34FF		retlw	0xFF
+0805: 34FF		retlw	0xFF
+0806: 341F		retlw	0x1F
+0807: 341F		retlw	0x1F
+0808: 341F		retlw	0x1F
+0809: 341F		retlw	0x1F
+080A: 341F		retlw	0x1F
+080B: 341F		retlw	0x1F
+080C: 341F		retlw	0x1F
+080D: 341F		retlw	0x1F
+080E: 341F		retlw	0x1F
+080F: 3400		retlw	0x00
+0810: 3400		retlw	0x00
+0811: 3400		retlw	0x00
+0812: 3470		retlw	0x70
+0813: 347F		retlw	0x7F
+0814: 34FF		retlw	0xFF
+0815: 34FF		retlw	0xFF
+0816: 34FF		retlw	0xFF
+0817: 347F		retlw	0x7F
+0818: 3438		retlw	0x38
+0819: 343C		retlw	0x3C
+081A: 343E		retlw	0x3E
+081B: 343E		retlw	0x3E
+081C: 347E		retlw	0x7E
+081D: 34FE		retlw	0xFE
+081E: 34FC		retlw	0xFC
+081F: 34F8		retlw	0xF8
+0820: 34F0		retlw	0xF0
+0821: 34E0		retlw	0xE0
+0822: 3400		retlw	0x00
+0823: 3400		retlw	0x00
+0824: 3480		retlw	0x80
+0825: 3480		retlw	0x80
+0826: 34C0		retlw	0xC0
+0827: 34C0		retlw	0xC0
+0828: 34C0		retlw	0xC0
+0829: 3400		retlw	0x00
+082A: 3400		retlw	0x00
+082B: 3400		retlw	0x00
+082C: 3400		retlw	0x00
+082D: 3400		retlw	0x00
+082E: 3400		retlw	0x00
+082F: 3400		retlw	0x00
+0830: 3401		retlw	0x01
+0831: 34FF		retlw	0xFF
+0832: 34FF		retlw	0xFF
+0833: 34FF		retlw	0xFF
+0834: 34FF		retlw	0xFF
+0835: 34FF		retlw	0xFF
+0836: 3400		retlw	0x00
+0837: 3403		retlw	0x03
+0838: 340F		retlw	0x0F
+0839: 341F		retlw	0x1F
+083A: 343F		retlw	0x3F
+083B: 347F		retlw	0x7F
+083C: 347F		retlw	0x7F
+083D: 34FC		retlw	0xFC
+083E: 34F8		retlw	0xF8
+083F: 34F8		retlw	0xF8
+0840: 34F8		retlw	0xF8
+0841: 34F8		retlw	0xF8
+0842: 34FC		retlw	0xFC
+0843: 347F		retlw	0x7F
+0844: 347F		retlw	0x7F
+0845: 343F		retlw	0x3F
+0846: 340F		retlw	0x0F
+0847: 3407		retlw	0x07
+0848: 3400		retlw	0x00
+0849: 3400		retlw	0x00
+084A: 3400		retlw	0x00
+084B: 34C0		retlw	0xC0
+084C: 34F0		retlw	0xF0
+084D: 34F8		retlw	0xF8
+084E: 34FC		retlw	0xFC
+084F: 34FE		retlw	0xFE
+0850: 343F		retlw	0x3F
+0851: 341F		retlw	0x1F
+0852: 341F		retlw	0x1F
+0853: 341F		retlw	0x1F
+0854: 347F		retlw	0x7F
+0855: 34FF		retlw	0xFF
+0856: 34FE		retlw	0xFE
+0857: 34FC		retlw	0xFC
+0858: 34F8		retlw	0xF8
+0859: 34C0		retlw	0xC0
+085A: 3400		retlw	0x00
+085B: 3400		retlw	0x00
+085C: 3400		retlw	0x00
+085D: 34FE		retlw	0xFE
+085E: 34FF		retlw	0xFF
+085F: 34FF		retlw	0xFF
+0860: 34FF		retlw	0xFF
+0861: 34FF		retlw	0xFF
+0862: 34E0		retlw	0xE0
+0863: 34F0		retlw	0xF0
+0864: 34F8		retlw	0xF8
+0865: 34F8		retlw	0xF8
+0866: 34F8		retlw	0xF8
+0867: 34F8		retlw	0xF8
+0868: 34F9		retlw	0xF9
+0869: 34F1		retlw	0xF1
+086A: 34E1		retlw	0xE1
+086B: 34C0		retlw	0xC0
+086C: 3480		retlw	0x80
+086D: 3400		retlw	0x00
+086E: 3400		retlw	0x00
+086F: 3400		retlw	0x00
+0870: 347F		retlw	0x7F
+0871: 34FF		retlw	0xFF
+0872: 34FF		retlw	0xFF
+0873: 34FF		retlw	0xFF
+0874: 34FF		retlw	0xFF
+0875: 3403		retlw	0x03
+0876: 3401		retlw	0x01
+0877: 3400		retlw	0x00
+0878: 3400		retlw	0x00
+0879: 3400		retlw	0x00
+087A: 3401		retlw	0x01
+087B: 3403		retlw	0x03
+087C: 34FF		retlw	0xFF
+087D: 34FF		retlw	0xFF
+087E: 34FF		retlw	0xFF
+087F: 34FF		retlw	0xFF
+0880: 34FE		retlw	0xFE
+0881: 3400		retlw	0x00
+0882: 3400		retlw	0x00
+0883: 3400		retlw	0x00
+0884: 3403		retlw	0x03
+0885: 340F		retlw	0x0F
+0886: 343F		retlw	0x3F
+0887: 347F		retlw	0x7F
+0888: 347F		retlw	0x7F
+0889: 34FC		retlw	0xFC
+088A: 34F8		retlw	0xF8
+088B: 34F8		retlw	0xF8
+088C: 34F8		retlw	0xF8
+088D: 34FC		retlw	0xFC
+088E: 34FE		retlw	0xFE
+088F: 347F		retlw	0x7F
+0890: 343F		retlw	0x3F
+0891: 341F		retlw	0x1F
+0892: 340F		retlw	0x0F
+0893: 3401		retlw	0x01
+0894: 3400		retlw	0x00
+0895: 3400		retlw	0x00
+0896: 341F		retlw	0x1F
+0897: 341F		retlw	0x1F
+0898: 341F		retlw	0x1F
+0899: 341F		retlw	0x1F
+089A: 341F		retlw	0x1F
+089B: 341F		retlw	0x1F
+089C: 341F		retlw	0x1F
+089D: 341F		retlw	0x1F
+089E: 341F		retlw	0x1F
+089F: 341F		retlw	0x1F
+08A0: 34DF		retlw	0xDF
+08A1: 34FF		retlw	0xFF
+08A2: 34FF		retlw	0xFF
+08A3: 34FF		retlw	0xFF
+08A4: 34FF		retlw	0xFF
+08A5: 347F		retlw	0x7F
+08A6: 341F		retlw	0x1F
+08A7: 3400		retlw	0x00
+08A8: 3400		retlw	0x00
+08A9: 3400		retlw	0x00
+08AA: 3400		retlw	0x00
+08AB: 3400		retlw	0x00
+08AC: 3400		retlw	0x00
+08AD: 3400		retlw	0x00
+08AE: 3400		retlw	0x00
+08AF: 34C0		retlw	0xC0
+08B0: 34F0		retlw	0xF0
+08B1: 34FC		retlw	0xFC
+08B2: 34FF		retlw	0xFF
+08B3: 34FF		retlw	0xFF
+08B4: 347F		retlw	0x7F
+08B5: 340F		retlw	0x0F
+08B6: 3403		retlw	0x03
+08B7: 3400		retlw	0x00
+08B8: 3400		retlw	0x00
+08B9: 3400		retlw	0x00
+08BA: 3400		retlw	0x00
+08BB: 3400		retlw	0x00
+08BC: 3400		retlw	0x00
+08BD: 3400		retlw	0x00
+08BE: 3400		retlw	0x00
+08BF: 3400		retlw	0x00
+08C0: 34E0		retlw	0xE0
+08C1: 34FE		retlw	0xFE
+08C2: 34FF		retlw	0xFF
+08C3: 34FF		retlw	0xFF
+08C4: 34FF		retlw	0xFF
+08C5: 341F		retlw	0x1F
+08C6: 3401		retlw	0x01
+08C7: 3400		retlw	0x00
+08C8: 3400		retlw	0x00
+08C9: 3400		retlw	0x00
+08CA: 3400		retlw	0x00
+08CB: 3400		retlw	0x00
+08CC: 3400		retlw	0x00
+08CD: 3400		retlw	0x00
+08CE: 3400		retlw	0x00
+08CF: 3400		retlw	0x00
+08D0: 3400		retlw	0x00
+08D1: 3400		retlw	0x00
+08D2: 34FC		retlw	0xFC
+08D3: 34FF		retlw	0xFF
+08D4: 34FF		retlw	0xFF
+08D5: 34FF		retlw	0xFF
+08D6: 34FF		retlw	0xFF
+08D7: 3403		retlw	0x03
+08D8: 3400		retlw	0x00
+08D9: 3400		retlw	0x00
+08DA: 3400		retlw	0x00
+08DB: 3400		retlw	0x00
+08DC: 3400		retlw	0x00
+08DD: 3400		retlw	0x00
+08DE: 3400		retlw	0x00
+08DF: 3400		retlw	0x00
+08E0: 3400		retlw	0x00
+08E1: 3400		retlw	0x00
+08E2: 3400		retlw	0x00
+08E3: 34E0		retlw	0xE0
+08E4: 34F8		retlw	0xF8
+08E5: 34FC		retlw	0xFC
+08E6: 34FE		retlw	0xFE
+08E7: 34FE		retlw	0xFE
+08E8: 343F		retlw	0x3F
+08E9: 341F		retlw	0x1F
+08EA: 341F		retlw	0x1F
+08EB: 341F		retlw	0x1F
+08EC: 343F		retlw	0x3F
+08ED: 34FF		retlw	0xFF
+08EE: 34FE		retlw	0xFE
+08EF: 34FC		retlw	0xFC
+08F0: 34F8		retlw	0xF8
+08F1: 34E0		retlw	0xE0
+08F2: 3400		retlw	0x00
+08F3: 3400		retlw	0x00
+08F4: 3400		retlw	0x00
+08F5: 3400		retlw	0x00
+08F6: 3407		retlw	0x07
+08F7: 341F		retlw	0x1F
+08F8: 34BF		retlw	0xBF
+08F9: 34FF		retlw	0xFF
+08FA: 34FF		retlw	0xFF
+08FB: 34F8		retlw	0xF8
+08FC: 34F0		retlw	0xF0
+08FD: 34F0		retlw	0xF0
+08FE: 34F0		retlw	0xF0
+08FF: 34F8		retlw	0xF8
+0900: 34FF		retlw	0xFF
+0901: 34FF		retlw	0xFF
+0902: 34BF		retlw	0xBF
+0903: 341F		retlw	0x1F
+0904: 3407		retlw	0x07
+0905: 3400		retlw	0x00
+0906: 3400		retlw	0x00
+0907: 3400		retlw	0x00
+0908: 34F8		retlw	0xF8
+0909: 34FE		retlw	0xFE
+090A: 34FF		retlw	0xFF
+090B: 34FF		retlw	0xFF
+090C: 34FF		retlw	0xFF
+090D: 3407		retlw	0x07
+090E: 3403		retlw	0x03
+090F: 3401		retlw	0x01
+0910: 3401		retlw	0x01
+0911: 3401		retlw	0x01
+0912: 3403		retlw	0x03
+0913: 3407		retlw	0x07
+0914: 34FF		retlw	0xFF
+0915: 34FF		retlw	0xFF
+0916: 34FF		retlw	0xFF
+0917: 34FE		retlw	0xFE
+0918: 34F8		retlw	0xF8
+0919: 3400		retlw	0x00
+091A: 3400		retlw	0x00
+091B: 3403		retlw	0x03
+091C: 340F		retlw	0x0F
+091D: 341F		retlw	0x1F
+091E: 343F		retlw	0x3F
+091F: 347F		retlw	0x7F
+0920: 347E		retlw	0x7E
+0921: 34FC		retlw	0xFC
+0922: 34F8		retlw	0xF8
+0923: 34F8		retlw	0xF8
+0924: 34F8		retlw	0xF8
+0925: 34FC		retlw	0xFC
+0926: 34FE		retlw	0xFE
+0927: 347F		retlw	0x7F
+0928: 343F		retlw	0x3F
+0929: 341F		retlw	0x1F
+092A: 340F		retlw	0x0F
+092B: 3403		retlw	0x03
+092C: 3400		retlw	0x00
+092D: 3480		retlw	0x80
+092E: 34F0		retlw	0xF0
+092F: 34F8		retlw	0xF8
+0930: 34FC		retlw	0xFC
+0931: 34FE		retlw	0xFE
+0932: 347E		retlw	0x7E
+0933: 343F		retlw	0x3F
+0934: 341F		retlw	0x1F
+0935: 341F		retlw	0x1F
+0936: 341F		retlw	0x1F
+0937: 341F		retlw	0x1F
+0938: 343E		retlw	0x3E
+0939: 34FE		retlw	0xFE
+093A: 34FC		retlw	0xFC
+093B: 34F8		retlw	0xF8
+093C: 34F0		retlw	0xF0
+093D: 34C0		retlw	0xC0
+093E: 3400		retlw	0x00
+093F: 3400		retlw	0x00
+0940: 347F		retlw	0x7F
+0941: 34FF		retlw	0xFF
+0942: 34FF		retlw	0xFF
+0943: 34FF		retlw	0xFF
+0944: 34FF		retlw	0xFF
+0945: 34C0		retlw	0xC0
+0946: 3480		retlw	0x80
+0947: 3400		retlw	0x00
+0948: 3400		retlw	0x00
+0949: 3400		retlw	0x00
+094A: 3400		retlw	0x00
+094B: 3480		retlw	0x80
+094C: 34C0		retlw	0xC0
+094D: 34FF		retlw	0xFF
+094E: 34FF		retlw	0xFF
+094F: 34FF		retlw	0xFF
+0950: 34FF		retlw	0xFF
+0951: 34FE		retlw	0xFE
+0952: 3400		retlw	0x00
+0953: 3400		retlw	0x00
+0954: 3401		retlw	0x01
+0955: 3403		retlw	0x03
+0956: 3487		retlw	0x87
+0957: 348F		retlw	0x8F
+0958: 348F		retlw	0x8F
+0959: 341F		retlw	0x1F
+095A: 341F		retlw	0x1F
+095B: 341F		retlw	0x1F
+095C: 341F		retlw	0x1F
+095D: 341F		retlw	0x1F
+095E: 340F		retlw	0x0F
+095F: 3407		retlw	0x07
+0960: 34FF		retlw	0xFF
+0961: 34FF		retlw	0xFF
+0962: 34FF		retlw	0xFF
+0963: 34FF		retlw	0xFF
+0964: 343F		retlw	0x3F
+0965: 3400		retlw	0x00
+0966: 3400		retlw	0x00
+0967: 3403		retlw	0x03
+0968: 341F		retlw	0x1F
+0969: 343F		retlw	0x3F
+096A: 347F		retlw	0x7F
+096B: 347F		retlw	0x7F
+096C: 34FE		retlw	0xFE
+096D: 34F8		retlw	0xF8
+096E: 34F8		retlw	0xF8
+096F: 34F8		retlw	0xF8
+0970: 34F8		retlw	0xF8
+0971: 347C		retlw	0x7C
+0972: 347F		retlw	0x7F
+0973: 343F		retlw	0x3F
+0974: 341F		retlw	0x1F
+0975: 340F		retlw	0x0F
+0976: 3403		retlw	0x03
+0977: 3400		retlw	0x00
+0978: 3400		retlw	0x00
+          	(font.obj line#74, 76 words)
+          	arialNarrow_32x19_Blank::
+0979: 3400		retlw	0x00
+097A: 3400		retlw	0x00
+097B: 3400		retlw	0x00
+097C: 3400		retlw	0x00
+097D: 3400		retlw	0x00
+097E: 3400		retlw	0x00
+097F: 3400		retlw	0x00
+0980: 3400		retlw	0x00
+0981: 3400		retlw	0x00
+0982: 3400		retlw	0x00
+0983: 3400		retlw	0x00
+0984: 3400		retlw	0x00
+0985: 3400		retlw	0x00
+0986: 3400		retlw	0x00
+0987: 3400		retlw	0x00
+0988: 3400		retlw	0x00
+0989: 3400		retlw	0x00
+098A: 3400		retlw	0x00
+098B: 3400		retlw	0x00
+098C: 3400		retlw	0x00
+098D: 3400		retlw	0x00
+098E: 3400		retlw	0x00
+098F: 3400		retlw	0x00
+0990: 3400		retlw	0x00
+0991: 3400		retlw	0x00
+0992: 3400		retlw	0x00
+0993: 3400		retlw	0x00
+0994: 3400		retlw	0x00
+0995: 3400		retlw	0x00
+0996: 3400		retlw	0x00
+0997: 3400		retlw	0x00
+0998: 3400		retlw	0x00
+0999: 3400		retlw	0x00
+099A: 3400		retlw	0x00
+099B: 3400		retlw	0x00
+099C: 3400		retlw	0x00
+099D: 3400		retlw	0x00
+099E: 3400		retlw	0x00
+099F: 3400		retlw	0x00
+09A0: 3400		retlw	0x00
+09A1: 3400		retlw	0x00
+09A2: 3400		retlw	0x00
+09A3: 3400		retlw	0x00
+09A4: 3400		retlw	0x00
+09A5: 3400		retlw	0x00
+09A6: 3400		retlw	0x00
+09A7: 3400		retlw	0x00
+09A8: 3400		retlw	0x00
+09A9: 3400		retlw	0x00
+09AA: 3400		retlw	0x00
+09AB: 3400		retlw	0x00
+09AC: 3400		retlw	0x00
+09AD: 3400		retlw	0x00
+09AE: 3400		retlw	0x00
+09AF: 3400		retlw	0x00
+09B0: 3400		retlw	0x00
+09B1: 3400		retlw	0x00
+09B2: 3400		retlw	0x00
+09B3: 3400		retlw	0x00
+09B4: 3400		retlw	0x00
+09B5: 3400		retlw	0x00
+09B6: 3400		retlw	0x00
+09B7: 3400		retlw	0x00
+09B8: 3400		retlw	0x00
+09B9: 3400		retlw	0x00
+09BA: 3400		retlw	0x00
+09BB: 3400		retlw	0x00
+09BC: 3400		retlw	0x00
+09BD: 3400		retlw	0x00
+09BE: 3400		retlw	0x00
+09BF: 3400		retlw	0x00
+09C0: 3400		retlw	0x00
+09C1: 3400		retlw	0x00
+09C2: 3400		retlw	0x00
+09C3: 3400		retlw	0x00
+09C4: 3400		retlw	0x00
+          	(font.obj line#89, 242 words)
+          	arial_16x11ptBitmaps::
+09C5: 3400		retlw	0x00
+09C6: 34F8		retlw	0xF8
+09C7: 34FE		retlw	0xFE
+09C8: 34FE		retlw	0xFE
+09C9: 3407		retlw	0x07
+09CA: 3403		retlw	0x03
+09CB: 3403		retlw	0x03
+09CC: 3407		retlw	0x07
+09CD: 34FE		retlw	0xFE
+09CE: 34FE		retlw	0xFE
+09CF: 34F8		retlw	0xF8
+09D0: 3400		retlw	0x00
+09D1: 340F		retlw	0x0F
+09D2: 343F		retlw	0x3F
+09D3: 343F		retlw	0x3F
+09D4: 3470		retlw	0x70
+09D5: 3460		retlw	0x60
+09D6: 3460		retlw	0x60
+09D7: 3470		retlw	0x70
+09D8: 343F		retlw	0x3F
+09D9: 343F		retlw	0x3F
+09DA: 340F		retlw	0x0F
+09DB: 3400		retlw	0x00
+09DC: 3400		retlw	0x00
+09DD: 3470		retlw	0x70
+09DE: 3438		retlw	0x38
+09DF: 3438		retlw	0x38
+09E0: 341C		retlw	0x1C
+09E1: 34FF		retlw	0xFF
+09E2: 34FF		retlw	0xFF
+09E3: 34FF		retlw	0xFF
+09E4: 3400		retlw	0x00
+09E5: 3400		retlw	0x00
+09E6: 3400		retlw	0x00
+09E7: 3400		retlw	0x00
+09E8: 3400		retlw	0x00
+09E9: 3400		retlw	0x00
+09EA: 3400		retlw	0x00
+09EB: 3400		retlw	0x00
+09EC: 347F		retlw	0x7F
+09ED: 347F		retlw	0x7F
+09EE: 347F		retlw	0x7F
+09EF: 3400		retlw	0x00
+09F0: 3400		retlw	0x00
+09F1: 3400		retlw	0x00
+09F2: 340C		retlw	0x0C
+09F3: 340E		retlw	0x0E
+09F4: 340F		retlw	0x0F
+09F5: 3407		retlw	0x07
+09F6: 3403		retlw	0x03
+09F7: 3483		retlw	0x83
+09F8: 34C7		retlw	0xC7
+09F9: 34FF		retlw	0xFF
+09FA: 34FE		retlw	0xFE
+09FB: 343C		retlw	0x3C
+09FC: 3400		retlw	0x00
+09FD: 3460		retlw	0x60
+09FE: 3470		retlw	0x70
+09FF: 347C		retlw	0x7C
+0A00: 347E		retlw	0x7E
+0A01: 346F		retlw	0x6F
+0A02: 3467		retlw	0x67
+0A03: 3463		retlw	0x63
+0A04: 3461		retlw	0x61
+0A05: 3460		retlw	0x60
+0A06: 3460		retlw	0x60
+0A07: 3400		retlw	0x00
+0A08: 340C		retlw	0x0C
+0A09: 340E		retlw	0x0E
+0A0A: 340F		retlw	0x0F
+0A0B: 34C3		retlw	0xC3
+0A0C: 34C3		retlw	0xC3
+0A0D: 34E3		retlw	0xE3
+0A0E: 34FF		retlw	0xFF
+0A0F: 34FE		retlw	0xFE
+0A10: 343C		retlw	0x3C
+0A11: 3400		retlw	0x00
+0A12: 3400		retlw	0x00
+0A13: 3418		retlw	0x18
+0A14: 3438		retlw	0x38
+0A15: 3478		retlw	0x78
+0A16: 3470		retlw	0x70
+0A17: 3460		retlw	0x60
+0A18: 3460		retlw	0x60
+0A19: 3471		retlw	0x71
+0A1A: 343F		retlw	0x3F
+0A1B: 343F		retlw	0x3F
+0A1C: 340E		retlw	0x0E
+0A1D: 3400		retlw	0x00
+0A1E: 3400		retlw	0x00
+0A1F: 34C0		retlw	0xC0
+0A20: 34E0		retlw	0xE0
+0A21: 3438		retlw	0x38
+0A22: 341E		retlw	0x1E
+0A23: 34FF		retlw	0xFF
+0A24: 34FF		retlw	0xFF
+0A25: 34FF		retlw	0xFF
+0A26: 3400		retlw	0x00
+0A27: 3400		retlw	0x00
+0A28: 340E		retlw	0x0E
+0A29: 340F		retlw	0x0F
+0A2A: 340D		retlw	0x0D
+0A2B: 340C		retlw	0x0C
+0A2C: 340C		retlw	0x0C
+0A2D: 340C		retlw	0x0C
+0A2E: 347F		retlw	0x7F
+0A2F: 347F		retlw	0x7F
+0A30: 347F		retlw	0x7F
+0A31: 340C		retlw	0x0C
+0A32: 340C		retlw	0x0C
+0A33: 3400		retlw	0x00
+0A34: 34C0		retlw	0xC0
+0A35: 34FC		retlw	0xFC
+0A36: 34FF		retlw	0xFF
+0A37: 347F		retlw	0x7F
+0A38: 3463		retlw	0x63
+0A39: 3463		retlw	0x63
+0A3A: 34E3		retlw	0xE3
+0A3B: 34E3		retlw	0xE3
+0A3C: 34C3		retlw	0xC3
+0A3D: 3480		retlw	0x80
+0A3E: 3400		retlw	0x00
+0A3F: 3418		retlw	0x18
+0A40: 3438		retlw	0x38
+0A41: 3478		retlw	0x78
+0A42: 3470		retlw	0x70
+0A43: 3460		retlw	0x60
+0A44: 3460		retlw	0x60
+0A45: 3470		retlw	0x70
+0A46: 343F		retlw	0x3F
+0A47: 343F		retlw	0x3F
+0A48: 340F		retlw	0x0F
+0A49: 3400		retlw	0x00
+0A4A: 34F8		retlw	0xF8
+0A4B: 34FE		retlw	0xFE
+0A4C: 34FE		retlw	0xFE
+0A4D: 34C7		retlw	0xC7
+0A4E: 3463		retlw	0x63
+0A4F: 3463		retlw	0x63
+0A50: 34E7		retlw	0xE7
+0A51: 34EF		retlw	0xEF
+0A52: 34C6		retlw	0xC6
+0A53: 3404		retlw	0x04
+0A54: 3400		retlw	0x00
+0A55: 340F		retlw	0x0F
+0A56: 343F		retlw	0x3F
+0A57: 343F		retlw	0x3F
+0A58: 3470		retlw	0x70
+0A59: 3460		retlw	0x60
+0A5A: 3460		retlw	0x60
+0A5B: 3470		retlw	0x70
+0A5C: 343F		retlw	0x3F
+0A5D: 343F		retlw	0x3F
+0A5E: 340F		retlw	0x0F
+0A5F: 3400		retlw	0x00
+0A60: 3403		retlw	0x03
+0A61: 3403		retlw	0x03
+0A62: 3403		retlw	0x03
+0A63: 3403		retlw	0x03
+0A64: 34C3		retlw	0xC3
+0A65: 34F3		retlw	0xF3
+0A66: 34FB		retlw	0xFB
+0A67: 343F		retlw	0x3F
+0A68: 340F		retlw	0x0F
+0A69: 3407		retlw	0x07
+0A6A: 3400		retlw	0x00
+0A6B: 3400		retlw	0x00
+0A6C: 3400		retlw	0x00
+0A6D: 3478		retlw	0x78
+0A6E: 347F		retlw	0x7F
+0A6F: 347F		retlw	0x7F
+0A70: 3407		retlw	0x07
+0A71: 3400		retlw	0x00
+0A72: 3400		retlw	0x00
+0A73: 3400		retlw	0x00
+0A74: 3400		retlw	0x00
+0A75: 3400		retlw	0x00
+0A76: 341C		retlw	0x1C
+0A77: 343E		retlw	0x3E
+0A78: 34FF		retlw	0xFF
+0A79: 34E7		retlw	0xE7
+0A7A: 34C3		retlw	0xC3
+0A7B: 34C3		retlw	0xC3
+0A7C: 34E7		retlw	0xE7
+0A7D: 34FF		retlw	0xFF
+0A7E: 343E		retlw	0x3E
+0A7F: 341C		retlw	0x1C
+0A80: 3400		retlw	0x00
+0A81: 341E		retlw	0x1E
+0A82: 343F		retlw	0x3F
+0A83: 347F		retlw	0x7F
+0A84: 3471		retlw	0x71
+0A85: 3460		retlw	0x60
+0A86: 3460		retlw	0x60
+0A87: 3471		retlw	0x71
+0A88: 347F		retlw	0x7F
+0A89: 343F		retlw	0x3F
+0A8A: 341E		retlw	0x1E
+0A8B: 3400		retlw	0x00
+0A8C: 3478		retlw	0x78
+0A8D: 34FE		retlw	0xFE
+0A8E: 34FE		retlw	0xFE
+0A8F: 3487		retlw	0x87
+0A90: 3403		retlw	0x03
+0A91: 3403		retlw	0x03
+0A92: 3487		retlw	0x87
+0A93: 34FE		retlw	0xFE
+0A94: 34FE		retlw	0xFE
+0A95: 34F8		retlw	0xF8
+0A96: 3400		retlw	0x00
+0A97: 3410		retlw	0x10
+0A98: 3439		retlw	0x39
+0A99: 347B		retlw	0x7B
+0A9A: 3473		retlw	0x73
+0A9B: 3463		retlw	0x63
+0A9C: 3463		retlw	0x63
+0A9D: 3471		retlw	0x71
+0A9E: 343F		retlw	0x3F
+0A9F: 343F		retlw	0x3F
+0AA0: 340F		retlw	0x0F
+0AA1: 3400		retlw	0x00
+0AA2: 3400		retlw	0x00
+0AA3: 3400		retlw	0x00
+0AA4: 3400		retlw	0x00
+0AA5: 3400		retlw	0x00
+0AA6: 3400		retlw	0x00
+0AA7: 3400		retlw	0x00
+0AA8: 3400		retlw	0x00
+0AA9: 3400		retlw	0x00
+0AAA: 3400		retlw	0x00
+0AAB: 3400		retlw	0x00
+0AAC: 3400		retlw	0x00
+0AAD: 3400		retlw	0x00
+0AAE: 3400		retlw	0x00
+0AAF: 3400		retlw	0x00
+0AB0: 3470		retlw	0x70
+0AB1: 3470		retlw	0x70
+0AB2: 3470		retlw	0x70
+0AB3: 3400		retlw	0x00
+0AB4: 3400		retlw	0x00
+0AB5: 3400		retlw	0x00
+0AB6: 3400		retlw	0x00
+          	(font.obj line#130, 32 words)
+          	verdana_16x16ptBitmaps_A::
+0AB7: 3400		retlw	0x00
+0AB8: 3400		retlw	0x00
+0AB9: 3400		retlw	0x00
+0ABA: 34C0		retlw	0xC0
+0ABB: 34F8		retlw	0xF8
+0ABC: 34FE		retlw	0xFE
+0ABD: 34FF		retlw	0xFF
+0ABE: 343F		retlw	0x3F
+0ABF: 343F		retlw	0x3F
+0AC0: 34FF		retlw	0xFF
+0AC1: 34FE		retlw	0xFE
+0AC2: 34F8		retlw	0xF8
+0AC3: 34C0		retlw	0xC0
+0AC4: 3400		retlw	0x00
+0AC5: 3400		retlw	0x00
+0AC6: 3400		retlw	0x00
+0AC7: 3480		retlw	0x80
+0AC8: 34F0		retlw	0xF0
+0AC9: 34FE		retlw	0xFE
+0ACA: 34FF		retlw	0xFF
+0ACB: 347F		retlw	0x7F
+0ACC: 341F		retlw	0x1F
+0ACD: 341D		retlw	0x1D
+0ACE: 341C		retlw	0x1C
+0ACF: 341C		retlw	0x1C
+0AD0: 341D		retlw	0x1D
+0AD1: 341F		retlw	0x1F
+0AD2: 347F		retlw	0x7F
+0AD3: 34FF		retlw	0xFF
+0AD4: 34FE		retlw	0xFE
+0AD5: 34F0		retlw	0xF0
+0AD6: 3480		retlw	0x80
+          	(font.obj line#135, 22 words)
+          	verdana_16x11ptBitmaps_F::
+0AD7: 34FF		retlw	0xFF
+0AD8: 34FF		retlw	0xFF
+0AD9: 34FF		retlw	0xFF
+0ADA: 34FF		retlw	0xFF
+0ADB: 34C7		retlw	0xC7
+0ADC: 34C7		retlw	0xC7
+0ADD: 34C7		retlw	0xC7
+0ADE: 34C7		retlw	0xC7
+0ADF: 34C7		retlw	0xC7
+0AE0: 34C7		retlw	0xC7
+0AE1: 3407		retlw	0x07
+0AE2: 34FF		retlw	0xFF
+0AE3: 34FF		retlw	0xFF
+0AE4: 34FF		retlw	0xFF
+0AE5: 34FF		retlw	0xFF
+0AE6: 3401		retlw	0x01
+0AE7: 3401		retlw	0x01
+0AE8: 3401		retlw	0x01
+0AE9: 3401		retlw	0x01
+0AEA: 3401		retlw	0x01
+0AEB: 3401		retlw	0x01
+0AEC: 3400		retlw	0x00
+          	(font.obj line#139, 32 words)
+          	verdana_16x16ptBitmaps_M::
+0AED: 34FF		retlw	0xFF
+0AEE: 34FF		retlw	0xFF
+0AEF: 34FF		retlw	0xFF
+0AF0: 34FF		retlw	0xFF
+0AF1: 343F		retlw	0x3F
+0AF2: 34FC		retlw	0xFC
+0AF3: 34F0		retlw	0xF0
+0AF4: 34C0		retlw	0xC0
+0AF5: 3480		retlw	0x80
+0AF6: 34E0		retlw	0xE0
+0AF7: 34FC		retlw	0xFC
+0AF8: 343F		retlw	0x3F
+0AF9: 34FF		retlw	0xFF
+0AFA: 34FF		retlw	0xFF
+0AFB: 34FF		retlw	0xFF
+0AFC: 34FF		retlw	0xFF
+0AFD: 34FF		retlw	0xFF
+0AFE: 34FF		retlw	0xFF
+0AFF: 34FF		retlw	0xFF
+0B00: 34FF		retlw	0xFF
+0B01: 3400		retlw	0x00
+0B02: 3401		retlw	0x01
+0B03: 3407		retlw	0x07
+0B04: 340F		retlw	0x0F
+0B05: 340F		retlw	0x0F
+0B06: 3407		retlw	0x07
+0B07: 3401		retlw	0x01
+0B08: 3400		retlw	0x00
+0B09: 34FF		retlw	0xFF
+0B0A: 34FF		retlw	0xFF
+0B0B: 34FF		retlw	0xFF
+0B0C: 34FF		retlw	0xFF
+          	(font.obj line#144, 552 words)
+          	FONT_6x8::
+0B0D: 3400		retlw	0x00
+0B0E: 3400		retlw	0x00
+0B0F: 3400		retlw	0x00
+0B10: 3400		retlw	0x00
+0B11: 3400		retlw	0x00
+0B12: 3400		retlw	0x00
+0B13: 3400		retlw	0x00
+0B14: 3400		retlw	0x00
+0B15: 3400		retlw	0x00
+0B16: 342F		retlw	0x2F
+0B17: 3400		retlw	0x00
+0B18: 3400		retlw	0x00
+0B19: 3400		retlw	0x00
+0B1A: 3400		retlw	0x00
+0B1B: 3407		retlw	0x07
+0B1C: 3400		retlw	0x00
+0B1D: 3407		retlw	0x07
+0B1E: 3400		retlw	0x00
+0B1F: 3400		retlw	0x00
+0B20: 3414		retlw	0x14
+0B21: 347F		retlw	0x7F
+0B22: 3414		retlw	0x14
+0B23: 347F		retlw	0x7F
+0B24: 3414		retlw	0x14
+0B25: 3400		retlw	0x00
+0B26: 3424		retlw	0x24
+0B27: 342A		retlw	0x2A
+0B28: 347F		retlw	0x7F
+0B29: 342A		retlw	0x2A
+0B2A: 3412		retlw	0x12
+0B2B: 3400		retlw	0x00
+0B2C: 3423		retlw	0x23
+0B2D: 3413		retlw	0x13
+0B2E: 3408		retlw	0x08
+0B2F: 3464		retlw	0x64
+0B30: 3462		retlw	0x62
+0B31: 3400		retlw	0x00
+0B32: 3436		retlw	0x36
+0B33: 3449		retlw	0x49
+0B34: 3455		retlw	0x55
+0B35: 3422		retlw	0x22
+0B36: 3450		retlw	0x50
+0B37: 3400		retlw	0x00
+0B38: 3400		retlw	0x00
+0B39: 3405		retlw	0x05
+0B3A: 3403		retlw	0x03
+0B3B: 3400		retlw	0x00
+0B3C: 3400		retlw	0x00
+0B3D: 3400		retlw	0x00
+0B3E: 3400		retlw	0x00
+0B3F: 341C		retlw	0x1C
+0B40: 3422		retlw	0x22
+0B41: 3441		retlw	0x41
+0B42: 3400		retlw	0x00
+0B43: 3400		retlw	0x00
+0B44: 3400		retlw	0x00
+0B45: 3441		retlw	0x41
+0B46: 3422		retlw	0x22
+0B47: 341C		retlw	0x1C
+0B48: 3400		retlw	0x00
+0B49: 3400		retlw	0x00
+0B4A: 3414		retlw	0x14
+0B4B: 3408		retlw	0x08
+0B4C: 343E		retlw	0x3E
+0B4D: 3408		retlw	0x08
+0B4E: 3414		retlw	0x14
+0B4F: 3400		retlw	0x00
+0B50: 3408		retlw	0x08
+0B51: 3408		retlw	0x08
+0B52: 343E		retlw	0x3E
+0B53: 3408		retlw	0x08
+0B54: 3408		retlw	0x08
+0B55: 3400		retlw	0x00
+0B56: 3400		retlw	0x00
+0B57: 3400		retlw	0x00
+0B58: 34A0		retlw	0xA0
+0B59: 3460		retlw	0x60
+0B5A: 3400		retlw	0x00
+0B5B: 3400		retlw	0x00
+0B5C: 3408		retlw	0x08
+0B5D: 3408		retlw	0x08
+0B5E: 3408		retlw	0x08
+0B5F: 3408		retlw	0x08
+0B60: 3408		retlw	0x08
+0B61: 3400		retlw	0x00
+0B62: 3400		retlw	0x00
+0B63: 3460		retlw	0x60
+0B64: 3460		retlw	0x60
+0B65: 3400		retlw	0x00
+0B66: 3400		retlw	0x00
+0B67: 3400		retlw	0x00
+0B68: 3420		retlw	0x20
+0B69: 3410		retlw	0x10
+0B6A: 3408		retlw	0x08
+0B6B: 3404		retlw	0x04
+0B6C: 3402		retlw	0x02
+0B6D: 3400		retlw	0x00
+0B6E: 343E		retlw	0x3E
+0B6F: 3451		retlw	0x51
+0B70: 3449		retlw	0x49
+0B71: 3445		retlw	0x45
+0B72: 343E		retlw	0x3E
+0B73: 3400		retlw	0x00
+0B74: 3400		retlw	0x00
+0B75: 3442		retlw	0x42
+0B76: 347F		retlw	0x7F
+0B77: 3440		retlw	0x40
+0B78: 3400		retlw	0x00
+0B79: 3400		retlw	0x00
+0B7A: 3442		retlw	0x42
+0B7B: 3461		retlw	0x61
+0B7C: 3451		retlw	0x51
+0B7D: 3449		retlw	0x49
+0B7E: 3446		retlw	0x46
+0B7F: 3400		retlw	0x00
+0B80: 3421		retlw	0x21
+0B81: 3441		retlw	0x41
+0B82: 3445		retlw	0x45
+0B83: 344B		retlw	0x4B
+0B84: 3431		retlw	0x31
+0B85: 3400		retlw	0x00
+0B86: 3418		retlw	0x18
+0B87: 3414		retlw	0x14
+0B88: 3412		retlw	0x12
+0B89: 347F		retlw	0x7F
+0B8A: 3410		retlw	0x10
+0B8B: 3400		retlw	0x00
+0B8C: 3427		retlw	0x27
+0B8D: 3445		retlw	0x45
+0B8E: 3445		retlw	0x45
+0B8F: 3445		retlw	0x45
+0B90: 3439		retlw	0x39
+0B91: 3400		retlw	0x00
+0B92: 343C		retlw	0x3C
+0B93: 344A		retlw	0x4A
+0B94: 3449		retlw	0x49
+0B95: 3449		retlw	0x49
+0B96: 3430		retlw	0x30
+0B97: 3400		retlw	0x00
+0B98: 3401		retlw	0x01
+0B99: 3471		retlw	0x71
+0B9A: 3409		retlw	0x09
+0B9B: 3405		retlw	0x05
+0B9C: 3403		retlw	0x03
+0B9D: 3400		retlw	0x00
+0B9E: 3436		retlw	0x36
+0B9F: 3449		retlw	0x49
+0BA0: 3449		retlw	0x49
+0BA1: 3449		retlw	0x49
+0BA2: 3436		retlw	0x36
+0BA3: 3400		retlw	0x00
+0BA4: 3406		retlw	0x06
+0BA5: 3449		retlw	0x49
+0BA6: 3449		retlw	0x49
+0BA7: 3429		retlw	0x29
+0BA8: 341E		retlw	0x1E
+0BA9: 3400		retlw	0x00
+0BAA: 3400		retlw	0x00
+0BAB: 3436		retlw	0x36
+0BAC: 3436		retlw	0x36
+0BAD: 3400		retlw	0x00
+0BAE: 3400		retlw	0x00
+0BAF: 3400		retlw	0x00
+0BB0: 3400		retlw	0x00
+0BB1: 3456		retlw	0x56
+0BB2: 3436		retlw	0x36
+0BB3: 3400		retlw	0x00
+0BB4: 3400		retlw	0x00
+0BB5: 3400		retlw	0x00
+0BB6: 3408		retlw	0x08
+0BB7: 3414		retlw	0x14
+0BB8: 3422		retlw	0x22
+0BB9: 3441		retlw	0x41
+0BBA: 3400		retlw	0x00
+0BBB: 3400		retlw	0x00
+0BBC: 3414		retlw	0x14
+0BBD: 3414		retlw	0x14
+0BBE: 3414		retlw	0x14
+0BBF: 3414		retlw	0x14
+0BC0: 3414		retlw	0x14
+0BC1: 3400		retlw	0x00
+0BC2: 3400		retlw	0x00
+0BC3: 3441		retlw	0x41
+0BC4: 3422		retlw	0x22
+0BC5: 3414		retlw	0x14
+0BC6: 3408		retlw	0x08
+0BC7: 3400		retlw	0x00
+0BC8: 3402		retlw	0x02
+0BC9: 3401		retlw	0x01
+0BCA: 3451		retlw	0x51
+0BCB: 3409		retlw	0x09
+0BCC: 3406		retlw	0x06
+0BCD: 3400		retlw	0x00
+0BCE: 3432		retlw	0x32
+0BCF: 3449		retlw	0x49
+0BD0: 3459		retlw	0x59
+0BD1: 3451		retlw	0x51
+0BD2: 343E		retlw	0x3E
+0BD3: 3400		retlw	0x00
+0BD4: 347C		retlw	0x7C
+0BD5: 3412		retlw	0x12
+0BD6: 3411		retlw	0x11
+0BD7: 3412		retlw	0x12
+0BD8: 347C		retlw	0x7C
+0BD9: 3400		retlw	0x00
+0BDA: 347F		retlw	0x7F
+0BDB: 3449		retlw	0x49
+0BDC: 3449		retlw	0x49
+0BDD: 3449		retlw	0x49
+0BDE: 3436		retlw	0x36
+0BDF: 3400		retlw	0x00
+0BE0: 343E		retlw	0x3E
+0BE1: 3441		retlw	0x41
+0BE2: 3441		retlw	0x41
+0BE3: 3441		retlw	0x41
+0BE4: 3422		retlw	0x22
+0BE5: 3400		retlw	0x00
+0BE6: 347F		retlw	0x7F
+0BE7: 3441		retlw	0x41
+0BE8: 3441		retlw	0x41
+0BE9: 3422		retlw	0x22
+0BEA: 341C		retlw	0x1C
+0BEB: 3400		retlw	0x00
+0BEC: 347F		retlw	0x7F
+0BED: 3449		retlw	0x49
+0BEE: 3449		retlw	0x49
+0BEF: 3449		retlw	0x49
+0BF0: 3441		retlw	0x41
+0BF1: 3400		retlw	0x00
+0BF2: 347F		retlw	0x7F
+0BF3: 3409		retlw	0x09
+0BF4: 3409		retlw	0x09
+0BF5: 3409		retlw	0x09
+0BF6: 3401		retlw	0x01
+0BF7: 3400		retlw	0x00
+0BF8: 343E		retlw	0x3E
+0BF9: 3441		retlw	0x41
+0BFA: 3449		retlw	0x49
+0BFB: 3449		retlw	0x49
+0BFC: 347A		retlw	0x7A
+0BFD: 3400		retlw	0x00
+0BFE: 347F		retlw	0x7F
+0BFF: 3408		retlw	0x08
+0C00: 3408		retlw	0x08
+0C01: 3408		retlw	0x08
+0C02: 347F		retlw	0x7F
+0C03: 3400		retlw	0x00
+0C04: 3400		retlw	0x00
+0C05: 3441		retlw	0x41
+0C06: 347F		retlw	0x7F
+0C07: 3441		retlw	0x41
+0C08: 3400		retlw	0x00
+0C09: 3400		retlw	0x00
+0C0A: 3420		retlw	0x20
+0C0B: 3440		retlw	0x40
+0C0C: 3441		retlw	0x41
+0C0D: 343F		retlw	0x3F
+0C0E: 3401		retlw	0x01
+0C0F: 3400		retlw	0x00
+0C10: 347F		retlw	0x7F
+0C11: 3408		retlw	0x08
+0C12: 3414		retlw	0x14
+0C13: 3422		retlw	0x22
+0C14: 3441		retlw	0x41
+0C15: 3400		retlw	0x00
+0C16: 347F		retlw	0x7F
+0C17: 3440		retlw	0x40
+0C18: 3440		retlw	0x40
+0C19: 3440		retlw	0x40
+0C1A: 3440		retlw	0x40
+0C1B: 3400		retlw	0x00
+0C1C: 347F		retlw	0x7F
+0C1D: 3402		retlw	0x02
+0C1E: 340C		retlw	0x0C
+0C1F: 3402		retlw	0x02
+0C20: 347F		retlw	0x7F
+0C21: 3400		retlw	0x00
+0C22: 347F		retlw	0x7F
+0C23: 3404		retlw	0x04
+0C24: 3408		retlw	0x08
+0C25: 3410		retlw	0x10
+0C26: 347F		retlw	0x7F
+0C27: 3400		retlw	0x00
+0C28: 343E		retlw	0x3E
+0C29: 3441		retlw	0x41
+0C2A: 3441		retlw	0x41
+0C2B: 3441		retlw	0x41
+0C2C: 343E		retlw	0x3E
+0C2D: 3400		retlw	0x00
+0C2E: 347F		retlw	0x7F
+0C2F: 3409		retlw	0x09
+0C30: 3409		retlw	0x09
+0C31: 3409		retlw	0x09
+0C32: 3406		retlw	0x06
+0C33: 3400		retlw	0x00
+0C34: 343E		retlw	0x3E
+0C35: 3441		retlw	0x41
+0C36: 3451		retlw	0x51
+0C37: 3421		retlw	0x21
+0C38: 345E		retlw	0x5E
+0C39: 3400		retlw	0x00
+0C3A: 347F		retlw	0x7F
+0C3B: 3409		retlw	0x09
+0C3C: 3419		retlw	0x19
+0C3D: 3429		retlw	0x29
+0C3E: 3446		retlw	0x46
+0C3F: 3400		retlw	0x00
+0C40: 3446		retlw	0x46
+0C41: 3449		retlw	0x49
+0C42: 3449		retlw	0x49
+0C43: 3449		retlw	0x49
+0C44: 3431		retlw	0x31
+0C45: 3400		retlw	0x00
+0C46: 3401		retlw	0x01
+0C47: 3401		retlw	0x01
+0C48: 347F		retlw	0x7F
+0C49: 3401		retlw	0x01
+0C4A: 3401		retlw	0x01
+0C4B: 3400		retlw	0x00
+0C4C: 343F		retlw	0x3F
+0C4D: 3440		retlw	0x40
+0C4E: 3440		retlw	0x40
+0C4F: 3440		retlw	0x40
+0C50: 343F		retlw	0x3F
+0C51: 3400		retlw	0x00
+0C52: 341F		retlw	0x1F
+0C53: 3420		retlw	0x20
+0C54: 3440		retlw	0x40
+0C55: 3420		retlw	0x20
+0C56: 341F		retlw	0x1F
+0C57: 3400		retlw	0x00
+0C58: 343F		retlw	0x3F
+0C59: 3440		retlw	0x40
+0C5A: 3438		retlw	0x38
+0C5B: 3440		retlw	0x40
+0C5C: 343F		retlw	0x3F
+0C5D: 3400		retlw	0x00
+0C5E: 3463		retlw	0x63
+0C5F: 3414		retlw	0x14
+0C60: 3408		retlw	0x08
+0C61: 3414		retlw	0x14
+0C62: 3463		retlw	0x63
+0C63: 3400		retlw	0x00
+0C64: 3407		retlw	0x07
+0C65: 3408		retlw	0x08
+0C66: 3470		retlw	0x70
+0C67: 3408		retlw	0x08
+0C68: 3407		retlw	0x07
+0C69: 3400		retlw	0x00
+0C6A: 3461		retlw	0x61
+0C6B: 3451		retlw	0x51
+0C6C: 3449		retlw	0x49
+0C6D: 3445		retlw	0x45
+0C6E: 3443		retlw	0x43
+0C6F: 3400		retlw	0x00
+0C70: 3400		retlw	0x00
+0C71: 347F		retlw	0x7F
+0C72: 3441		retlw	0x41
+0C73: 3441		retlw	0x41
+0C74: 3400		retlw	0x00
+0C75: 3400		retlw	0x00
+0C76: 3455		retlw	0x55
+0C77: 342A		retlw	0x2A
+0C78: 3455		retlw	0x55
+0C79: 342A		retlw	0x2A
+0C7A: 3455		retlw	0x55
+0C7B: 3400		retlw	0x00
+0C7C: 3400		retlw	0x00
+0C7D: 3441		retlw	0x41
+0C7E: 3441		retlw	0x41
+0C7F: 347F		retlw	0x7F
+0C80: 3400		retlw	0x00
+0C81: 3400		retlw	0x00
+0C82: 3404		retlw	0x04
+0C83: 3402		retlw	0x02
+0C84: 3401		retlw	0x01
+0C85: 3402		retlw	0x02
+0C86: 3404		retlw	0x04
+0C87: 3400		retlw	0x00
+0C88: 3440		retlw	0x40
+0C89: 3440		retlw	0x40
+0C8A: 3440		retlw	0x40
+0C8B: 3440		retlw	0x40
+0C8C: 3440		retlw	0x40
+0C8D: 3400		retlw	0x00
+0C8E: 3400		retlw	0x00
+0C8F: 3401		retlw	0x01
+0C90: 3402		retlw	0x02
+0C91: 3404		retlw	0x04
+0C92: 3400		retlw	0x00
+0C93: 3400		retlw	0x00
+0C94: 3420		retlw	0x20
+0C95: 3454		retlw	0x54
+0C96: 3454		retlw	0x54
+0C97: 3454		retlw	0x54
+0C98: 3478		retlw	0x78
+0C99: 3400		retlw	0x00
+0C9A: 347F		retlw	0x7F
+0C9B: 3448		retlw	0x48
+0C9C: 3444		retlw	0x44
+0C9D: 3444		retlw	0x44
+0C9E: 3438		retlw	0x38
+0C9F: 3400		retlw	0x00
+0CA0: 3438		retlw	0x38
+0CA1: 3444		retlw	0x44
+0CA2: 3444		retlw	0x44
+0CA3: 3444		retlw	0x44
+0CA4: 3420		retlw	0x20
+0CA5: 3400		retlw	0x00
+0CA6: 3438		retlw	0x38
+0CA7: 3444		retlw	0x44
+0CA8: 3444		retlw	0x44
+0CA9: 3448		retlw	0x48
+0CAA: 347F		retlw	0x7F
+0CAB: 3400		retlw	0x00
+0CAC: 3438		retlw	0x38
+0CAD: 3454		retlw	0x54
+0CAE: 3454		retlw	0x54
+0CAF: 3454		retlw	0x54
+0CB0: 3418		retlw	0x18
+0CB1: 3400		retlw	0x00
+0CB2: 3408		retlw	0x08
+0CB3: 347E		retlw	0x7E
+0CB4: 3409		retlw	0x09
+0CB5: 3401		retlw	0x01
+0CB6: 3402		retlw	0x02
+0CB7: 3400		retlw	0x00
+0CB8: 3418		retlw	0x18
+0CB9: 34A4		retlw	0xA4
+0CBA: 34A4		retlw	0xA4
+0CBB: 34A4		retlw	0xA4
+0CBC: 347C		retlw	0x7C
+0CBD: 3400		retlw	0x00
+0CBE: 347F		retlw	0x7F
+0CBF: 3408		retlw	0x08
+0CC0: 3404		retlw	0x04
+0CC1: 3404		retlw	0x04
+0CC2: 3478		retlw	0x78
+0CC3: 3400		retlw	0x00
+0CC4: 3400		retlw	0x00
+0CC5: 3444		retlw	0x44
+0CC6: 347D		retlw	0x7D
+0CC7: 3440		retlw	0x40
+0CC8: 3400		retlw	0x00
+0CC9: 3400		retlw	0x00
+0CCA: 3440		retlw	0x40
+0CCB: 3480		retlw	0x80
+0CCC: 3484		retlw	0x84
+0CCD: 347D		retlw	0x7D
+0CCE: 3400		retlw	0x00
+0CCF: 3400		retlw	0x00
+0CD0: 347F		retlw	0x7F
+0CD1: 3410		retlw	0x10
+0CD2: 3428		retlw	0x28
+0CD3: 3444		retlw	0x44
+0CD4: 3400		retlw	0x00
+0CD5: 3400		retlw	0x00
+0CD6: 3400		retlw	0x00
+0CD7: 3441		retlw	0x41
+0CD8: 347F		retlw	0x7F
+0CD9: 3440		retlw	0x40
+0CDA: 3400		retlw	0x00
+0CDB: 3400		retlw	0x00
+0CDC: 347C		retlw	0x7C
+0CDD: 3404		retlw	0x04
+0CDE: 3418		retlw	0x18
+0CDF: 3404		retlw	0x04
+0CE0: 3478		retlw	0x78
+0CE1: 3400		retlw	0x00
+0CE2: 347C		retlw	0x7C
+0CE3: 3408		retlw	0x08
+0CE4: 3404		retlw	0x04
+0CE5: 3404		retlw	0x04
+0CE6: 3478		retlw	0x78
+0CE7: 3400		retlw	0x00
+0CE8: 3438		retlw	0x38
+0CE9: 3444		retlw	0x44
+0CEA: 3444		retlw	0x44
+0CEB: 3444		retlw	0x44
+0CEC: 3438		retlw	0x38
+0CED: 3400		retlw	0x00
+0CEE: 34FC		retlw	0xFC
+0CEF: 3424		retlw	0x24
+0CF0: 3424		retlw	0x24
+0CF1: 3424		retlw	0x24
+0CF2: 3418		retlw	0x18
+0CF3: 3400		retlw	0x00
+0CF4: 3418		retlw	0x18
+0CF5: 3424		retlw	0x24
+0CF6: 3424		retlw	0x24
+0CF7: 3418		retlw	0x18
+0CF8: 34FC		retlw	0xFC
+0CF9: 3400		retlw	0x00
+0CFA: 347C		retlw	0x7C
+0CFB: 3408		retlw	0x08
+0CFC: 3404		retlw	0x04
+0CFD: 3404		retlw	0x04
+0CFE: 3408		retlw	0x08
+0CFF: 3400		retlw	0x00
+0D00: 3448		retlw	0x48
+0D01: 3454		retlw	0x54
+0D02: 3454		retlw	0x54
+0D03: 3454		retlw	0x54
+0D04: 3420		retlw	0x20
+0D05: 3400		retlw	0x00
+0D06: 3404		retlw	0x04
+0D07: 343F		retlw	0x3F
+0D08: 3444		retlw	0x44
+0D09: 3440		retlw	0x40
+0D0A: 3420		retlw	0x20
+0D0B: 3400		retlw	0x00
+0D0C: 343C		retlw	0x3C
+0D0D: 3440		retlw	0x40
+0D0E: 3440		retlw	0x40
+0D0F: 3420		retlw	0x20
+0D10: 347C		retlw	0x7C
+0D11: 3400		retlw	0x00
+0D12: 341C		retlw	0x1C
+0D13: 3420		retlw	0x20
+0D14: 3440		retlw	0x40
+0D15: 3420		retlw	0x20
+0D16: 341C		retlw	0x1C
+0D17: 3400		retlw	0x00
+0D18: 343C		retlw	0x3C
+0D19: 3440		retlw	0x40
+0D1A: 3430		retlw	0x30
+0D1B: 3440		retlw	0x40
+0D1C: 343C		retlw	0x3C
+0D1D: 3400		retlw	0x00
+0D1E: 3444		retlw	0x44
+0D1F: 3428		retlw	0x28
+0D20: 3410		retlw	0x10
+0D21: 3428		retlw	0x28
+0D22: 3444		retlw	0x44
+0D23: 3400		retlw	0x00
+0D24: 341C		retlw	0x1C
+0D25: 34A0		retlw	0xA0
+0D26: 34A0		retlw	0xA0
+0D27: 34A0		retlw	0xA0
+0D28: 347C		retlw	0x7C
+0D29: 3400		retlw	0x00
+0D2A: 3444		retlw	0x44
+0D2B: 3464		retlw	0x64
+0D2C: 3454		retlw	0x54
+0D2D: 344C		retlw	0x4C
+0D2E: 3444		retlw	0x44
+0D2F: 3414		retlw	0x14
+0D30: 3414		retlw	0x14
+0D31: 3414		retlw	0x14
+0D32: 3414		retlw	0x14
+0D33: 3414		retlw	0x14
+0D34: 3414		retlw	0x14
+          	(oled.obj line#390, 30 words)
+          	oledInitCmdList:
+0D35: 34AE		retlw	0xAE
+0D36: 3400		retlw	0x00
+0D37: 3410		retlw	0x10
+0D38: 3440		retlw	0x40
+0D39: 34B0		retlw	0xB0
+0D3A: 3481		retlw	0x81
+0D3B: 34FF		retlw	0xFF
+0D3C: 34A1		retlw	0xA1
+0D3D: 34A6		retlw	0xA6
+0D3E: 34A8		retlw	0xA8
+0D3F: 341F		retlw	0x1F
+0D40: 34C8		retlw	0xC8
+0D41: 34D3		retlw	0xD3
+0D42: 3400		retlw	0x00
+0D43: 34D5		retlw	0xD5
+0D44: 3480		retlw	0x80
+0D45: 34D9		retlw	0xD9
+0D46: 34F1		retlw	0xF1
+0D47: 34DA		retlw	0xDA
+0D48: 3402		retlw	0x02
+0D49: 34DB		retlw	0xDB
+0D4A: 3440		retlw	0x40
+0D4B: 348D		retlw	0x8D
+0D4C: 3414		retlw	0x14
+0D4D: 3420		retlw	0x20
+0D4E: 3402		retlw	0x02
+0D4F: 34A4		retlw	0xA4
+0D50: 34A6		retlw	0xA6
+0D51: 342E		retlw	0x2E
+0D52: 34AF		retlw	0xAF
+          	(radio.obj line#735, 4 words)
+          	_$CS1:
+0D53: 344D		retlw	0x4D
+0D54: 3448		retlw	0x48
+0D55: 347A		retlw	0x7A
+0D56: 3400		retlw	0x00
+          	(radio.obj line#738, 4 words)
+          	_$CS2:
+0D57: 344B		retlw	0x4B
+0D58: 3448		retlw	0x48
+0D59: 347A		retlw	0x7A
+0D5A: 3400		retlw	0x00
+          	(si47xx.obj line#264, 3 words)
+          	IS47xx_powerUpFM::
+0D5B: 3401		retlw	0x01
+0D5C: 34D0		retlw	0xD0
+0D5D: 3405		retlw	0x05
+          	(si47xx.obj line#267, 3 words)
+          	IS47xx_powerUpAM::
+0D5E: 3401		retlw	0x01
+0D5F: 34D1		retlw	0xD1
+0D60: 3405		retlw	0x05
+
+************ CALLING PATH ************
+[0]tmr0_isr
+[1] KEY_scan
+
+[0]main
+[1] TMR0_init
+
+[0]main
+[1] I2C_init
+
+[0]main
+[1] OLED_init
+[2]  TMR0_delayMs
+
+[0]main
+[1] OLED_init
+[2]  OLED_clr
+[3]   OLED_command
+[4]    I2C_start
+[5]     I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_clr
+[3]   OLED_command
+[4]    I2C_start
+[5]     I2C_writeByte
+[6]      I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_clr
+[3]   OLED_command
+[4]    I2C_end
+[5]     I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_clr
+[3]   OLED_command
+[4]    I2C_writeByte
+[5]     I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_clr
+[3]   OLED_data
+[4]    I2C_start
+[5]     I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_clr
+[3]   OLED_data
+[4]    I2C_start
+[5]     I2C_writeByte
+[6]      I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_clr
+[3]   OLED_data
+[4]    I2C_end
+[5]     I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_clr
+[3]   OLED_data
+[4]    I2C_writeByte
+[5]     I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_clr
+[3]   OLED_data
+[4]    _copyPar
+
+[0]main
+[1] OLED_init
+[2]  OLED_command
+[3]   I2C_start
+[4]    I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_command
+[3]   I2C_start
+[4]    I2C_writeByte
+[5]     I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_command
+[3]   I2C_end
+[4]    I2C_delay
+
+[0]main
+[1] OLED_init
+[2]  OLED_command
+[3]   I2C_writeByte
+[4]    I2C_delay
+
+[0]main
+[1] KEY_init
+
+[0]main
+[1] RADIO_init
+[2]  TMR0_delayMs
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   TMR0_delayMs
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_data
+[5]     I2C_start
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_data
+[5]     I2C_start
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_data
+[5]     I2C_end
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_data
+[5]     I2C_writeByte
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_data
+[5]     _copyPar
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    _copyPar
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    _mul16indf
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     I2C_start
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     I2C_start
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     I2C_end
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     I2C_writeByte
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     _copyPar
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    _copyPar
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   KEY_read
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_start
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_start
+[8]        I2C_writeByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_end
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_data
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_data
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_data
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_data
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_data
+[6]      _copyPar
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     _copyPar
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_start
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_start
+[8]        I2C_writeByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_end
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_data
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_data
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_data
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_data
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_data
+[6]      _copyPar
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     _copyPar
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    _mul8
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    _mul16indf
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    _divmod16
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      _copyPar
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      TMR0_delayMs
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_start
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_start
+[8]        I2C_writeByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_end
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_readByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       _copyPar
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     _copyPar
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_write
+[7]       I2C_start
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_write
+[7]       I2C_start
+[8]        I2C_writeByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_write
+[7]       I2C_end
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_write
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_write
+[7]       _copyPar
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       TMR0_delayMs
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       SI47xx_read
+[8]        I2C_start
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       SI47xx_read
+[8]        I2C_start
+[9]         I2C_writeByte
+[10]          I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       SI47xx_read
+[8]        I2C_end
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       SI47xx_read
+[8]        I2C_readByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       SI47xx_read
+[8]        _copyPar
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      _copyPar
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     _copyPar
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      _copyPar
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      TMR0_delayMs
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_start
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_start
+[8]        I2C_writeByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_end
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_readByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       _copyPar
+
+[0]main
+[1] RADIO_init
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  OLED_clr
+[3]   OLED_command
+[4]    I2C_start
+[5]     I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  OLED_clr
+[3]   OLED_command
+[4]    I2C_start
+[5]     I2C_writeByte
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  OLED_clr
+[3]   OLED_command
+[4]    I2C_end
+[5]     I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  OLED_clr
+[3]   OLED_command
+[4]    I2C_writeByte
+[5]     I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  OLED_clr
+[3]   OLED_data
+[4]    I2C_start
+[5]     I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  OLED_clr
+[3]   OLED_data
+[4]    I2C_start
+[5]     I2C_writeByte
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  OLED_clr
+[3]   OLED_data
+[4]    I2C_end
+[5]     I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  OLED_clr
+[3]   OLED_data
+[4]    I2C_writeByte
+[5]     I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  OLED_clr
+[3]   OLED_data
+[4]    _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  KEY_read
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   TMR0_delayMs
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_data
+[5]     I2C_start
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_data
+[5]     I2C_start
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_data
+[5]     I2C_end
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_data
+[5]     I2C_writeByte
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_data
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_8x6_str
+[4]    _mul16indf
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     I2C_start
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     I2C_start
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     I2C_end
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     I2C_writeByte
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   OLED_displayChar_16
+[4]    _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   KEY_read
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_start
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_start
+[8]        I2C_writeByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_end
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_data
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_data
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_data
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_data
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_data
+[6]      _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_start
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_start
+[8]        I2C_writeByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_end
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_data
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_data
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_data
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_data
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_data
+[6]      _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    _mul8
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    _mul16indf
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   RADIO_dispFreq
+[4]    _divmod16
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      TMR0_delayMs
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_start
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_start
+[8]        I2C_writeByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_end
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_readByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_write
+[7]       I2C_start
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_write
+[7]       I2C_start
+[8]        I2C_writeByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_write
+[7]       I2C_end
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_write
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_write
+[7]       _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       TMR0_delayMs
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       SI47xx_read
+[8]        I2C_start
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       SI47xx_read
+[8]        I2C_start
+[9]         I2C_writeByte
+[10]          I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       SI47xx_read
+[8]        I2C_end
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       SI47xx_read
+[8]        I2C_readByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       SI47xx_read
+[8]        _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      TMR0_delayMs
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_start
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_start
+[8]        I2C_writeByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_end
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_readByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startFM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   TMR0_delayMs
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_data
+[5]     I2C_start
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_data
+[5]     I2C_start
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_data
+[5]     I2C_end
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_data
+[5]     I2C_writeByte
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_8x6_str
+[4]    OLED_data
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_8x6_str
+[4]    _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_8x6_str
+[4]    _mul16indf
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_16
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_16
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_16
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_16
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     I2C_start
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     I2C_start
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     I2C_end
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     I2C_writeByte
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   OLED_displayChar_16
+[4]    _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   KEY_read
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_start
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_start
+[8]        I2C_writeByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_end
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_data
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_data
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_data
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_data
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     OLED_data
+[6]      _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_32x19
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_start
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_start
+[8]        I2C_writeByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_end
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_setPos
+[6]      OLED_command
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_data
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_data
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_data
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_data
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     OLED_data
+[6]      _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    OLED_displayChar_16
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    _mul8
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    _mul16indf
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   RADIO_dispFreq
+[4]    _divmod16
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      TMR0_delayMs
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_start
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_start
+[8]        I2C_writeByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_end
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_readByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_init
+[4]    SI47xx_command
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_write
+[7]       I2C_start
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_write
+[7]       I2C_start
+[8]        I2C_writeByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_write
+[7]       I2C_end
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_write
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_write
+[7]       _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       TMR0_delayMs
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       SI47xx_read
+[8]        I2C_start
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       SI47xx_read
+[8]        I2C_start
+[9]         I2C_writeByte
+[10]          I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       SI47xx_read
+[8]        I2C_end
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       SI47xx_read
+[8]        I2C_readByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      SI47xx_waitCTS
+[7]       SI47xx_read
+[8]        _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     SI47xx_command
+[6]      _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setVolume
+[4]    SI47xx_property
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_write
+[6]      _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      TMR0_delayMs
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_start
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_start
+[8]        I2C_writeByte
+[9]         I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_end
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       I2C_readByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     SI47xx_waitCTS
+[6]      SI47xx_read
+[7]       _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  startAM
+[3]   SI47xx_setFreq
+[4]    SI47xx_command
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_32x19
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_32x19
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_32x19
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_32x19
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_32x19
+[4]    OLED_data
+[5]     I2C_start
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_32x19
+[4]    OLED_data
+[5]     I2C_start
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_32x19
+[4]    OLED_data
+[5]     I2C_end
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_32x19
+[4]    OLED_data
+[5]     I2C_writeByte
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_32x19
+[4]    OLED_data
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_32x19
+[4]    _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_16
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_16
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_16
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_16
+[4]    OLED_setPos
+[5]     OLED_command
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     I2C_start
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     I2C_start
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     I2C_end
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     I2C_writeByte
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_16
+[4]    OLED_data
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   OLED_displayChar_16
+[4]    _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   _mul8
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   _mul16indf
+
+[0]main
+[1] RADIO_poll
+[2]  RADIO_dispFreq
+[3]   _divmod16
+
+[0]main
+[1] RADIO_poll
+[2]  SI47xx_setFreq
+[3]   SI47xx_command
+[4]    SI47xx_write
+[5]     I2C_start
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  SI47xx_setFreq
+[3]   SI47xx_command
+[4]    SI47xx_write
+[5]     I2C_start
+[6]      I2C_writeByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  SI47xx_setFreq
+[3]   SI47xx_command
+[4]    SI47xx_write
+[5]     I2C_end
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  SI47xx_setFreq
+[3]   SI47xx_command
+[4]    SI47xx_write
+[5]     I2C_writeByte
+[6]      I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  SI47xx_setFreq
+[3]   SI47xx_command
+[4]    SI47xx_write
+[5]     _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  SI47xx_setFreq
+[3]   SI47xx_command
+[4]    SI47xx_waitCTS
+[5]     TMR0_delayMs
+
+[0]main
+[1] RADIO_poll
+[2]  SI47xx_setFreq
+[3]   SI47xx_command
+[4]    SI47xx_waitCTS
+[5]     SI47xx_read
+[6]      I2C_start
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  SI47xx_setFreq
+[3]   SI47xx_command
+[4]    SI47xx_waitCTS
+[5]     SI47xx_read
+[6]      I2C_start
+[7]       I2C_writeByte
+[8]        I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  SI47xx_setFreq
+[3]   SI47xx_command
+[4]    SI47xx_waitCTS
+[5]     SI47xx_read
+[6]      I2C_end
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  SI47xx_setFreq
+[3]   SI47xx_command
+[4]    SI47xx_waitCTS
+[5]     SI47xx_read
+[6]      I2C_readByte
+[7]       I2C_delay
+
+[0]main
+[1] RADIO_poll
+[2]  SI47xx_setFreq
+[3]   SI47xx_command
+[4]    SI47xx_waitCTS
+[5]     SI47xx_read
+[6]      _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  SI47xx_setFreq
+[3]   SI47xx_command
+[4]    _copyPar
+
+[0]main
+[1] RADIO_poll
+[2]  _divmod16
+
+

@@ -1,0 +1,106 @@
+                           1 ;**********************************************************
+                           2 ;  Microchip Enhanced PIC16F1xxx C Compiler (CC16E), v1.00
+                           3 ;  Mon Dec 04 17:19:04 2023
+                           4 ;**********************************************************
+                           5 	.invoke	"c:\p16ecc/include/pic16e"
+                           6 	.invoke	"c:\p16ecc/include/p12f1840"
+                           7 	.invoke	"c:\p16ecc/include/string"
+                           8 
+                           9 	.device	"p12f1840", 256, 4096
+                          10 
+                          11 _$$::	.equ	0x20F0	; stack init. value
+                          12 
+                          13 
+                          14 	.segment	FUSE (ABS, =32775)
+08007: 0x3FE4             15 	.dw	16356
+                          16 
+                          17 	.segment	FUSE (ABS, =32776)
+08008: 0xFFFF             18 	.dw	65535
+                          19 
+                          20 	.segment	CODE0 (ABS, =0x0000)
+00000: 0x0000             21 	nop
+00001: 0x3180?            22 	movlp	main >> 8
+00002: 0x2800?            23 	goto	main
+                          24 
+                          25 	.segment	CODEi (REL, BEG)
+                          26 _$init$::
+00000: 0x01FF             27 	clrf	127
+00001: 0x01FE             28 	clrf	126
+                          29 
+                          30 	.segment	CODEi (REL, END)
+00000: 0x0008             31 	return
+                          32 
+                          33 	.segment	CODE1 (ABS, =0x0004, BEG)
+00004: 0x018A             34 	clrf	PCLATH
+00005: 0x0870             35 	movf	112, W
+00006: 0x001D             36 	movwi	--INDF1
+                          37 
+                          38 	.segment	CODE1 (REL, END)
+00000: 0x0016             39 	moviw	INDF1++
+00001: 0x00F0             40 	movwf	112
+00002: 0x0009             41 	retfie
+                          42 
+                          43 	.segment	CODE2 (REL) main:0
+                          44 main::
+                          45 	.psel	main, _$init$
+00000: 0x2000?            46 	call	_$init$
+00001: 0x30F0             47 	movlw	_$$
+00002: 0x0086             48 	movwf	FSR1L
+00003: 0x3020             49 	movlw	_$$>>8
+00004: 0x0087             50 	movwf	FSR1H
+                          51 ; :: main.c #12: OSCCON = 0x70;
+00005: 0x3070             52 	movlw	112
+00006: 0x0021             53 	movlb	1
+00007: 0x0099             54 	movwf	25
+                          55 ; :: main.c #13: OSCTUNE = 0x00;
+                          56 	.bsel	153, 152
+00008: 0x0198             57 	clrf	24
+                          58 ; :: main.c #14: BORCON = 0x00;
+                          59 	.bsel	152, 278
+00009: 0x0196             60 	clrf	22
+                          61 	.psel	_$init$, _$L2
+                          62 _$L2:
+                          63 ; :: main.c #15: while( !(OSCSTAT & (1 << 6)) )
+0000A: 0x0021             64 	movlb	1
+0000B: 0x1F1A             65 	btfss	26, 6
+0000C: 0x2800?            66 	goto	_$L2
+                          67 ; :: main.c #15: ;
+                          68 ; :: main.c #17: GIE = 1;
+0000D: 0x178B             69 	bsf	11, 7
+                          70 ; :: main.c #18: ANSELA = 0;
+                          71 	.bsel	154, 396
+0000E: 0x018C             72 	clrf	12
+                          73 ; :: main.c #20: TMR0_init();
+                          74 	.psel	_$L2, TMR0_init
+0000F: 0x2000?            75 	call	TMR0_init
+                          76 ; :: main.c #21: I2C_init();
+                          77 	.psel	TMR0_init, I2C_init
+00010: 0x2000?            78 	call	I2C_init
+                          79 ; :: main.c #22: OLED_init();
+                          80 	.psel	I2C_init, OLED_init
+00011: 0x2000?            81 	call	OLED_init
+                          82 ; :: main.c #23: KEY_init();
+                          83 	.psel	OLED_init, KEY_init
+00012: 0x2000?            84 	call	KEY_init
+                          85 ; :: main.c #24: RADIO_init();
+                          86 	.psel	KEY_init, RADIO_init
+00013: 0x2000?            87 	call	RADIO_init
+                          88 	.psel	RADIO_init, _$L5
+                          89 _$L5:
+                          90 ; :: main.c #28: RADIO_poll();
+                          91 	.psel	_$L5, RADIO_poll
+00014: 0x2000?            92 	call	RADIO_poll
+                          93 	.psel	RADIO_poll, _$L5
+00015: 0x2800?            94 	goto	_$L5
+                          95 	.psel	_$L5, main
+00016: 0x0008             96 	return
+                          97 ; function(s) called::
+                          98 	.fcall	main, RADIO_poll
+                          99 	.fcall	main, RADIO_init
+                         100 	.fcall	main, KEY_init
+                         101 	.fcall	main, OLED_init
+                         102 	.fcall	main, I2C_init
+                         103 	.fcall	main, TMR0_init
+                         104 	.fcall	main, _$init$
+                         105 
+                         106 	.end

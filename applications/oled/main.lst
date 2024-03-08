@@ -1,0 +1,191 @@
+                           1 ;**********************************************************
+                           2 ;  Microchip Enhanced PIC16F1xxx C Compiler (CC16E), v1.00
+                           3 ;  Thu Dec 07 16:12:49 2023
+                           4 ;**********************************************************
+                           5 	.invoke	"c:\p16ecc/include/pic16e"
+                           6 	.invoke	"c:\p16ecc/include/p16f18857"
+                           7 
+                           8 	.device	"p16f18857", 4096, 32768
+                           9 
+                          10 _$$::	.equ	0x2FF0	; stack init. value
+                          11 
+                          12 
+                          13 	.segment	FUSE (ABS, =32775)
+08007: 0x3F9C             14 	.dw	16284
+                          15 
+                          16 	.segment	FUSE (ABS, =32776)
+08008: 0x3FFF             17 	.dw	16383
+                          18 
+                          19 	.segment	FUSE (ABS, =32777)
+08009: 0x3F9F             20 	.dw	16287
+                          21 
+                          22 	.segment	FUSE (ABS, =32778)
+0800A: 0x3FFF             23 	.dw	16383
+                          24 
+                          25 	.segment	FUSE (ABS, =32779)
+0800B: 0x3FFF             26 	.dw	16383
+                          27 
+                          28 	.segment	CODE0 (ABS, =0x0000)
+00000: 0x0000             29 	nop
+00001: 0x3180?            30 	movlp	main >> 8
+00002: 0x2800?            31 	goto	main
+                          32 
+                          33 	.segment	CODEi (REL, BEG)
+                          34 _$init$::
+00000: 0x01FF             35 	clrf	127
+00001: 0x01FE             36 	clrf	126
+                          37 
+                          38 	.segment	CODEi (REL, END)
+00000: 0x0008             39 	return
+                          40 
+                          41 	.segment	CODE1 (ABS, =0x0004, BEG)
+00004: 0x018A             42 	clrf	PCLATH
+                          43 
+                          44 	.segment	CODE1 (REL, END)
+00000: 0x0009             45 	retfie
+                          46 
+                          47 	.segment	CODE2 (REL) main:1
+                          48 main_$1_c:	.equ	main_$data$+0
+                          49 main::
+                          50 	.psel	main, _$init$
+00000: 0x2000?            51 	call	_$init$
+00001: 0x30F0             52 	movlw	_$$
+00002: 0x0086             53 	movwf	FSR1L
+00003: 0x302F             54 	movlw	_$$>>8
+00004: 0x0087             55 	movwf	FSR1H
+                          56 ; :: main.c #20: OSCCON1 = 0x70;
+00005: 0x3070             57 	movlw	112
+00006: 0x0151             58 	movlb	17
+00007: 0x008D             59 	movwf	13
+                          60 ; :: main.c #21: OSCTUNE = 0x00;
+                          61 	.bsel	2189, 2194
+00008: 0x0192             62 	clrf	18
+                          63 	.psel	_$init$, _$L2
+                          64 _$L2:
+                          65 ; :: main.c #23: while( !(OSCSTAT & (1 << 6)) )
+00009: 0x0151             66 	movlb	17
+0000A: 0x1F10             67 	btfss	16, 6
+0000B: 0x2800?            68 	goto	_$L2
+                          69 ; :: main.c #23: ;
+                          70 ; :: main.c #25: GIE = 1;
+0000C: 0x178B             71 	bsf	11, 7
+                          72 ; :: main.c #26: PEIE = 1;
+0000D: 0x170B             73 	bsf	11, 6
+                          74 ; :: main.c #27: ANSELA = 0;
+                          75 	.bsel	2192, 7992
+0000E: 0x01B8             76 	clrf	56
+                          77 ; :: main.c #29: TMR0_init();
+                          78 	.psel	_$L2, TMR0_init
+0000F: 0x2000?            79 	call	TMR0_init
+                          80 ; :: main.c #30: I2C_init();
+                          81 	.psel	TMR0_init, I2C_init
+00010: 0x2000?            82 	call	I2C_init
+                          83 ; :: main.c #32: OLED_init();
+                          84 	.psel	I2C_init, OLED_init
+00011: 0x2000?            85 	call	OLED_init
+                          86 ; :: main.c #34: OLED_ShowStr(0, 0, "Hello, world!", 		FONT_SIZE_16x8);
+00012: 0x3000             87 	movlw	0
+00013: 0x001D             88 	movwi	--INDF1
+00014: 0x001D             89 	movwi	--INDF1
+00015: 0x3000?            90 	movlw	_$CS1
+00016: 0x001D             91 	movwi	--INDF1
+00017: 0x3000?            92 	movlw	(_$CS1)>>8
+00018: 0x001D             93 	movwi	--INDF1
+00019: 0x3001             94 	movlw	1
+0001A: 0x001D             95 	movwi	--INDF1
+                          96 	.psel	OLED_init, OLED_ShowStr
+0001B: 0x2000?            97 	call	OLED_ShowStr
+                          98 ; :: main.c #35: OLED_ShowStr(0, 7, "diycompiler@gmail.com", FONT_SIZE_8x6);
+0001C: 0x3000             99 	movlw	0
+0001D: 0x001D            100 	movwi	--INDF1
+0001E: 0x3007            101 	movlw	7
+0001F: 0x001D            102 	movwi	--INDF1
+00020: 0x3000?           103 	movlw	_$CS2
+00021: 0x001D            104 	movwi	--INDF1
+00022: 0x3000?           105 	movlw	(_$CS2)>>8
+00023: 0x001D            106 	movwi	--INDF1
+00024: 0x3000            107 	movlw	0
+00025: 0x001D            108 	movwi	--INDF1
+00026: 0x2000?           109 	call	OLED_ShowStr
+                         110 ; :: main.c #36: for (c = 0;
+00027: 0x0140?           111 	.bsel	main_$data$
+00028: 0x0180?           112 	clrf	main_$1_c
+                         113 	.psel	OLED_ShowStr, _$L5
+                         114 _$L5:
+                         115 ; :: main.c #38: OLED_travelImg(c);
+00029: 0x0140?           116 	.bsel	main_$data$
+0002A: 0x0800?           117 	movf	main_$1_c, W
+0002B: 0x001D            118 	movwi	--INDF1
+                         119 	.psel	_$L5, OLED_travelImg
+0002C: 0x2000?           120 	call	OLED_travelImg
+                         121 ; :: main.c #39: if ( ++c > 120 )
+0002D: 0x0140?           122 	.bsel	main_$data$
+0002E: 0x0A80?           123 	incf	main_$1_c, F
+0002F: 0x3078            124 	movlw	120
+00030: 0x0600?           125 	xorwf	main_$1_c, W
+00031: 0x001D            126 	movwi	--INDF1
+00032: 0x0600?           127 	xorwf	main_$1_c, W
+00033: 0x0200?           128 	subwf	main_$1_c, W
+                         129 	.psel	OLED_travelImg, _signedCmp
+00034: 0x2000?           130 	call	_signedCmp
+                         131 	.psel	_signedCmp, _$L5
+00035: 0x1C09            132 	btfss	9, 0
+00036: 0x2800?           133 	goto	_$L5
+                         134 ; :: main.c #39: c = -128;
+00037: 0x3080            135 	movlw	128
+00038: 0x0080?           136 	movwf	main_$1_c
+00039: 0x2800?           137 	goto	_$L5
+                         138 	.psel	_$L5, main
+0003A: 0x0008            139 	return
+                         140 ; function(s) called::
+                         141 	.fcall	main, _signedCmp
+                         142 	.fcall	main, OLED_travelImg
+                         143 	.fcall	main, OLED_ShowStr
+                         144 	.fcall	main, OLED_init
+                         145 	.fcall	main, I2C_init
+                         146 	.fcall	main, TMR0_init
+                         147 	.fcall	main, _$init$
+                         148 
+                         149 	.segment	CONSTi (REL)
+                         150 _$CS1:
+00000: 0x3448            151 	retlw	72
+00001: 0x3465            152 	retlw	101
+00002: 0x346C            153 	retlw	108
+00003: 0x346C            154 	retlw	108
+00004: 0x346F            155 	retlw	111
+00005: 0x342C            156 	retlw	44
+00006: 0x3420            157 	retlw	32
+00007: 0x3477            158 	retlw	119
+00008: 0x346F            159 	retlw	111
+00009: 0x3472            160 	retlw	114
+0000A: 0x346C            161 	retlw	108
+0000B: 0x3464            162 	retlw	100
+0000C: 0x3421            163 	retlw	33
+0000D: 0x3400            164 	retlw	0
+                         165 
+                         166 	.segment	CONSTi (REL)
+                         167 _$CS2:
+00000: 0x3464            168 	retlw	100
+00001: 0x3469            169 	retlw	105
+00002: 0x3479            170 	retlw	121
+00003: 0x3463            171 	retlw	99
+00004: 0x346F            172 	retlw	111
+00005: 0x346D            173 	retlw	109
+00006: 0x3470            174 	retlw	112
+00007: 0x3469            175 	retlw	105
+00008: 0x346C            176 	retlw	108
+00009: 0x3465            177 	retlw	101
+0000A: 0x3472            178 	retlw	114
+0000B: 0x3440            179 	retlw	64
+0000C: 0x3467            180 	retlw	103
+0000D: 0x346D            181 	retlw	109
+0000E: 0x3461            182 	retlw	97
+0000F: 0x3469            183 	retlw	105
+00010: 0x346C            184 	retlw	108
+00011: 0x342E            185 	retlw	46
+00012: 0x3463            186 	retlw	99
+00013: 0x346F            187 	retlw	111
+00014: 0x346D            188 	retlw	109
+00015: 0x3400            189 	retlw	0
+                         190 
+                         191 	.end

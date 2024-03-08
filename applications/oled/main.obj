@@ -1,0 +1,101 @@
+I "c:\p16ecc/include/pic16e"
+I "c:\p16ecc/include/p16f18857"
+P "p16f18857" 4096 32768
+E _$$ 12272
+S FUSE ABS 32775
+W 0x3F9C
+S FUSE ABS 32776
+W 0x3FFF
+S FUSE ABS 32777
+W 0x3F9F
+S FUSE ABS 32778
+W 0x3FFF
+S FUSE ABS 32779
+W 0x3FFF
+S CODE0 ABS 0
+W 0x0000 0x3180|((main>>8)&127) 0x2800|(main&2047)
+S CODEi REL BEG
+G _$init$
+W 0x01FF 0x01FE
+S CODEi REL END
+W 0x0008
+S CODE1 ABS 4 BEG
+W 0x018A
+S CODE1 REL END
+W 0x0009
+S CODE2 REL
+U main 1
+G main
+J main _$init$
+W 0x2000|(_$init$&2047) 0x30F0 0x0086 0x302F 0x0087
+; "; :: main.c #20: OSCCON1 = 0x70;"
+W 0x3070 0x0151 0x008D
+; "; :: main.c #21: OSCTUNE = 0x00;"
+K 2189 2194
+W 0x0192
+J _$init$ _$L2
+L _$L2
+; "; :: main.c #23: while( !(OSCSTAT & (1 << 6)) )"
+W 0x0151 0x1F10 0x2800|(_$L2&2047)
+; "; :: main.c #23: ;"
+; "; :: main.c #25: GIE = 1;"
+W 0x178B
+; "; :: main.c #26: PEIE = 1;"
+W 0x170B
+; "; :: main.c #27: ANSELA = 0;"
+K 2192 7992
+W 0x01B8
+; "; :: main.c #29: TMR0_init();"
+J _$L2 TMR0_init
+W 0x2000|(TMR0_init&2047)
+; "; :: main.c #30: I2C_init();"
+J TMR0_init I2C_init
+W 0x2000|(I2C_init&2047)
+; "; :: main.c #32: OLED_init();"
+J I2C_init OLED_init
+W 0x2000|(OLED_init&2047)
+; "; :: main.c #34: OLED_ShowStr(0, 0, "Hello, world!", 		FONT_SIZE_16x8);"
+W 0x3000 0x001D 0x001D 0x3000|(_$CS1&255) 0x001D 0x3000|((_$CS1>>8)&255) 0x001D
+W 0x3001 0x001D
+J OLED_init OLED_ShowStr
+W 0x2000|(OLED_ShowStr&2047)
+; "; :: main.c #35: OLED_ShowStr(0, 7, "diycompiler@gmail.com", FONT_SIZE_8x6);"
+W 0x3000 0x001D 0x3007 0x001D 0x3000|(_$CS2&255) 0x001D 0x3000|((_$CS2>>8)&255)
+W 0x001D 0x3000 0x001D 0x2000|(OLED_ShowStr&2047)
+; "; :: main.c #36: for (c = 0;"
+K main_$data$
+W 0x0180:main_$data$
+J OLED_ShowStr _$L5
+L _$L5
+; "; :: main.c #38: OLED_travelImg(c);"
+K main_$data$
+W 0x0800:main_$data$ 0x001D
+J _$L5 OLED_travelImg
+W 0x2000|(OLED_travelImg&2047)
+; "; :: main.c #39: if ( ++c > 120 )"
+K main_$data$
+W 0x0A80:main_$data$ 0x3078 0x0600:main_$data$ 0x001D 0x0600:main_$data$
+W 0x0200:main_$data$
+J OLED_travelImg _signedCmp
+W 0x2000|(_signedCmp&2047)
+J _signedCmp _$L5
+W 0x1C09 0x2800|(_$L5&2047)
+; "; :: main.c #39: c = -128;"
+W 0x3080 0x0080:main_$data$ 0x2800|(_$L5&2047)
+J _$L5 main
+W 0x0008
+F main _signedCmp
+F main OLED_travelImg
+F main OLED_ShowStr
+F main OLED_init
+F main I2C_init
+F main TMR0_init
+F main _$init$
+S CONSTi REL
+L _$CS1
+W 0x3448 0x3465 0x346C 0x346C 0x346F 0x342C 0x3420 0x3477 0x346F 0x3472 0x346C
+W 0x3464 0x3421 0x3400
+S CONSTi REL
+L _$CS2
+W 0x3464 0x3469 0x3479 0x3463 0x346F 0x346D 0x3470 0x3469 0x346C 0x3465 0x3472
+W 0x3440 0x3467 0x346D 0x3461 0x3469 0x346C 0x342E 0x3463 0x346F 0x346D 0x3400

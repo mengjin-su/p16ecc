@@ -1,0 +1,594 @@
+                           1 ;**********************************************************
+                           2 ;  Microchip Enhanced PIC16F1xxx C Compiler (CC16E), v1.00
+                           3 ;  Mon Dec 04 17:19:05 2023
+                           4 ;**********************************************************
+                           5 	.invoke	"c:\p16ecc/include/pic16e"
+                           6 	.invoke	"c:\p16ecc/include/p12f1840"
+                           7 
+                           8 	.device	"p12f1840", 256, 4096
+                           9 
+                          10 _$$::	.equ	0x20F0	; stack init. value
+                          11 
+                          12 
+                          13 	.segment	CODE2 (REL) OLED_setPos:3
+                          14 OLED_setPos_$_x:	.equ	OLED_setPos_$data$+0
+                          15 OLED_setPos_$_y:	.equ	OLED_setPos_$data$+1
+                          16 OLED_setPos_$1:	.equ	OLED_setPos_$data$+2
+                          17 OLED_setPos::
+00000: 0x0020?            18 	.bsel	OLED_setPos_$data$
+00001: 0x0016             19 	moviw	INDF1++
+00002: 0x0080?            20 	movwf	OLED_setPos_$data$+1
+00003: 0x0016             21 	moviw	INDF1++
+00004: 0x0080?            22 	movwf	OLED_setPos_$data$+0
+                          23 ; :: oled.c #19: OLED_command(0xb0+y);
+00005: 0x30B0             24 	movlw	176
+00006: 0x0700?            25 	addwf	OLED_setPos_$_y, W
+00007: 0x0080?            26 	movwf	OLED_setPos_$1
+00008: 0x0800?            27 	movf	OLED_setPos_$1, W
+00009: 0x001D             28 	movwi	--INDF1
+                          29 	.psel	OLED_setPos, OLED_command
+0000A: 0x2000?            30 	call	OLED_command
+                          31 ; :: oled.c #20: OLED_command((x >> 4)|0x10);
+0000B: 0x0020?            32 	.bsel	OLED_setPos_$data$
+0000C: 0x0800?            33 	movf	OLED_setPos_$_x, W
+0000D: 0x0080?            34 	movwf	OLED_setPos_$1
+0000E: 0x0E80?            35 	swapf	OLED_setPos_$1, F
+0000F: 0x300F             36 	movlw	15
+00010: 0x0580?            37 	andwf	OLED_setPos_$1, F
+00011: 0x1600?            38 	bsf	OLED_setPos_$1, 4
+00012: 0x0800?            39 	movf	OLED_setPos_$1, W
+00013: 0x001D             40 	movwi	--INDF1
+00014: 0x2000?            41 	call	OLED_command
+                          42 ; :: oled.c #21: OLED_command((x&0x0f)|0x01);
+00015: 0x0020?            43 	.bsel	OLED_setPos_$data$
+00016: 0x0800?            44 	movf	OLED_setPos_$_x, W
+00017: 0x390F             45 	andlw	15
+00018: 0x0080?            46 	movwf	OLED_setPos_$1
+00019: 0x1400?            47 	bsf	OLED_setPos_$1, 0
+0001A: 0x0800?            48 	movf	OLED_setPos_$1, W
+0001B: 0x001D             49 	movwi	--INDF1
+0001C: 0x2000?            50 	call	OLED_command
+                          51 	.psel	OLED_command, OLED_setPos
+0001D: 0x0008             52 	return
+                          53 ; function(s) called::
+                          54 	.fcall	OLED_setPos, OLED_command
+                          55 
+                          56 	.segment	CODE2 (REL) OLED_clr:4
+                          57 OLED_clr_$1_y:	.equ	OLED_clr_$data$+0
+                          58 OLED_clr_$2_x:	.equ	OLED_clr_$data$+1
+                          59 OLED_clr_$3_c:	.equ	OLED_clr_$data$+2
+                          60 OLED_clr_$1:	.equ	OLED_clr_$data$+3
+                          61 OLED_clr::
+00000: 0x0020?            62 	.bsel	OLED_clr_$data$
+00001: 0x0180?            63 	clrf	OLED_clr_$3_c
+                          64 ; :: oled.c #34: for (y = 0;
+00002: 0x0180?            65 	clrf	OLED_clr_$1_y
+                          66 	.psel	OLED_clr, _$L3
+                          67 _$L3:
+                          68 ; :: oled.c #34: y < OLED_HEIGHT/8;
+00003: 0x3004             69 	movlw	4
+00004: 0x0020?            70 	.bsel	OLED_clr_$data$
+00005: 0x0200?            71 	subwf	OLED_clr_$1_y, W
+                          72 	.psel	_$L3, _$L5
+00006: 0x1803             73 	btfsc	3, 0
+00007: 0x2800?            74 	goto	_$L5
+                          75 ; :: oled.c #36: OLED_command(0xb0+y);
+00008: 0x30B0             76 	movlw	176
+00009: 0x0700?            77 	addwf	OLED_clr_$1_y, W
+0000A: 0x0080?            78 	movwf	OLED_clr_$1
+0000B: 0x0800?            79 	movf	OLED_clr_$1, W
+0000C: 0x001D             80 	movwi	--INDF1
+                          81 	.psel	_$L5, OLED_command
+0000D: 0x2000?            82 	call	OLED_command
+                          83 ; :: oled.c #37: OLED_command(0x01);
+0000E: 0x3001             84 	movlw	1
+0000F: 0x001D             85 	movwi	--INDF1
+00010: 0x2000?            86 	call	OLED_command
+                          87 ; :: oled.c #38: OLED_command(0x10);
+00011: 0x3010             88 	movlw	16
+00012: 0x001D             89 	movwi	--INDF1
+00013: 0x2000?            90 	call	OLED_command
+                          91 ; :: oled.c #40: for (x = 0;
+00014: 0x0020?            92 	.bsel	OLED_clr_$data$
+00015: 0x0180?            93 	clrf	OLED_clr_$2_x
+                          94 	.psel	OLED_command, _$L7
+                          95 _$L7:
+                          96 ; :: oled.c #40: x < OLED_WIDTH;
+00016: 0x3080             97 	movlw	128
+00017: 0x0020?            98 	.bsel	OLED_clr_$data$
+00018: 0x0200?            99 	subwf	OLED_clr_$2_x, W
+                         100 	.psel	_$L7, _$L9
+00019: 0x1803            101 	btfsc	3, 0
+0001A: 0x2800?           102 	goto	_$L9
+                         103 ; :: oled.c #41: OLED_data(&c, 1);
+0001B: 0x3000?           104 	movlw	OLED_clr_$3_c
+0001C: 0x001D            105 	movwi	--INDF1
+0001D: 0x3000?           106 	movlw	(OLED_clr_$3_c)>>8
+0001E: 0x001D            107 	movwi	--INDF1
+0001F: 0x3001            108 	movlw	1
+00020: 0x001D            109 	movwi	--INDF1
+                         110 	.psel	_$L9, OLED_data
+00021: 0x2000?           111 	call	OLED_data
+                         112 ; :: oled.c #40: x++)
+00022: 0x0020?           113 	.bsel	OLED_clr_$data$
+00023: 0x0A80?           114 	incf	OLED_clr_$2_x, F
+                         115 	.psel	OLED_data, _$L7
+00024: 0x2800?           116 	goto	_$L7
+                         117 	.psel	_$L7, _$L9
+                         118 _$L9:
+                         119 ; :: oled.c #34: y++)
+00025: 0x0020?           120 	.bsel	OLED_clr_$data$
+00026: 0x0A80?           121 	incf	OLED_clr_$1_y, F
+                         122 	.psel	_$L9, _$L3
+00027: 0x2800?           123 	goto	_$L3
+                         124 	.psel	_$L3, _$L5
+                         125 _$L5:
+                         126 	.psel	_$L5, OLED_clr
+00028: 0x0008            127 	return
+                         128 ; function(s) called::
+                         129 	.fcall	OLED_clr, OLED_data
+                         130 	.fcall	OLED_clr, OLED_command
+                         131 
+                         132 	.segment	CODE2 (REL) OLED_init:3
+                         133 OLED_init_$1_i:	.equ	OLED_init_$data$+0
+                         134 OLED_init_$1:	.equ	OLED_init_$data$+1
+                         135 OLED_init::
+                         136 ; :: oled.c #57: TMR0_delayMs(100);
+00000: 0x3064            137 	movlw	100
+00001: 0x001D            138 	movwi	--INDF1
+                         139 	.psel	OLED_init, TMR0_delayMs
+00002: 0x2000?           140 	call	TMR0_delayMs
+                         141 ; :: oled.c #59: for (i = 0;
+00003: 0x0020?           142 	.bsel	OLED_init_$data$
+00004: 0x0180?           143 	clrf	OLED_init_$1_i
+                         144 	.psel	TMR0_delayMs, _$L12
+                         145 _$L12:
+                         146 ; :: oled.c #59: i < sizeof(oledInitCmdList);
+00005: 0x301E            147 	movlw	30
+00006: 0x0020?           148 	.bsel	OLED_init_$data$
+00007: 0x0200?           149 	subwf	OLED_init_$1_i, W
+                         150 	.psel	_$L12, _$L14
+00008: 0x1803            151 	btfsc	3, 0
+00009: 0x2800?           152 	goto	_$L14
+                         153 ; :: oled.c #60: OLED_command(oledInitCmdList[i]);
+0000A: 0x3000?           154 	movlw	oledInitCmdList
+0000B: 0x0700?           155 	addwf	OLED_init_$1_i, W
+0000C: 0x0080?           156 	movwf	OLED_init_$1
+0000D: 0x3000?           157 	movlw	(oledInitCmdList)>>8
+0000E: 0x3D7F            158 	addwfc	127, W
+0000F: 0x0080?           159 	movwf	OLED_init_$1+1
+00010: 0x0800?           160 	movf	OLED_init_$1, W
+00011: 0x0084            161 	movwf	FSR0L
+00012: 0x0800?           162 	movf	OLED_init_$1+1, W
+00013: 0x0085            163 	movwf	FSR0H
+00014: 0x3F00            164 	moviw	0[INDF0]
+00015: 0x001D            165 	movwi	--INDF1
+                         166 	.psel	_$L14, OLED_command
+00016: 0x2000?           167 	call	OLED_command
+                         168 ; :: oled.c #59: i++)
+00017: 0x0020?           169 	.bsel	OLED_init_$data$
+00018: 0x0A80?           170 	incf	OLED_init_$1_i, F
+                         171 	.psel	OLED_command, _$L12
+00019: 0x2800?           172 	goto	_$L12
+                         173 	.psel	_$L12, _$L14
+                         174 _$L14:
+                         175 ; :: oled.c #62: TMR0_delayMs(100);
+0001A: 0x3064            176 	movlw	100
+0001B: 0x001D            177 	movwi	--INDF1
+                         178 	.psel	_$L14, TMR0_delayMs
+0001C: 0x2000?           179 	call	TMR0_delayMs
+                         180 ; :: oled.c #64: OLED_clr();
+                         181 	.psel	TMR0_delayMs, OLED_clr
+0001D: 0x2000?           182 	call	OLED_clr
+                         183 	.psel	OLED_clr, OLED_init
+0001E: 0x0008            184 	return
+                         185 ; function(s) called::
+                         186 	.fcall	OLED_init, OLED_clr
+                         187 	.fcall	OLED_init, OLED_command
+                         188 	.fcall	OLED_init, TMR0_delayMs
+                         189 
+                         190 	.segment	CODE2 (REL) OLED_command:1
+                         191 OLED_command_$_cmd:	.equ	OLED_command_$data$+0
+                         192 OLED_command::
+00000: 0x0020?           193 	.bsel	OLED_command_$data$
+00001: 0x0016            194 	moviw	INDF1++
+00002: 0x0080?           195 	movwf	OLED_command_$data$+0
+                         196 ; :: oled.c #70: I2C_start(SSD1306_IIC_ADDR);
+00003: 0x3078            197 	movlw	120
+00004: 0x001D            198 	movwi	--INDF1
+                         199 	.psel	OLED_command, I2C_start
+00005: 0x2000?           200 	call	I2C_start
+                         201 ; :: oled.c #71: I2C_writeByte(SSD1306_IIC_CMD_MASK);
+00006: 0x3000            202 	movlw	0
+00007: 0x001D            203 	movwi	--INDF1
+                         204 	.psel	I2C_start, I2C_writeByte
+00008: 0x2000?           205 	call	I2C_writeByte
+                         206 ; :: oled.c #72: I2C_writeByte(cmd);
+00009: 0x0020?           207 	.bsel	OLED_command_$data$
+0000A: 0x0800?           208 	movf	OLED_command_$_cmd, W
+0000B: 0x001D            209 	movwi	--INDF1
+0000C: 0x2000?           210 	call	I2C_writeByte
+                         211 ; :: oled.c #73: I2C_end();
+                         212 	.psel	I2C_writeByte, I2C_end
+0000D: 0x2000?           213 	call	I2C_end
+                         214 	.psel	I2C_end, OLED_command
+0000E: 0x0008            215 	return
+                         216 ; function(s) called::
+                         217 	.fcall	OLED_command, I2C_end
+                         218 	.fcall	OLED_command, I2C_writeByte
+                         219 	.fcall	OLED_command, I2C_start
+                         220 
+                         221 	.segment	CODE2 (REL) OLED_data:5
+                         222 OLED_data_$_dat:	.equ	OLED_data_$data$+0
+                         223 OLED_data_$_length:	.equ	OLED_data_$data$+2
+                         224 OLED_data_$1:	.equ	OLED_data_$data$+3
+                         225 OLED_data::
+00000: 0x3000?           226 	movlw	OLED_data_$data$+3
+00001: 0x0084            227 	movwf	FSR0L
+00002: 0x3000?           228 	movlw	(OLED_data_$data$+3)>>8
+00003: 0x0085            229 	movwf	FSR0H
+00004: 0x0023            230 	movlb	3
+                         231 	.psel	OLED_data, _copyPar
+00005: 0x2000?           232 	call	_copyPar
+                         233 ; :: oled.c #78: I2C_start(SSD1306_IIC_ADDR);
+00006: 0x3078            234 	movlw	120
+00007: 0x001D            235 	movwi	--INDF1
+                         236 	.psel	_copyPar, I2C_start
+00008: 0x2000?           237 	call	I2C_start
+                         238 ; :: oled.c #79: I2C_writeByte(SSD1306_IIC_DAT_MASK);
+00009: 0x3040            239 	movlw	64
+0000A: 0x001D            240 	movwi	--INDF1
+                         241 	.psel	I2C_start, I2C_writeByte
+0000B: 0x2000?           242 	call	I2C_writeByte
+                         243 	.psel	I2C_writeByte, _$L18
+                         244 _$L18:
+                         245 ; :: oled.c #80: while ( length-- )
+0000C: 0x0020?           246 	.bsel	OLED_data_$data$
+0000D: 0x0380?           247 	decf	OLED_data_$_length, F
+0000E: 0x0A00?           248 	incf	OLED_data_$_length, W
+                         249 	.psel	_$L18, _$L20
+0000F: 0x1903            250 	btfsc	3, 2
+00010: 0x2800?           251 	goto	_$L20
+                         252 ; :: oled.c #80: I2C_writeByte(*dat++);
+00011: 0x0800?           253 	movf	OLED_data_$_dat, W
+00012: 0x0080?           254 	movwf	OLED_data_$1
+00013: 0x0800?           255 	movf	OLED_data_$_dat+1, W
+00014: 0x0080?           256 	movwf	OLED_data_$1+1
+00015: 0x0A80?           257 	incf	OLED_data_$_dat, F
+00016: 0x1903            258 	btfsc	3, 2
+00017: 0x0A80?           259 	incf	OLED_data_$_dat+1, F
+00018: 0x0800?           260 	movf	OLED_data_$1, W
+00019: 0x0084            261 	movwf	FSR0L
+0001A: 0x0800?           262 	movf	OLED_data_$1+1, W
+0001B: 0x0085            263 	movwf	FSR0H
+0001C: 0x3F00            264 	moviw	0[INDF0]
+0001D: 0x001D            265 	movwi	--INDF1
+                         266 	.psel	_$L20, I2C_writeByte
+0001E: 0x2000?           267 	call	I2C_writeByte
+                         268 	.psel	I2C_writeByte, _$L18
+0001F: 0x2800?           269 	goto	_$L18
+                         270 	.psel	_$L18, _$L20
+                         271 _$L20:
+                         272 ; :: oled.c #81: I2C_end();
+                         273 	.psel	_$L20, I2C_end
+00020: 0x2000?           274 	call	I2C_end
+                         275 	.psel	I2C_end, OLED_data
+00021: 0x0008            276 	return
+                         277 ; function(s) called::
+                         278 	.fcall	OLED_data, I2C_end
+                         279 	.fcall	OLED_data, I2C_writeByte
+                         280 	.fcall	OLED_data, I2C_start
+                         281 	.fcall	OLED_data, _copyPar
+                         282 
+                         283 	.segment	CODE2 (REL) OLED_displayChar_8x6_str:6
+                         284 OLED_displayChar_8x6_str_$_x:	.equ	OLED_displayChar_8x6_str_$data$+0
+                         285 OLED_displayChar_8x6_str_$_y:	.equ	OLED_displayChar_8x6_str_$data$+1
+                         286 OLED_displayChar_8x6_str_$_sp:	.equ	OLED_displayChar_8x6_str_$data$+2
+                         287 OLED_displayChar_8x6_str_$1:	.equ	OLED_displayChar_8x6_str_$data$+4
+                         288 OLED_displayChar_8x6_str::
+00000: 0x3000?           289 	movlw	OLED_displayChar_8x6_str_$data$+4
+00001: 0x0084            290 	movwf	FSR0L
+00002: 0x3000?           291 	movlw	(OLED_displayChar_8x6_str_$data$+4)>>8
+00003: 0x0085            292 	movwf	FSR0H
+00004: 0x0024            293 	movlb	4
+                         294 	.psel	OLED_displayChar_8x6_str, _copyPar
+00005: 0x2000?           295 	call	_copyPar
+                         296 	.psel	_copyPar, _$L22
+                         297 _$L22:
+                         298 ; :: oled.c #126: while ( *sp )
+00006: 0x0020?           299 	.bsel	OLED_displayChar_8x6_str_$data$
+00007: 0x0800?           300 	movf	OLED_displayChar_8x6_str_$_sp, W
+00008: 0x0084            301 	movwf	FSR0L
+00009: 0x0800?           302 	movf	OLED_displayChar_8x6_str_$_sp+1, W
+0000A: 0x0085            303 	movwf	FSR0H
+0000B: 0x3F00            304 	moviw	0[INDF0]
+                         305 	.psel	_$L22, _$L24
+0000C: 0x1903            306 	btfsc	3, 2
+0000D: 0x2800?           307 	goto	_$L24
+                         308 ; :: oled.c #128: OLED_setPos(x, y);
+0000E: 0x0800?           309 	movf	OLED_displayChar_8x6_str_$_x, W
+0000F: 0x001D            310 	movwi	--INDF1
+00010: 0x0800?           311 	movf	OLED_displayChar_8x6_str_$_y, W
+00011: 0x001D            312 	movwi	--INDF1
+                         313 	.psel	_$L24, OLED_setPos
+00012: 0x2000?           314 	call	OLED_setPos
+                         315 ; :: oled.c #129: OLED_data(FONT_6x8[*sp++ - 32], 6);
+00013: 0x0020?           316 	.bsel	OLED_displayChar_8x6_str_$data$
+00014: 0x0800?           317 	movf	OLED_displayChar_8x6_str_$_sp, W
+00015: 0x0080?           318 	movwf	OLED_displayChar_8x6_str_$1
+00016: 0x0800?           319 	movf	OLED_displayChar_8x6_str_$_sp+1, W
+00017: 0x0080?           320 	movwf	OLED_displayChar_8x6_str_$1+1
+00018: 0x0A80?           321 	incf	OLED_displayChar_8x6_str_$_sp, F
+00019: 0x1903            322 	btfsc	3, 2
+0001A: 0x0A80?           323 	incf	OLED_displayChar_8x6_str_$_sp+1, F
+0001B: 0x0800?           324 	movf	OLED_displayChar_8x6_str_$1, W
+0001C: 0x0084            325 	movwf	FSR0L
+0001D: 0x0800?           326 	movf	OLED_displayChar_8x6_str_$1+1, W
+0001E: 0x0085            327 	movwf	FSR0H
+0001F: 0x3020            328 	movlw	32
+00020: 0x0200            329 	subwf	INDF0, W
+00021: 0x0080?           330 	movwf	OLED_displayChar_8x6_str_$1
+00022: 0x3101            331 	addfsr	INDF0, 1
+00023: 0x0100            332 	clrw
+00024: 0x3B7F            333 	subwfb	127, W
+00025: 0x0080?           334 	movwf	OLED_displayChar_8x6_str_$1+1
+00026: 0x3006            335 	movlw	6
+00027: 0x001D            336 	movwi	--INDF1
+00028: 0x3000            337 	movlw	0
+00029: 0x001D            338 	movwi	--INDF1
+0002A: 0x3000?           339 	movlw	OLED_displayChar_8x6_str_$1
+0002B: 0x0084            340 	movwf	FSR0L
+0002C: 0x3000?           341 	movlw	OLED_displayChar_8x6_str_$1>>8
+0002D: 0x0085            342 	movwf	FSR0H
+                         343 	.psel	OLED_setPos, _mul16indf
+0002E: 0x2000?           344 	call	_mul16indf
+0002F: 0x3000?           345 	movlw	FONT_6x8
+00030: 0x0780?           346 	addwf	OLED_displayChar_8x6_str_$1, F
+00031: 0x3000?           347 	movlw	(FONT_6x8)>>8
+00032: 0x3D80?           348 	addwfc	OLED_displayChar_8x6_str_$1+1, F
+00033: 0x0800?           349 	movf	OLED_displayChar_8x6_str_$1, W
+00034: 0x001D            350 	movwi	--INDF1
+00035: 0x0800?           351 	movf	OLED_displayChar_8x6_str_$1+1, W
+00036: 0x001D            352 	movwi	--INDF1
+00037: 0x3006            353 	movlw	6
+00038: 0x001D            354 	movwi	--INDF1
+                         355 	.psel	_mul16indf, OLED_data
+00039: 0x2000?           356 	call	OLED_data
+                         357 ; :: oled.c #130: x += 6;
+0003A: 0x3006            358 	movlw	6
+0003B: 0x0020?           359 	.bsel	OLED_displayChar_8x6_str_$data$
+0003C: 0x0780?           360 	addwf	OLED_displayChar_8x6_str_$_x, F
+                         361 	.psel	OLED_data, _$L22
+0003D: 0x2800?           362 	goto	_$L22
+                         363 	.psel	_$L22, _$L24
+                         364 _$L24:
+                         365 	.psel	_$L24, OLED_displayChar_8x6_str
+0003E: 0x0008            366 	return
+                         367 ; function(s) called::
+                         368 	.fcall	OLED_displayChar_8x6_str, OLED_data
+                         369 	.fcall	OLED_displayChar_8x6_str, _mul16indf
+                         370 	.fcall	OLED_displayChar_8x6_str, OLED_setPos
+                         371 	.fcall	OLED_displayChar_8x6_str, _copyPar
+                         372 
+                         373 	.segment	CODE2 (REL) OLED_displayChar_32x19:5
+                         374 OLED_displayChar_32x19_$_x:	.equ	OLED_displayChar_32x19_$data$+0
+                         375 OLED_displayChar_32x19_$_fp:	.equ	OLED_displayChar_32x19_$data$+1
+                         376 OLED_displayChar_32x19_$1_i:	.equ	OLED_displayChar_32x19_$data$+3
+                         377 OLED_displayChar_32x19_$2_y:	.equ	OLED_displayChar_32x19_$data$+4
+                         378 OLED_displayChar_32x19::
+00000: 0x3000?           379 	movlw	OLED_displayChar_32x19_$data$+3
+00001: 0x0084            380 	movwf	FSR0L
+00002: 0x3000?           381 	movlw	(OLED_displayChar_32x19_$data$+3)>>8
+00003: 0x0085            382 	movwf	FSR0H
+00004: 0x0023            383 	movlb	3
+                         384 	.psel	OLED_displayChar_32x19, _copyPar
+00005: 0x2000?           385 	call	_copyPar
+                         386 ; :: oled.c #137: for (y = 0;
+                         387 	.bsel	0, OLED_displayChar_32x19_$data$
+00006: 0x0180?           388 	clrf	OLED_displayChar_32x19_$2_y
+                         389 	.psel	_copyPar, _$L26
+                         390 _$L26:
+                         391 ; :: oled.c #137: y < 4;
+00007: 0x3004            392 	movlw	4
+00008: 0x0020?           393 	.bsel	OLED_displayChar_32x19_$data$
+00009: 0x0200?           394 	subwf	OLED_displayChar_32x19_$2_y, W
+                         395 	.psel	_$L26, _$L28
+0000A: 0x1803            396 	btfsc	3, 0
+0000B: 0x2800?           397 	goto	_$L28
+                         398 ; :: oled.c #139: OLED_setPos(x, y);
+0000C: 0x0800?           399 	movf	OLED_displayChar_32x19_$_x, W
+0000D: 0x001D            400 	movwi	--INDF1
+0000E: 0x0800?           401 	movf	OLED_displayChar_32x19_$2_y, W
+0000F: 0x001D            402 	movwi	--INDF1
+                         403 	.psel	_$L28, OLED_setPos
+00010: 0x2000?           404 	call	OLED_setPos
+                         405 ; :: oled.c #140: OLED_data(fp, 19);
+00011: 0x0020?           406 	.bsel	OLED_displayChar_32x19_$data$
+00012: 0x0800?           407 	movf	OLED_displayChar_32x19_$_fp, W
+00013: 0x001D            408 	movwi	--INDF1
+00014: 0x0800?           409 	movf	OLED_displayChar_32x19_$_fp+1, W
+00015: 0x001D            410 	movwi	--INDF1
+00016: 0x3013            411 	movlw	19
+00017: 0x001D            412 	movwi	--INDF1
+                         413 	.psel	OLED_setPos, OLED_data
+00018: 0x2000?           414 	call	OLED_data
+                         415 ; :: oled.c #141: fp += 19;
+00019: 0x3013            416 	movlw	19
+0001A: 0x0020?           417 	.bsel	OLED_displayChar_32x19_$data$
+0001B: 0x0780?           418 	addwf	OLED_displayChar_32x19_$_fp, F
+0001C: 0x3000            419 	movlw	0
+0001D: 0x3D80?           420 	addwfc	OLED_displayChar_32x19_$_fp+1, F
+                         421 ; :: oled.c #137: y++)
+0001E: 0x0A80?           422 	incf	OLED_displayChar_32x19_$2_y, F
+                         423 	.psel	OLED_data, _$L26
+0001F: 0x2800?           424 	goto	_$L26
+                         425 	.psel	_$L26, _$L28
+                         426 _$L28:
+                         427 	.psel	_$L28, OLED_displayChar_32x19
+00020: 0x0008            428 	return
+                         429 ; function(s) called::
+                         430 	.fcall	OLED_displayChar_32x19, OLED_data
+                         431 	.fcall	OLED_displayChar_32x19, OLED_setPos
+                         432 	.fcall	OLED_displayChar_32x19, _copyPar
+                         433 
+                         434 	.segment	CODE2 (REL) OLED_displayChar_32x10:5
+                         435 OLED_displayChar_32x10_$_x:	.equ	OLED_displayChar_32x10_$data$+0
+                         436 OLED_displayChar_32x10_$_fp:	.equ	OLED_displayChar_32x10_$data$+1
+                         437 OLED_displayChar_32x10_$1_i:	.equ	OLED_displayChar_32x10_$data$+3
+                         438 OLED_displayChar_32x10_$2_y:	.equ	OLED_displayChar_32x10_$data$+4
+                         439 OLED_displayChar_32x10::
+00000: 0x3000?           440 	movlw	OLED_displayChar_32x10_$data$+3
+00001: 0x0084            441 	movwf	FSR0L
+00002: 0x3000?           442 	movlw	(OLED_displayChar_32x10_$data$+3)>>8
+00003: 0x0085            443 	movwf	FSR0H
+00004: 0x0023            444 	movlb	3
+                         445 	.psel	OLED_displayChar_32x10, _copyPar
+00005: 0x2000?           446 	call	_copyPar
+                         447 ; :: oled.c #148: for (y = 0;
+                         448 	.bsel	0, OLED_displayChar_32x10_$data$
+00006: 0x0180?           449 	clrf	OLED_displayChar_32x10_$2_y
+                         450 	.psel	_copyPar, _$L31
+                         451 _$L31:
+                         452 ; :: oled.c #148: y < 4;
+00007: 0x3004            453 	movlw	4
+00008: 0x0020?           454 	.bsel	OLED_displayChar_32x10_$data$
+00009: 0x0200?           455 	subwf	OLED_displayChar_32x10_$2_y, W
+                         456 	.psel	_$L31, _$L33
+0000A: 0x1803            457 	btfsc	3, 0
+0000B: 0x2800?           458 	goto	_$L33
+                         459 ; :: oled.c #150: OLED_setPos(x, y);
+0000C: 0x0800?           460 	movf	OLED_displayChar_32x10_$_x, W
+0000D: 0x001D            461 	movwi	--INDF1
+0000E: 0x0800?           462 	movf	OLED_displayChar_32x10_$2_y, W
+0000F: 0x001D            463 	movwi	--INDF1
+                         464 	.psel	_$L33, OLED_setPos
+00010: 0x2000?           465 	call	OLED_setPos
+                         466 ; :: oled.c #151: OLED_data(fp, 10);
+00011: 0x0020?           467 	.bsel	OLED_displayChar_32x10_$data$
+00012: 0x0800?           468 	movf	OLED_displayChar_32x10_$_fp, W
+00013: 0x001D            469 	movwi	--INDF1
+00014: 0x0800?           470 	movf	OLED_displayChar_32x10_$_fp+1, W
+00015: 0x001D            471 	movwi	--INDF1
+00016: 0x300A            472 	movlw	10
+00017: 0x001D            473 	movwi	--INDF1
+                         474 	.psel	OLED_setPos, OLED_data
+00018: 0x2000?           475 	call	OLED_data
+                         476 ; :: oled.c #152: fp += 10;
+00019: 0x300A            477 	movlw	10
+0001A: 0x0020?           478 	.bsel	OLED_displayChar_32x10_$data$
+0001B: 0x0780?           479 	addwf	OLED_displayChar_32x10_$_fp, F
+0001C: 0x3000            480 	movlw	0
+0001D: 0x3D80?           481 	addwfc	OLED_displayChar_32x10_$_fp+1, F
+                         482 ; :: oled.c #148: y++)
+0001E: 0x0A80?           483 	incf	OLED_displayChar_32x10_$2_y, F
+                         484 	.psel	OLED_data, _$L31
+0001F: 0x2800?           485 	goto	_$L31
+                         486 	.psel	_$L31, _$L33
+                         487 _$L33:
+                         488 	.psel	_$L33, OLED_displayChar_32x10
+00020: 0x0008            489 	return
+                         490 ; function(s) called::
+                         491 	.fcall	OLED_displayChar_32x10, OLED_data
+                         492 	.fcall	OLED_displayChar_32x10, OLED_setPos
+                         493 	.fcall	OLED_displayChar_32x10, _copyPar
+                         494 
+                         495 	.segment	CODE2 (REL) OLED_displayChar_16:7
+                         496 OLED_displayChar_16_$_x:	.equ	OLED_displayChar_16_$data$+0
+                         497 OLED_displayChar_16_$_y:	.equ	OLED_displayChar_16_$data$+1
+                         498 OLED_displayChar_16_$_fp:	.equ	OLED_displayChar_16_$data$+2
+                         499 OLED_displayChar_16_$_width:	.equ	OLED_displayChar_16_$data$+4
+                         500 OLED_displayChar_16_$1_row:	.equ	OLED_displayChar_16_$data$+5
+                         501 OLED_displayChar_16_$1:	.equ	OLED_displayChar_16_$data$+6
+                         502 OLED_displayChar_16::
+00000: 0x3000?           503 	movlw	OLED_displayChar_16_$data$+5
+00001: 0x0084            504 	movwf	FSR0L
+00002: 0x3000?           505 	movlw	(OLED_displayChar_16_$data$+5)>>8
+00003: 0x0085            506 	movwf	FSR0H
+00004: 0x0025            507 	movlb	5
+                         508 	.psel	OLED_displayChar_16, _copyPar
+00005: 0x2000?           509 	call	_copyPar
+                         510 ; :: oled.c #159: for (row = 0;
+                         511 	.bsel	0, OLED_displayChar_16_$data$
+00006: 0x0180?           512 	clrf	OLED_displayChar_16_$1_row
+                         513 	.psel	_copyPar, _$L36
+                         514 _$L36:
+                         515 ; :: oled.c #159: row < 2;
+00007: 0x3002            516 	movlw	2
+00008: 0x0020?           517 	.bsel	OLED_displayChar_16_$data$
+00009: 0x0200?           518 	subwf	OLED_displayChar_16_$1_row, W
+                         519 	.psel	_$L36, _$L38
+0000A: 0x1803            520 	btfsc	3, 0
+0000B: 0x2800?           521 	goto	_$L38
+                         522 ; :: oled.c #161: OLED_setPos(x, y+row);
+0000C: 0x0800?           523 	movf	OLED_displayChar_16_$_x, W
+0000D: 0x001D            524 	movwi	--INDF1
+0000E: 0x0800?           525 	movf	OLED_displayChar_16_$1_row, W
+0000F: 0x0700?           526 	addwf	OLED_displayChar_16_$_y, W
+00010: 0x0080?           527 	movwf	OLED_displayChar_16_$1
+00011: 0x0800?           528 	movf	OLED_displayChar_16_$1, W
+00012: 0x001D            529 	movwi	--INDF1
+                         530 	.psel	_$L38, OLED_setPos
+00013: 0x2000?           531 	call	OLED_setPos
+                         532 ; :: oled.c #162: OLED_data(fp, width);
+00014: 0x0020?           533 	.bsel	OLED_displayChar_16_$data$
+00015: 0x0800?           534 	movf	OLED_displayChar_16_$_fp, W
+00016: 0x001D            535 	movwi	--INDF1
+00017: 0x0800?           536 	movf	OLED_displayChar_16_$_fp+1, W
+00018: 0x001D            537 	movwi	--INDF1
+00019: 0x0800?           538 	movf	OLED_displayChar_16_$_width, W
+0001A: 0x001D            539 	movwi	--INDF1
+                         540 	.psel	OLED_setPos, OLED_data
+0001B: 0x2000?           541 	call	OLED_data
+                         542 ; :: oled.c #163: fp += width;
+0001C: 0x0020?           543 	.bsel	OLED_displayChar_16_$data$
+0001D: 0x0800?           544 	movf	OLED_displayChar_16_$_width, W
+0001E: 0x0780?           545 	addwf	OLED_displayChar_16_$_fp, F
+0001F: 0x3000            546 	movlw	0
+00020: 0x3D80?           547 	addwfc	OLED_displayChar_16_$_fp+1, F
+                         548 ; :: oled.c #159: row++)
+00021: 0x0A80?           549 	incf	OLED_displayChar_16_$1_row, F
+                         550 	.psel	OLED_data, _$L36
+00022: 0x2800?           551 	goto	_$L36
+                         552 	.psel	_$L36, _$L38
+                         553 _$L38:
+                         554 	.psel	_$L38, OLED_displayChar_16
+00023: 0x0008            555 	return
+                         556 ; function(s) called::
+                         557 	.fcall	OLED_displayChar_16, OLED_data
+                         558 	.fcall	OLED_displayChar_16, OLED_setPos
+                         559 	.fcall	OLED_displayChar_16, _copyPar
+                         560 
+                         561 	.segment	CONSTi (REL)
+                         562 oledInitCmdList:
+00000: 0x34AE            563 	retlw	174
+00001: 0x3400            564 	retlw	0
+00002: 0x3410            565 	retlw	16
+00003: 0x3440            566 	retlw	64
+00004: 0x34B0            567 	retlw	176
+00005: 0x3481            568 	retlw	129
+00006: 0x34FF            569 	retlw	255
+00007: 0x34A1            570 	retlw	161
+00008: 0x34A6            571 	retlw	166
+00009: 0x34A8            572 	retlw	168
+0000A: 0x341F            573 	retlw	31
+0000B: 0x34C8            574 	retlw	200
+0000C: 0x34D3            575 	retlw	211
+0000D: 0x3400            576 	retlw	0
+0000E: 0x34D5            577 	retlw	213
+0000F: 0x3480            578 	retlw	128
+00010: 0x34D9            579 	retlw	217
+00011: 0x34F1            580 	retlw	241
+00012: 0x34DA            581 	retlw	218
+00013: 0x3402            582 	retlw	2
+00014: 0x34DB            583 	retlw	219
+00015: 0x3440            584 	retlw	64
+00016: 0x348D            585 	retlw	141
+00017: 0x3414            586 	retlw	20
+00018: 0x3420            587 	retlw	32
+00019: 0x3402            588 	retlw	2
+0001A: 0x34A4            589 	retlw	164
+0001B: 0x34A6            590 	retlw	166
+0001C: 0x342E            591 	retlw	46
+0001D: 0x34AF            592 	retlw	175
+                         593 
+                         594 	.end

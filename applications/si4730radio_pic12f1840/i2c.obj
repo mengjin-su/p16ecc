@@ -1,0 +1,205 @@
+I "c:\p16ecc/include/pic16e"
+I "c:\p16ecc/include/p12f1840"
+P "p12f1840" 256 4096
+E _$$ 8432
+S CODE2 REL
+U I2C_init 0
+G I2C_init
+; "; :: i2c.c #5: TRISA |= ((1 << SCL_PIN) | (1 << SDA_PIN));"
+W 0x3006 0x0021 0x048C
+; "; :: i2c.c #6: LATA &= ~((1 << SCL_PIN) | (1 << SDA_PIN));"
+W 0x30F9
+K 140 268
+W 0x058C 0x0008
+S CODE2 REL
+U I2C_delay 1
+L I2C_delay
+W 0x3002
+K I2C_delay_$data$
+W 0x0080:I2C_delay_$data$
+J I2C_delay _$L3
+L _$L3
+; "; :: i2c.c #12: while ( --n )"
+K I2C_delay_$data$
+W 0x0B80:I2C_delay_$data$ 0x2800|(_$L3&2047)
+; "; :: i2c.c #12: ;"
+J _$L3 I2C_delay
+W 0x0008
+S CODE2 REL
+U I2C_start 1
+G I2C_start
+K I2C_start_$data$
+W 0x0016 0x0080:I2C_start_$data$
+; "; :: i2c.c #17: SDA_LO;"
+K I2C_start_$data$ 140
+W 0x110C
+; "; :: i2c.c #17: asm(" nop");"
+W 0x0000
+; "; :: i2c.c #17: asm(" nop");"
+W 0x0000
+; "; :: i2c.c #17: asm(" nop");"
+W 0x0000
+; "; :: i2c.c #17: asm(" nop");"
+W 0x0000
+; "; :: i2c.c #18: SCL_LO;"
+K 140 140
+W 0x108C
+; "; :: i2c.c #18: I2C_delay();"
+J I2C_start I2C_delay
+W 0x2000|(I2C_delay&2047)
+; "; :: i2c.c #19: I2C_writeByte(addr);"
+K I2C_start_$data$
+W 0x0800:I2C_start_$data$ 0x001D
+J I2C_delay I2C_writeByte
+W 0x2000|(I2C_writeByte&2047)
+J I2C_writeByte I2C_start
+W 0x0008
+F I2C_start I2C_writeByte
+F I2C_start I2C_delay
+S CODE2 REL
+U I2C_end 0
+G I2C_end
+; "; :: i2c.c #24: SDA_LO;"
+W 0x0021 0x110C
+; "; :: i2c.c #24: I2C_delay();"
+J I2C_end I2C_delay
+W 0x2000|(I2C_delay&2047)
+; "; :: i2c.c #25: SCL_HI;"
+W 0x0021 0x148C
+; "; :: i2c.c #25: asm(" nop");"
+W 0x0000
+; "; :: i2c.c #25: asm(" nop");"
+W 0x0000
+; "; :: i2c.c #25: asm(" nop");"
+W 0x0000
+; "; :: i2c.c #25: asm(" nop");"
+W 0x0000
+; "; :: i2c.c #26: SDA_HI;"
+K 140 140
+W 0x150C
+; "; :: i2c.c #26: I2C_delay();"
+W 0x2000|(I2C_delay&2047)
+J I2C_delay I2C_end
+W 0x0008
+F I2C_end I2C_delay
+S CODE2 REL
+U I2C_writeByte 2
+G I2C_writeByte
+K I2C_writeByte_$data$
+W 0x0016 0x0080:I2C_writeByte_$data$ 0x3008 0x0080:(I2C_writeByte_$data$+1)
+J I2C_writeByte _$L9
+L _$L9
+; "; :: i2c.c #33: if ( data & 0x80 )"
+K I2C_writeByte_$data$
+J _$L9 _$L13
+W 0x1F80:I2C_writeByte_$data$ 0x2800|(_$L13&2047)
+; "; :: i2c.c #33: SDA_HI;"
+K I2C_writeByte_$data$ 140
+W 0x150C
+J _$L13 _$L14
+W 0x2800|(_$L14&2047)
+J _$L14 _$L13
+L _$L13
+; "; :: i2c.c #34: else			   SDA_LO;"
+W 0x0021 0x110C
+J _$L13 _$L14
+L _$L14
+; "; :: i2c.c #35: I2C_delay();"
+J _$L14 I2C_delay
+W 0x2000|(I2C_delay&2047)
+; "; :: i2c.c #35: SCL_HI;"
+W 0x0021 0x148C
+; "; :: i2c.c #36: I2C_delay();"
+W 0x2000|(I2C_delay&2047)
+; "; :: i2c.c #36: SCL_LO;"
+W 0x0021 0x108C
+; "; :: i2c.c #37: data <<= 1;"
+K 140 I2C_writeByte_$data$
+W 0x3580:I2C_writeByte_$data$
+; "; :: i2c.c #38: while ( --cnt )"
+J I2C_delay _$L9
+W 0x0B80:(I2C_writeByte_$data$+1) 0x2800|(_$L9&2047)
+; "; :: i2c.c #40: SDA_HI;"
+K I2C_writeByte_$data$ 140
+W 0x150C
+; "; :: i2c.c #40: I2C_delay();"
+J _$L9 I2C_delay
+W 0x2000|(I2C_delay&2047)
+; "; :: i2c.c #41: SCL_HI;"
+W 0x0021 0x148C
+; "; :: i2c.c #41: I2C_delay();"
+W 0x2000|(I2C_delay&2047)
+; "; :: i2c.c #42: if ( I2C_READ )"
+W 0x0020
+J I2C_delay _$L16
+W 0x1D0C 0x2800|(_$L16&2047)
+; "; :: i2c.c #42: cnt++;"
+K 12 I2C_writeByte_$data$
+W 0x0A80:(I2C_writeByte_$data$+1)
+L _$L16
+; "; :: i2c.c #43: ;"
+W 0x0021 0x108C
+; "; :: i2c.c #44: return cnt;"
+K 140 I2C_writeByte_$data$
+W 0x0800:(I2C_writeByte_$data$+1) 0x00F0
+J _$L16 I2C_writeByte
+W 0x0008
+F I2C_writeByte I2C_delay
+S CODE2 REL
+U I2C_readByte 3
+G I2C_readByte
+K I2C_readByte_$data$
+W 0x0016 0x0080:I2C_readByte_$data$ 0x3008 0x0080:(I2C_readByte_$data$+1)
+J I2C_readByte _$L19
+L _$L19
+; "; :: i2c.c #52: I2C_delay();"
+J _$L19 I2C_delay
+W 0x2000|(I2C_delay&2047)
+; "; :: i2c.c #53: SCL_HI;"
+W 0x0021 0x148C
+; "; :: i2c.c #54: I2C_delay();"
+W 0x2000|(I2C_delay&2047)
+; "; :: i2c.c #55: data <<= 1;"
+K I2C_readByte_$data$
+W 0x3580:(I2C_readByte_$data$+2)
+; "; :: i2c.c #56: if ( I2C_READ )"
+K I2C_readByte_$data$ 12
+J I2C_delay _$L23
+W 0x1D0C 0x2800|(_$L23&2047)
+; "; :: i2c.c #56: data++;"
+K 12 I2C_readByte_$data$
+W 0x0A80:(I2C_readByte_$data$+2)
+L _$L23
+; "; :: i2c.c #57: ;"
+W 0x0021 0x108C
+; "; :: i2c.c #58: while ( --cnt )"
+J _$L23 _$L19
+K 140 I2C_readByte_$data$
+W 0x0B80:(I2C_readByte_$data$+1) 0x2800|(_$L19&2047)
+; "; :: i2c.c #60: if ( more_bytes )"
+W 0x0800:I2C_readByte_$data$
+J _$L19 _$L26
+W 0x1903 0x2800|(_$L26&2047)
+; "; :: i2c.c #62: SDA_LO;"
+K I2C_readByte_$data$ 140
+W 0x110C
+; "; :: i2c.c #62: I2C_delay();"
+J _$L26 I2C_delay
+W 0x2000|(I2C_delay&2047)
+; "; :: i2c.c #63: SCL_HI;"
+W 0x0021 0x148C
+; "; :: i2c.c #63: I2C_delay();"
+W 0x2000|(I2C_delay&2047)
+; "; :: i2c.c #64: SCL_LO;"
+W 0x0021 0x108C
+; "; :: i2c.c #64: SDA_HI;"
+K 140 140
+W 0x150C
+J I2C_delay _$L26
+L _$L26
+; "; :: i2c.c #66: data;"
+K I2C_readByte_$data$
+W 0x0800:(I2C_readByte_$data$+2) 0x00F0
+J _$L26 I2C_readByte
+W 0x0008
+F I2C_readByte I2C_delay

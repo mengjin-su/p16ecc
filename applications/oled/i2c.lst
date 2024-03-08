@@ -1,0 +1,305 @@
+                           1 ;**********************************************************
+                           2 ;  Microchip Enhanced PIC16F1xxx C Compiler (CC16E), v1.00
+                           3 ;  Thu Dec 07 16:12:50 2023
+                           4 ;**********************************************************
+                           5 	.invoke	"c:\p16ecc/include/pic16e"
+                           6 	.invoke	"c:\p16ecc/include/p16f18857"
+                           7 
+                           8 	.device	"p16f18857", 4096, 32768
+                           9 
+                          10 _$$::	.equ	0x2FF0	; stack init. value
+                          11 
+                          12 
+                          13 	.segment	CODE2 (REL) I2C_init:0
+                          14 I2C_init::
+                          15 ; :: i2c.c #22: I2C_ODR_PORT &= ~((1 << I2C_SCL_PIN) | (1 << I2C_SDA_PIN));
+00000: 0x30FC             16 	movlw	252
+00001: 0x0140             17 	movlb	0
+00002: 0x0596             18 	andwf	22, F
+                          19 ; :: i2c.c #23: I2C_DDR_PORT |=  ((1 << I2C_SCL_PIN) | (1 << I2C_SDA_PIN));
+00003: 0x3003             20 	movlw	3
+                          21 	.bsel	22, 17
+00004: 0x0491             22 	iorwf	17, F
+00005: 0x0008             23 	return
+                          24 
+                          25 	.segment	CODE2 (REL) I2C_delay:0
+                          26 I2C_delay::
+00000: 0x0008             27 	return
+                          28 
+                          29 	.segment	CODE2 (REL) I2C_start:0
+                          30 I2C_start::
+                          31 ; :: i2c.c #33: SDA_LO;
+00000: 0x0140             32 	movlb	0
+00001: 0x1011             33 	bcf	17, 0
+                          34 ; :: i2c.c #34: I2C_delay();
+                          35 	.psel	I2C_start, I2C_delay
+00002: 0x2000?            36 	call	I2C_delay
+                          37 ; :: i2c.c #35: SCL_LO;
+00003: 0x0140             38 	movlb	0
+00004: 0x1091             39 	bcf	17, 1
+                          40 ; :: i2c.c #36: I2C_write(I2C_ADDR);
+00005: 0x3078             41 	movlw	120
+00006: 0x001D             42 	movwi	--INDF1
+                          43 	.psel	I2C_delay, I2C_write
+00007: 0x2000?            44 	call	I2C_write
+                          45 	.psel	I2C_write, I2C_start
+00008: 0x0008             46 	return
+                          47 ; function(s) called::
+                          48 	.fcall	I2C_start, I2C_write
+                          49 	.fcall	I2C_start, I2C_delay
+                          50 
+                          51 	.segment	CODE2 (REL) I2C_end:0
+                          52 I2C_end::
+                          53 ; :: i2c.c #41: SDA_LO;
+00000: 0x0140             54 	movlb	0
+00001: 0x1011             55 	bcf	17, 0
+                          56 ; :: i2c.c #42: I2C_delay();
+                          57 	.psel	I2C_end, I2C_delay
+00002: 0x2000?            58 	call	I2C_delay
+                          59 ; :: i2c.c #43: SCL_HI;
+00003: 0x0140             60 	movlb	0
+00004: 0x1491             61 	bsf	17, 1
+                          62 ; :: i2c.c #44: I2C_delay();
+00005: 0x2000?            63 	call	I2C_delay
+                          64 ; :: i2c.c #45: SDA_HI;
+00006: 0x0140             65 	movlb	0
+00007: 0x1411             66 	bsf	17, 0
+                          67 	.psel	I2C_delay, I2C_end
+00008: 0x0008             68 	return
+                          69 ; function(s) called::
+                          70 	.fcall	I2C_end, I2C_delay
+                          71 
+                          72 	.segment	CODE2 (REL) I2C_command:1
+                          73 I2C_command_$_c:	.equ	I2C_command_$data$+0
+                          74 I2C_command::
+00000: 0x0140?            75 	.bsel	I2C_command_$data$
+00001: 0x0016             76 	moviw	INDF1++
+00002: 0x0080?            77 	movwf	I2C_command_$data$+0
+                          78 ; :: i2c.c #50: I2C_start();
+                          79 	.psel	I2C_command, I2C_start
+00003: 0x2000?            80 	call	I2C_start
+                          81 ; :: i2c.c #51: I2C_write(0x00);
+00004: 0x3000             82 	movlw	0
+00005: 0x001D             83 	movwi	--INDF1
+                          84 	.psel	I2C_start, I2C_write
+00006: 0x2000?            85 	call	I2C_write
+                          86 ; :: i2c.c #52: I2C_write(c);
+00007: 0x0140?            87 	.bsel	I2C_command_$data$
+00008: 0x0800?            88 	movf	I2C_command_$_c, W
+00009: 0x001D             89 	movwi	--INDF1
+0000A: 0x2000?            90 	call	I2C_write
+                          91 ; :: i2c.c #53: I2C_end();
+                          92 	.psel	I2C_write, I2C_end
+0000B: 0x2000?            93 	call	I2C_end
+                          94 	.psel	I2C_end, I2C_command
+0000C: 0x0008             95 	return
+                          96 ; function(s) called::
+                          97 	.fcall	I2C_command, I2C_end
+                          98 	.fcall	I2C_command, I2C_write
+                          99 	.fcall	I2C_command, I2C_start
+                         100 
+                         101 	.segment	CODE2 (REL) I2C_data:1
+                         102 I2C_data_$_c:	.equ	I2C_data_$data$+0
+                         103 I2C_data::
+00000: 0x0140?           104 	.bsel	I2C_data_$data$
+00001: 0x0016            105 	moviw	INDF1++
+00002: 0x0080?           106 	movwf	I2C_data_$data$+0
+                         107 ; :: i2c.c #58: I2C_start();
+                         108 	.psel	I2C_data, I2C_start
+00003: 0x2000?           109 	call	I2C_start
+                         110 ; :: i2c.c #59: I2C_write(0x40);
+00004: 0x3040            111 	movlw	64
+00005: 0x001D            112 	movwi	--INDF1
+                         113 	.psel	I2C_start, I2C_write
+00006: 0x2000?           114 	call	I2C_write
+                         115 ; :: i2c.c #60: I2C_write(c);
+00007: 0x0140?           116 	.bsel	I2C_data_$data$
+00008: 0x0800?           117 	movf	I2C_data_$_c, W
+00009: 0x001D            118 	movwi	--INDF1
+0000A: 0x2000?           119 	call	I2C_write
+                         120 ; :: i2c.c #61: I2C_end();
+                         121 	.psel	I2C_write, I2C_end
+0000B: 0x2000?           122 	call	I2C_end
+                         123 	.psel	I2C_end, I2C_data
+0000C: 0x0008            124 	return
+                         125 ; function(s) called::
+                         126 	.fcall	I2C_data, I2C_end
+                         127 	.fcall	I2C_data, I2C_write
+                         128 	.fcall	I2C_data, I2C_start
+                         129 
+                         130 	.segment	CODE2 (REL) I2C_dataLength:5
+                         131 I2C_dataLength_$_s:	.equ	I2C_dataLength_$data$+0
+                         132 I2C_dataLength_$_length:	.equ	I2C_dataLength_$data$+2
+                         133 I2C_dataLength_$1:	.equ	I2C_dataLength_$data$+3
+                         134 I2C_dataLength::
+00000: 0x3000?           135 	movlw	I2C_dataLength_$data$+3
+00001: 0x0084            136 	movwf	FSR0L
+00002: 0x3000?           137 	movlw	(I2C_dataLength_$data$+3)>>8
+00003: 0x0085            138 	movwf	FSR0H
+00004: 0x0143            139 	movlb	3
+                         140 	.psel	I2C_dataLength, _copyPar
+00005: 0x2000?           141 	call	_copyPar
+                         142 ; :: i2c.c #66: I2C_start();
+                         143 	.psel	_copyPar, I2C_start
+00006: 0x2000?           144 	call	I2C_start
+                         145 ; :: i2c.c #67: I2C_write(0x40);
+00007: 0x3040            146 	movlw	64
+00008: 0x001D            147 	movwi	--INDF1
+                         148 	.psel	I2C_start, I2C_write
+00009: 0x2000?           149 	call	I2C_write
+                         150 	.psel	I2C_write, _$L8
+                         151 _$L8:
+                         152 ; :: i2c.c #68: while ( length-- )
+0000A: 0x0140?           153 	.bsel	I2C_dataLength_$data$
+0000B: 0x0380?           154 	decf	I2C_dataLength_$_length, F
+0000C: 0x0A00?           155 	incf	I2C_dataLength_$_length, W
+                         156 	.psel	_$L8, _$L10
+0000D: 0x1903            157 	btfsc	3, 2
+0000E: 0x2800?           158 	goto	_$L10
+                         159 ; :: i2c.c #68: I2C_write(*s++);
+0000F: 0x0800?           160 	movf	I2C_dataLength_$_s, W
+00010: 0x0080?           161 	movwf	I2C_dataLength_$1
+00011: 0x0800?           162 	movf	I2C_dataLength_$_s+1, W
+00012: 0x0080?           163 	movwf	I2C_dataLength_$1+1
+00013: 0x0A80?           164 	incf	I2C_dataLength_$_s, F
+00014: 0x1903            165 	btfsc	3, 2
+00015: 0x0A80?           166 	incf	I2C_dataLength_$_s+1, F
+00016: 0x0800?           167 	movf	I2C_dataLength_$1, W
+00017: 0x0084            168 	movwf	FSR0L
+00018: 0x0800?           169 	movf	I2C_dataLength_$1+1, W
+00019: 0x0085            170 	movwf	FSR0H
+0001A: 0x3F00            171 	moviw	0[INDF0]
+0001B: 0x001D            172 	movwi	--INDF1
+                         173 	.psel	_$L10, I2C_write
+0001C: 0x2000?           174 	call	I2C_write
+                         175 	.psel	I2C_write, _$L8
+0001D: 0x2800?           176 	goto	_$L8
+                         177 	.psel	_$L8, _$L10
+                         178 _$L10:
+                         179 ; :: i2c.c #69: I2C_end();
+                         180 	.psel	_$L10, I2C_end
+0001E: 0x2000?           181 	call	I2C_end
+                         182 	.psel	I2C_end, I2C_dataLength
+0001F: 0x0008            183 	return
+                         184 ; function(s) called::
+                         185 	.fcall	I2C_dataLength, I2C_end
+                         186 	.fcall	I2C_dataLength, I2C_write
+                         187 	.fcall	I2C_dataLength, I2C_start
+                         188 	.fcall	I2C_dataLength, _copyPar
+                         189 
+                         190 	.segment	CODE2 (REL) I2C_write:2
+                         191 I2C_write_$_c:	.equ	I2C_write_$data$+0
+                         192 I2C_write_$1_count:	.equ	I2C_write_$data$+1
+                         193 I2C_write::
+00000: 0x0140?           194 	.bsel	I2C_write_$data$
+00001: 0x0016            195 	moviw	INDF1++
+00002: 0x0080?           196 	movwf	I2C_write_$data$+0
+00003: 0x3008            197 	movlw	8
+00004: 0x0080?           198 	movwf	I2C_write_$1_count
+                         199 	.psel	I2C_write, _$L12
+                         200 _$L12:
+                         201 ; :: i2c.c #76: if ( c & 0x80 )
+00005: 0x0140?           202 	.bsel	I2C_write_$data$
+                         203 	.psel	_$L12, _$L16
+00006: 0x1F80?           204 	btfss	I2C_write_$_c, 7
+00007: 0x2800?           205 	goto	_$L16
+                         206 ; :: i2c.c #76: SDA_HI;
+                         207 	.bsel	I2C_write_$data$, 17
+00008: 0x1411            208 	bsf	17, 0
+                         209 	.psel	_$L16, _$L17
+00009: 0x2800?           210 	goto	_$L17
+                         211 	.psel	_$L17, _$L16
+                         212 _$L16:
+                         213 ; :: i2c.c #77: else SDA_LO;
+0000A: 0x0140            214 	movlb	0
+0000B: 0x1011            215 	bcf	17, 0
+                         216 	.psel	_$L16, _$L17
+                         217 _$L17:
+                         218 ; :: i2c.c #78: I2C_delay();
+                         219 	.psel	_$L17, I2C_delay
+0000C: 0x2000?           220 	call	I2C_delay
+                         221 ; :: i2c.c #79: SCL_HI;
+0000D: 0x0140            222 	movlb	0
+0000E: 0x1491            223 	bsf	17, 1
+                         224 ; :: i2c.c #80: I2C_delay();
+0000F: 0x2000?           225 	call	I2C_delay
+                         226 ; :: i2c.c #81: c <<= 1;
+00010: 0x0140?           227 	.bsel	I2C_write_$data$
+00011: 0x3580?           228 	lslf	I2C_write_$_c, F
+                         229 ; :: i2c.c #82: SCL_LO;
+                         230 	.bsel	I2C_write_$data$, 17
+00012: 0x1091            231 	bcf	17, 1
+                         232 ; :: i2c.c #83: while ( --count )
+                         233 	.psel	I2C_delay, _$L12
+                         234 	.bsel	17, I2C_write_$data$
+00013: 0x0B80?           235 	decfsz	I2C_write_$1_count, F
+00014: 0x2800?           236 	goto	_$L12
+                         237 ; :: i2c.c #85: SDA_HI;
+                         238 	.bsel	I2C_write_$data$, 17
+00015: 0x1411            239 	bsf	17, 0
+                         240 ; :: i2c.c #86: I2C_delay();
+                         241 	.psel	_$L12, I2C_delay
+00016: 0x2000?           242 	call	I2C_delay
+                         243 ; :: i2c.c #87: SCL_HI;
+00017: 0x0140            244 	movlb	0
+00018: 0x1491            245 	bsf	17, 1
+                         246 ; :: i2c.c #88: I2C_delay();
+00019: 0x2000?           247 	call	I2C_delay
+                         248 ; :: i2c.c #89: SCL_LO;
+0001A: 0x0140            249 	movlb	0
+0001B: 0x1091            250 	bcf	17, 1
+                         251 	.psel	I2C_delay, I2C_write
+0001C: 0x0008            252 	return
+                         253 ; function(s) called::
+                         254 	.fcall	I2C_write, I2C_delay
+                         255 
+                         256 	.segment	CODE2 (REL) I2C_str:5
+                         257 I2C_str_$_s:	.equ	I2C_str_$data$+0
+                         258 I2C_str_$_length:	.equ	I2C_str_$data$+2
+                         259 I2C_str_$1:	.equ	I2C_str_$data$+3
+                         260 I2C_str::
+00000: 0x3000?           261 	movlw	I2C_str_$data$+3
+00001: 0x0084            262 	movwf	FSR0L
+00002: 0x3000?           263 	movlw	(I2C_str_$data$+3)>>8
+00003: 0x0085            264 	movwf	FSR0H
+00004: 0x0143            265 	movlb	3
+                         266 	.psel	I2C_str, _copyPar
+00005: 0x2000?           267 	call	_copyPar
+                         268 	.psel	_copyPar, _$L19
+                         269 _$L19:
+                         270 ; :: i2c.c #94: while ( length )
+00006: 0x0140?           271 	.bsel	I2C_str_$data$
+00007: 0x0800?           272 	movf	I2C_str_$_length, W
+                         273 	.psel	_$L19, _$L21
+00008: 0x1903            274 	btfsc	3, 2
+00009: 0x2800?           275 	goto	_$L21
+                         276 ; :: i2c.c #95: I2C_data(*s++);
+0000A: 0x0800?           277 	movf	I2C_str_$_s, W
+0000B: 0x0080?           278 	movwf	I2C_str_$1
+0000C: 0x0800?           279 	movf	I2C_str_$_s+1, W
+0000D: 0x0080?           280 	movwf	I2C_str_$1+1
+0000E: 0x0A80?           281 	incf	I2C_str_$_s, F
+0000F: 0x1903            282 	btfsc	3, 2
+00010: 0x0A80?           283 	incf	I2C_str_$_s+1, F
+00011: 0x0800?           284 	movf	I2C_str_$1, W
+00012: 0x0084            285 	movwf	FSR0L
+00013: 0x0800?           286 	movf	I2C_str_$1+1, W
+00014: 0x0085            287 	movwf	FSR0H
+00015: 0x3F00            288 	moviw	0[INDF0]
+00016: 0x001D            289 	movwi	--INDF1
+                         290 	.psel	_$L21, I2C_data
+00017: 0x2000?           291 	call	I2C_data
+                         292 ; :: i2c.c #96: length--;
+00018: 0x0140?           293 	.bsel	I2C_str_$data$
+00019: 0x0380?           294 	decf	I2C_str_$_length, F
+                         295 	.psel	I2C_data, _$L19
+0001A: 0x2800?           296 	goto	_$L19
+                         297 	.psel	_$L19, _$L21
+                         298 _$L21:
+                         299 	.psel	_$L21, I2C_str
+0001B: 0x0008            300 	return
+                         301 ; function(s) called::
+                         302 	.fcall	I2C_str, I2C_data
+                         303 	.fcall	I2C_str, _copyPar
+                         304 
+                         305 	.end

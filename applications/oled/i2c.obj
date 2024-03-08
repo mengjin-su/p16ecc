@@ -1,0 +1,226 @@
+I "c:\p16ecc/include/pic16e"
+I "c:\p16ecc/include/p16f18857"
+P "p16f18857" 4096 32768
+E _$$ 12272
+S CODE2 REL
+U I2C_init 0
+G I2C_init
+; "; :: i2c.c #22: I2C_ODR_PORT &= ~((1 << I2C_SCL_PIN) | (1 << I2C_SDA_PIN));"
+W 0x30FC 0x0140 0x0596
+; "; :: i2c.c #23: I2C_DDR_PORT |=  ((1 << I2C_SCL_PIN) | (1 << I2C_SDA_PIN));"
+W 0x3003
+K 22 17
+W 0x0491 0x0008
+S CODE2 REL
+U I2C_delay 0
+G I2C_delay
+W 0x0008
+S CODE2 REL
+U I2C_start 0
+G I2C_start
+; "; :: i2c.c #33: SDA_LO;"
+W 0x0140 0x1011
+; "; :: i2c.c #34: I2C_delay();"
+J I2C_start I2C_delay
+W 0x2000|(I2C_delay&2047)
+; "; :: i2c.c #35: SCL_LO;"
+W 0x0140 0x1091
+; "; :: i2c.c #36: I2C_write(I2C_ADDR);"
+W 0x3078 0x001D
+J I2C_delay I2C_write
+W 0x2000|(I2C_write&2047)
+J I2C_write I2C_start
+W 0x0008
+F I2C_start I2C_write
+F I2C_start I2C_delay
+S CODE2 REL
+U I2C_end 0
+G I2C_end
+; "; :: i2c.c #41: SDA_LO;"
+W 0x0140 0x1011
+; "; :: i2c.c #42: I2C_delay();"
+J I2C_end I2C_delay
+W 0x2000|(I2C_delay&2047)
+; "; :: i2c.c #43: SCL_HI;"
+W 0x0140 0x1491
+; "; :: i2c.c #44: I2C_delay();"
+W 0x2000|(I2C_delay&2047)
+; "; :: i2c.c #45: SDA_HI;"
+W 0x0140 0x1411
+J I2C_delay I2C_end
+W 0x0008
+F I2C_end I2C_delay
+S CODE2 REL
+U I2C_command 1
+G I2C_command
+K I2C_command_$data$
+W 0x0016 0x0080:I2C_command_$data$
+; "; :: i2c.c #50: I2C_start();"
+J I2C_command I2C_start
+W 0x2000|(I2C_start&2047)
+; "; :: i2c.c #51: I2C_write(0x00);"
+W 0x3000 0x001D
+J I2C_start I2C_write
+W 0x2000|(I2C_write&2047)
+; "; :: i2c.c #52: I2C_write(c);"
+K I2C_command_$data$
+W 0x0800:I2C_command_$data$ 0x001D 0x2000|(I2C_write&2047)
+; "; :: i2c.c #53: I2C_end();"
+J I2C_write I2C_end
+W 0x2000|(I2C_end&2047)
+J I2C_end I2C_command
+W 0x0008
+F I2C_command I2C_end
+F I2C_command I2C_write
+F I2C_command I2C_start
+S CODE2 REL
+U I2C_data 1
+G I2C_data
+K I2C_data_$data$
+W 0x0016 0x0080:I2C_data_$data$
+; "; :: i2c.c #58: I2C_start();"
+J I2C_data I2C_start
+W 0x2000|(I2C_start&2047)
+; "; :: i2c.c #59: I2C_write(0x40);"
+W 0x3040 0x001D
+J I2C_start I2C_write
+W 0x2000|(I2C_write&2047)
+; "; :: i2c.c #60: I2C_write(c);"
+K I2C_data_$data$
+W 0x0800:I2C_data_$data$ 0x001D 0x2000|(I2C_write&2047)
+; "; :: i2c.c #61: I2C_end();"
+J I2C_write I2C_end
+W 0x2000|(I2C_end&2047)
+J I2C_end I2C_data
+W 0x0008
+F I2C_data I2C_end
+F I2C_data I2C_write
+F I2C_data I2C_start
+S CODE2 REL
+U I2C_dataLength 5
+G I2C_dataLength
+W 0x3000|((I2C_dataLength_$data$+3)&255) 0x0084
+W 0x3000|(((I2C_dataLength_$data$+3)>>8)&255) 0x0085 0x0143
+J I2C_dataLength _copyPar
+W 0x2000|(_copyPar&2047)
+; "; :: i2c.c #66: I2C_start();"
+J _copyPar I2C_start
+W 0x2000|(I2C_start&2047)
+; "; :: i2c.c #67: I2C_write(0x40);"
+W 0x3040 0x001D
+J I2C_start I2C_write
+W 0x2000|(I2C_write&2047)
+J I2C_write _$L8
+L _$L8
+; "; :: i2c.c #68: while ( length-- )"
+K I2C_dataLength_$data$
+W 0x0380:(I2C_dataLength_$data$+2) 0x0A00:(I2C_dataLength_$data$+2)
+J _$L8 _$L10
+W 0x1903 0x2800|(_$L10&2047)
+; "; :: i2c.c #68: I2C_write(*s++);"
+W 0x0800:I2C_dataLength_$data$ 0x0080:(I2C_dataLength_$data$+3)
+W 0x0800:(I2C_dataLength_$data$+1) 0x0080:((I2C_dataLength_$data$+3)+1)
+W 0x0A80:I2C_dataLength_$data$ 0x1903 0x0A80:(I2C_dataLength_$data$+1)
+W 0x0800:(I2C_dataLength_$data$+3) 0x0084 0x0800:((I2C_dataLength_$data$+3)+1)
+W 0x0085 0x3F00 0x001D
+J _$L10 I2C_write
+W 0x2000|(I2C_write&2047)
+J I2C_write _$L8
+W 0x2800|(_$L8&2047)
+J _$L8 _$L10
+L _$L10
+; "; :: i2c.c #69: I2C_end();"
+J _$L10 I2C_end
+W 0x2000|(I2C_end&2047)
+J I2C_end I2C_dataLength
+W 0x0008
+F I2C_dataLength I2C_end
+F I2C_dataLength I2C_write
+F I2C_dataLength I2C_start
+F I2C_dataLength _copyPar
+S CODE2 REL
+U I2C_write 2
+G I2C_write
+K I2C_write_$data$
+W 0x0016 0x0080:I2C_write_$data$ 0x3008 0x0080:(I2C_write_$data$+1)
+J I2C_write _$L12
+L _$L12
+; "; :: i2c.c #76: if ( c & 0x80 )"
+K I2C_write_$data$
+J _$L12 _$L16
+W 0x1F80:I2C_write_$data$ 0x2800|(_$L16&2047)
+; "; :: i2c.c #76: SDA_HI;"
+K I2C_write_$data$ 17
+W 0x1411
+J _$L16 _$L17
+W 0x2800|(_$L17&2047)
+J _$L17 _$L16
+L _$L16
+; "; :: i2c.c #77: else SDA_LO;"
+W 0x0140 0x1011
+J _$L16 _$L17
+L _$L17
+; "; :: i2c.c #78: I2C_delay();"
+J _$L17 I2C_delay
+W 0x2000|(I2C_delay&2047)
+; "; :: i2c.c #79: SCL_HI;"
+W 0x0140 0x1491
+; "; :: i2c.c #80: I2C_delay();"
+W 0x2000|(I2C_delay&2047)
+; "; :: i2c.c #81: c <<= 1;"
+K I2C_write_$data$
+W 0x3580:I2C_write_$data$
+; "; :: i2c.c #82: SCL_LO;"
+K I2C_write_$data$ 17
+W 0x1091
+; "; :: i2c.c #83: while ( --count )"
+J I2C_delay _$L12
+K 17 I2C_write_$data$
+W 0x0B80:(I2C_write_$data$+1) 0x2800|(_$L12&2047)
+; "; :: i2c.c #85: SDA_HI;"
+K I2C_write_$data$ 17
+W 0x1411
+; "; :: i2c.c #86: I2C_delay();"
+J _$L12 I2C_delay
+W 0x2000|(I2C_delay&2047)
+; "; :: i2c.c #87: SCL_HI;"
+W 0x0140 0x1491
+; "; :: i2c.c #88: I2C_delay();"
+W 0x2000|(I2C_delay&2047)
+; "; :: i2c.c #89: SCL_LO;"
+W 0x0140 0x1091
+J I2C_delay I2C_write
+W 0x0008
+F I2C_write I2C_delay
+S CODE2 REL
+U I2C_str 5
+G I2C_str
+W 0x3000|((I2C_str_$data$+3)&255) 0x0084 0x3000|(((I2C_str_$data$+3)>>8)&255)
+W 0x0085 0x0143
+J I2C_str _copyPar
+W 0x2000|(_copyPar&2047)
+J _copyPar _$L19
+L _$L19
+; "; :: i2c.c #94: while ( length )"
+K I2C_str_$data$
+W 0x0800:(I2C_str_$data$+2)
+J _$L19 _$L21
+W 0x1903 0x2800|(_$L21&2047)
+; "; :: i2c.c #95: I2C_data(*s++);"
+W 0x0800:I2C_str_$data$ 0x0080:(I2C_str_$data$+3) 0x0800:(I2C_str_$data$+1)
+W 0x0080:((I2C_str_$data$+3)+1) 0x0A80:I2C_str_$data$ 0x1903
+W 0x0A80:(I2C_str_$data$+1) 0x0800:(I2C_str_$data$+3) 0x0084
+W 0x0800:((I2C_str_$data$+3)+1) 0x0085 0x3F00 0x001D
+J _$L21 I2C_data
+W 0x2000|(I2C_data&2047)
+; "; :: i2c.c #96: length--;"
+K I2C_str_$data$
+W 0x0380:(I2C_str_$data$+2)
+J I2C_data _$L19
+W 0x2800|(_$L19&2047)
+J _$L19 _$L21
+L _$L21
+J _$L21 I2C_str
+W 0x0008
+F I2C_str I2C_data
+F I2C_str _copyPar

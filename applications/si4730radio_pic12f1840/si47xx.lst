@@ -1,0 +1,393 @@
+                           1 ;**********************************************************
+                           2 ;  Microchip Enhanced PIC16F1xxx C Compiler (CC16E), v1.00
+                           3 ;  Mon Dec 04 17:19:05 2023
+                           4 ;**********************************************************
+                           5 	.invoke	"c:\p16ecc/include/pic16e"
+                           6 	.invoke	"c:\p16ecc/include/p12f1840"
+                           7 
+                           8 	.device	"p12f1840", 256, 4096
+                           9 
+                          10 _$$::	.equ	0x20F0	; stack init. value
+                          11 
+                          12 
+                          13 	.segment	CODE2 (REL) SI47xx_write:3
+                          14 SI47xx_write_$_buf:	.equ	SI47xx_write_$data$+0
+                          15 SI47xx_write_$_length:	.equ	SI47xx_write_$data$+2
+                          16 SI47xx_write:
+00000: 0x3000?            17 	movlw	SI47xx_write_$data$+3
+00001: 0x0084             18 	movwf	FSR0L
+00002: 0x3000?            19 	movlw	(SI47xx_write_$data$+3)>>8
+00003: 0x0085             20 	movwf	FSR0H
+00004: 0x0023             21 	movlb	3
+                          22 	.psel	SI47xx_write, _copyPar
+00005: 0x2000?            23 	call	_copyPar
+                          24 ; :: si47xx.c #28: I2C_start(SI47xx_I2C_WR_ADDR);
+00006: 0x30C6             25 	movlw	198
+00007: 0x001D             26 	movwi	--INDF1
+                          27 	.psel	_copyPar, I2C_start
+00008: 0x2000?            28 	call	I2C_start
+                          29 	.psel	I2C_start, _$L2
+                          30 _$L2:
+                          31 ; :: si47xx.c #29: while ( length-- )
+00009: 0x0020?            32 	.bsel	SI47xx_write_$data$
+0000A: 0x0380?            33 	decf	SI47xx_write_$_length, F
+0000B: 0x0A00?            34 	incf	SI47xx_write_$_length, W
+                          35 	.psel	_$L2, _$L4
+0000C: 0x1903             36 	btfsc	3, 2
+0000D: 0x2800?            37 	goto	_$L4
+                          38 ; :: si47xx.c #29: I2C_writeByte(*buf);
+0000E: 0x0800?            39 	movf	SI47xx_write_$_buf, W
+0000F: 0x0084             40 	movwf	FSR0L
+00010: 0x0800?            41 	movf	SI47xx_write_$_buf+1, W
+00011: 0x0085             42 	movwf	FSR0H
+00012: 0x3F00             43 	moviw	0[INDF0]
+00013: 0x001D             44 	movwi	--INDF1
+                          45 	.psel	_$L4, I2C_writeByte
+00014: 0x2000?            46 	call	I2C_writeByte
+                          47 ; :: si47xx.c #29: buf++;
+00015: 0x0020?            48 	.bsel	SI47xx_write_$data$
+00016: 0x0A80?            49 	incf	SI47xx_write_$_buf, F
+00017: 0x1903             50 	btfsc	3, 2
+00018: 0x0A80?            51 	incf	SI47xx_write_$_buf+1, F
+                          52 	.psel	I2C_writeByte, _$L2
+00019: 0x2800?            53 	goto	_$L2
+                          54 	.psel	_$L2, _$L4
+                          55 _$L4:
+                          56 ; :: si47xx.c #30: I2C_end();
+                          57 	.psel	_$L4, I2C_end
+0001A: 0x2000?            58 	call	I2C_end
+                          59 	.psel	I2C_end, SI47xx_write
+0001B: 0x0008             60 	return
+                          61 ; function(s) called::
+                          62 	.fcall	SI47xx_write, I2C_end
+                          63 	.fcall	SI47xx_write, I2C_writeByte
+                          64 	.fcall	SI47xx_write, I2C_start
+                          65 	.fcall	SI47xx_write, _copyPar
+                          66 
+                          67 	.segment	CODE2 (REL) SI47xx_read:3
+                          68 SI47xx_read_$_buf:	.equ	SI47xx_read_$data$+0
+                          69 SI47xx_read_$_length:	.equ	SI47xx_read_$data$+2
+                          70 SI47xx_read::
+00000: 0x3000?            71 	movlw	SI47xx_read_$data$+3
+00001: 0x0084             72 	movwf	FSR0L
+00002: 0x3000?            73 	movlw	(SI47xx_read_$data$+3)>>8
+00003: 0x0085             74 	movwf	FSR0H
+00004: 0x0023             75 	movlb	3
+                          76 	.psel	SI47xx_read, _copyPar
+00005: 0x2000?            77 	call	_copyPar
+                          78 ; :: si47xx.c #35: I2C_start(SI47xx_I2C_RD_ADDR);
+00006: 0x30C7             79 	movlw	199
+00007: 0x001D             80 	movwi	--INDF1
+                          81 	.psel	_copyPar, I2C_start
+00008: 0x2000?            82 	call	I2C_start
+                          83 	.psel	I2C_start, _$L6
+                          84 _$L6:
+                          85 ; :: si47xx.c #36: while ( length-- )
+00009: 0x0020?            86 	.bsel	SI47xx_read_$data$
+0000A: 0x0380?            87 	decf	SI47xx_read_$_length, F
+0000B: 0x0A00?            88 	incf	SI47xx_read_$_length, W
+                          89 	.psel	_$L6, _$L8
+0000C: 0x1903             90 	btfsc	3, 2
+0000D: 0x2800?            91 	goto	_$L8
+                          92 ; :: si47xx.c #36: *buf = I2C_readByte(length);
+0000E: 0x0800?            93 	movf	SI47xx_read_$_length, W
+0000F: 0x001D             94 	movwi	--INDF1
+                          95 	.psel	_$L8, I2C_readByte
+00010: 0x2000?            96 	call	I2C_readByte
+00011: 0x0020?            97 	.bsel	SI47xx_read_$data$
+00012: 0x0800?            98 	movf	SI47xx_read_$_buf, W
+00013: 0x0084             99 	movwf	FSR0L
+00014: 0x0800?           100 	movf	SI47xx_read_$_buf+1, W
+00015: 0x0085            101 	movwf	FSR0H
+00016: 0x0870            102 	movf	112, W
+00017: 0x001A            103 	movwi	INDF0++
+                         104 ; :: si47xx.c #36: buf++;
+00018: 0x0A80?           105 	incf	SI47xx_read_$_buf, F
+00019: 0x1903            106 	btfsc	3, 2
+0001A: 0x0A80?           107 	incf	SI47xx_read_$_buf+1, F
+                         108 	.psel	I2C_readByte, _$L6
+0001B: 0x2800?           109 	goto	_$L6
+                         110 	.psel	_$L6, _$L8
+                         111 _$L8:
+                         112 ; :: si47xx.c #37: I2C_end();
+                         113 	.psel	_$L8, I2C_end
+0001C: 0x2000?           114 	call	I2C_end
+                         115 	.psel	I2C_end, SI47xx_read
+0001D: 0x0008            116 	return
+                         117 ; function(s) called::
+                         118 	.fcall	SI47xx_read, I2C_end
+                         119 	.fcall	SI47xx_read, I2C_readByte
+                         120 	.fcall	SI47xx_read, I2C_start
+                         121 	.fcall	SI47xx_read, _copyPar
+                         122 
+                         123 	.segment	CODE2 (REL) SI47xx_waitCTS:2
+                         124 SI47xx_waitCTS_$1_counter:	.equ	SI47xx_waitCTS_$data$+0
+                         125 SI47xx_waitCTS_$2_status:	.equ	SI47xx_waitCTS_$data$+1
+                         126 SI47xx_waitCTS:
+00000: 0x3064            127 	movlw	100
+00001: 0x0020?           128 	.bsel	SI47xx_waitCTS_$data$
+00002: 0x0080?           129 	movwf	SI47xx_waitCTS_$1_counter
+                         130 	.psel	SI47xx_waitCTS, _$L10
+                         131 _$L10:
+                         132 ; :: si47xx.c #43: while ( counter-- )
+00003: 0x0020?           133 	.bsel	SI47xx_waitCTS_$data$
+00004: 0x0380?           134 	decf	SI47xx_waitCTS_$1_counter, F
+00005: 0x0A00?           135 	incf	SI47xx_waitCTS_$1_counter, W
+                         136 	.psel	_$L10, _$L12
+00006: 0x1903            137 	btfsc	3, 2
+00007: 0x2800?           138 	goto	_$L12
+                         139 ; :: si47xx.c #45: SI47xx_read(&status, 1);
+00008: 0x3000?           140 	movlw	SI47xx_waitCTS_$2_status
+00009: 0x001D            141 	movwi	--INDF1
+0000A: 0x3000?           142 	movlw	(SI47xx_waitCTS_$2_status)>>8
+0000B: 0x001D            143 	movwi	--INDF1
+0000C: 0x3001            144 	movlw	1
+0000D: 0x001D            145 	movwi	--INDF1
+                         146 	.psel	_$L12, SI47xx_read
+0000E: 0x2000?           147 	call	SI47xx_read
+                         148 ; :: si47xx.c #46: if ( (status & CTS) )
+0000F: 0x0020?           149 	.bsel	SI47xx_waitCTS_$data$
+                         150 	.psel	SI47xx_read, _$L12
+00010: 0x1B80?           151 	btfsc	SI47xx_waitCTS_$2_status, 7
+00011: 0x2800?           152 	goto	_$L12
+                         153 ; :: si47xx.c #46: break;
+                         154 ; :: si47xx.c #47: (1);
+00012: 0x3001            155 	movlw	1
+00013: 0x001D            156 	movwi	--INDF1
+                         157 	.psel	_$L12, TMR0_delayMs
+00014: 0x2000?           158 	call	TMR0_delayMs
+                         159 	.psel	TMR0_delayMs, _$L10
+00015: 0x2800?           160 	goto	_$L10
+                         161 	.psel	_$L10, _$L12
+                         162 _$L12:
+                         163 	.psel	_$L12, SI47xx_waitCTS
+00016: 0x0008            164 	return
+                         165 ; function(s) called::
+                         166 	.fcall	SI47xx_waitCTS, TMR0_delayMs
+                         167 	.fcall	SI47xx_waitCTS, SI47xx_read
+                         168 
+                         169 	.segment	CODE2 (REL) SI47xx_command:3
+                         170 SI47xx_command_$_wbuf:	.equ	SI47xx_command_$data$+0
+                         171 SI47xx_command_$_wlength:	.equ	SI47xx_command_$data$+2
+                         172 SI47xx_command:
+00000: 0x3000?           173 	movlw	SI47xx_command_$data$+3
+00001: 0x0084            174 	movwf	FSR0L
+00002: 0x3000?           175 	movlw	(SI47xx_command_$data$+3)>>8
+00003: 0x0085            176 	movwf	FSR0H
+00004: 0x0023            177 	movlb	3
+                         178 	.psel	SI47xx_command, _copyPar
+00005: 0x2000?           179 	call	_copyPar
+                         180 ; :: si47xx.c #53: SI47xx_waitCTS();
+                         181 	.psel	_copyPar, SI47xx_waitCTS
+00006: 0x2000?           182 	call	SI47xx_waitCTS
+                         183 ; :: si47xx.c #54: SI47xx_write(wbuf, wlength);
+00007: 0x0020?           184 	.bsel	SI47xx_command_$data$
+00008: 0x0800?           185 	movf	SI47xx_command_$_wbuf, W
+00009: 0x001D            186 	movwi	--INDF1
+0000A: 0x0800?           187 	movf	SI47xx_command_$_wbuf+1, W
+0000B: 0x001D            188 	movwi	--INDF1
+0000C: 0x0800?           189 	movf	SI47xx_command_$_wlength, W
+0000D: 0x001D            190 	movwi	--INDF1
+                         191 	.psel	SI47xx_waitCTS, SI47xx_write
+0000E: 0x2000?           192 	call	SI47xx_write
+                         193 ; :: si47xx.c #55: SI47xx_waitCTS();
+                         194 	.psel	SI47xx_write, SI47xx_waitCTS
+0000F: 0x2000?           195 	call	SI47xx_waitCTS
+                         196 	.psel	SI47xx_waitCTS, SI47xx_command
+00010: 0x0008            197 	return
+                         198 ; function(s) called::
+                         199 	.fcall	SI47xx_command, SI47xx_write
+                         200 	.fcall	SI47xx_command, SI47xx_waitCTS
+                         201 	.fcall	SI47xx_command, _copyPar
+                         202 
+                         203 	.segment	CODE2 (REL) SI47xx_property:10
+                         204 SI47xx_property_$_prop_num:	.equ	SI47xx_property_$data$+0
+                         205 SI47xx_property_$_prop_val:	.equ	SI47xx_property_$data$+2
+                         206 SI47xx_property_$1_cmd:	.equ	SI47xx_property_$data$+4
+                         207 SI47xx_property:
+00000: 0x3000?           208 	movlw	SI47xx_property_$data$+4
+00001: 0x0084            209 	movwf	FSR0L
+00002: 0x3000?           210 	movlw	(SI47xx_property_$data$+4)>>8
+00003: 0x0085            211 	movwf	FSR0H
+00004: 0x0024            212 	movlb	4
+                         213 	.psel	SI47xx_property, _copyPar
+00005: 0x2000?           214 	call	_copyPar
+                         215 ; :: si47xx.c #61: cmd[0] = SET_PROPERTY;
+00006: 0x3012            216 	movlw	18
+                         217 	.bsel	0, SI47xx_property_$data$
+00007: 0x0080?           218 	movwf	SI47xx_property_$1_cmd
+                         219 ; :: si47xx.c #62: cmd[1] = 0;
+00008: 0x0180?           220 	clrf	(SI47xx_property_$1_cmd+1)
+                         221 ; :: si47xx.c #63: cmd[2] = prop_num >> 8;
+00009: 0x0800?           222 	movf	SI47xx_property_$_prop_num+1, W
+0000A: 0x0080?           223 	movwf	(SI47xx_property_$1_cmd+2)
+                         224 ; :: si47xx.c #64: cmd[3] = prop_num;
+0000B: 0x0800?           225 	movf	SI47xx_property_$_prop_num, W
+0000C: 0x0080?           226 	movwf	(SI47xx_property_$1_cmd+3)
+                         227 ; :: si47xx.c #65: cmd[4] = prop_val >> 8;
+0000D: 0x0800?           228 	movf	SI47xx_property_$_prop_val+1, W
+0000E: 0x0080?           229 	movwf	(SI47xx_property_$1_cmd+4)
+                         230 ; :: si47xx.c #66: cmd[5] = prop_val;
+0000F: 0x0800?           231 	movf	SI47xx_property_$_prop_val, W
+00010: 0x0080?           232 	movwf	(SI47xx_property_$1_cmd+5)
+                         233 ; :: si47xx.c #67: SI47xx_command(cmd, 6);
+00011: 0x3000?           234 	movlw	SI47xx_property_$1_cmd
+00012: 0x001D            235 	movwi	--INDF1
+00013: 0x3000?           236 	movlw	(SI47xx_property_$1_cmd)>>8
+00014: 0x001D            237 	movwi	--INDF1
+00015: 0x3006            238 	movlw	6
+00016: 0x001D            239 	movwi	--INDF1
+                         240 	.psel	_copyPar, SI47xx_command
+00017: 0x2000?           241 	call	SI47xx_command
+                         242 	.psel	SI47xx_command, SI47xx_property
+00018: 0x0008            243 	return
+                         244 ; function(s) called::
+                         245 	.fcall	SI47xx_property, SI47xx_command
+                         246 	.fcall	SI47xx_property, _copyPar
+                         247 
+                         248 	.segment	CODE2 (REL) SI47xx_init:0
+                         249 SI47xx_init::
+                         250 ; :: si47xx.c #77: if ( RADIO_mode == FM_MODE )
+00000: 0x0020?           251 	.bsel	RADIO_mode
+00001: 0x0800?           252 	movf	RADIO_mode, W
+                         253 	.psel	SI47xx_init, _$L20
+00002: 0x1D03            254 	btfss	3, 2
+00003: 0x2800?           255 	goto	_$L20
+                         256 ; :: si47xx.c #78: SI47xx_command(IS47xx_powerUpFM, sizeof(IS47xx_powerUpFM));
+00004: 0x3000?           257 	movlw	IS47xx_powerUpFM
+00005: 0x001D            258 	movwi	--INDF1
+00006: 0x3000?           259 	movlw	(IS47xx_powerUpFM)>>8
+00007: 0x001D            260 	movwi	--INDF1
+00008: 0x3003            261 	movlw	3
+00009: 0x001D            262 	movwi	--INDF1
+                         263 	.psel	_$L20, SI47xx_command
+0000A: 0x2000?           264 	call	SI47xx_command
+                         265 	.psel	SI47xx_command, _$L21
+0000B: 0x2800?           266 	goto	_$L21
+                         267 	.psel	_$L21, _$L20
+                         268 _$L20:
+                         269 ; :: si47xx.c #80: else		SI47xx_command(IS47xx_powerUpAM, sizeof(IS47xx_powerUpFM));
+0000C: 0x3000?           270 	movlw	IS47xx_powerUpAM
+0000D: 0x001D            271 	movwi	--INDF1
+0000E: 0x3000?           272 	movlw	(IS47xx_powerUpAM)>>8
+0000F: 0x001D            273 	movwi	--INDF1
+00010: 0x3003            274 	movlw	3
+00011: 0x001D            275 	movwi	--INDF1
+                         276 	.psel	_$L20, SI47xx_command
+00012: 0x2000?           277 	call	SI47xx_command
+                         278 	.psel	SI47xx_command, _$L21
+                         279 _$L21:
+                         280 	.psel	_$L21, SI47xx_init
+00013: 0x0008            281 	return
+                         282 ; function(s) called::
+                         283 	.fcall	SI47xx_init, SI47xx_command
+                         284 
+                         285 	.segment	CODE2 (REL) SI47xx_setVolume:1
+                         286 SI47xx_setVolume_$_v:	.equ	SI47xx_setVolume_$data$+0
+                         287 SI47xx_setVolume::
+00000: 0x0020?           288 	.bsel	SI47xx_setVolume_$data$
+00001: 0x0016            289 	moviw	INDF1++
+00002: 0x0080?           290 	movwf	SI47xx_setVolume_$data$+0
+                         291 ; :: si47xx.c #85: SI47xx_property(RX_HARD_MUTE, 0);
+00003: 0x3001            292 	movlw	1
+00004: 0x001D            293 	movwi	--INDF1
+00005: 0x3040            294 	movlw	64
+00006: 0x001D            295 	movwi	--INDF1
+00007: 0x3000            296 	movlw	0
+00008: 0x001D            297 	movwi	--INDF1
+00009: 0x001D            298 	movwi	--INDF1
+                         299 	.psel	SI47xx_setVolume, SI47xx_property
+0000A: 0x2000?           300 	call	SI47xx_property
+                         301 ; :: si47xx.c #86: SI47xx_property(RX_VOLUME,    v);
+0000B: 0x3000            302 	movlw	0
+0000C: 0x001D            303 	movwi	--INDF1
+0000D: 0x3040            304 	movlw	64
+0000E: 0x001D            305 	movwi	--INDF1
+0000F: 0x0020?           306 	.bsel	SI47xx_setVolume_$data$
+00010: 0x0800?           307 	movf	SI47xx_setVolume_$_v, W
+00011: 0x001D            308 	movwi	--INDF1
+00012: 0x3000            309 	movlw	0
+00013: 0x001D            310 	movwi	--INDF1
+00014: 0x2000?           311 	call	SI47xx_property
+                         312 	.psel	SI47xx_property, SI47xx_setVolume
+00015: 0x0008            313 	return
+                         314 ; function(s) called::
+                         315 	.fcall	SI47xx_setVolume, SI47xx_property
+                         316 
+                         317 	.segment	CODE2 (REL) SI47xx_setFreq:8
+                         318 SI47xx_setFreq_$_freq:	.equ	SI47xx_setFreq_$data$+0
+                         319 SI47xx_setFreq_$1_cmd:	.equ	SI47xx_setFreq_$data$+2
+                         320 SI47xx_setFreq::
+00000: 0x0020?           321 	.bsel	SI47xx_setFreq_$data$
+00001: 0x0016            322 	moviw	INDF1++
+00002: 0x0080?           323 	movwf	SI47xx_setFreq_$data$+1
+00003: 0x0016            324 	moviw	INDF1++
+00004: 0x0080?           325 	movwf	SI47xx_setFreq_$data$+0
+                         326 ; :: si47xx.c #93: cmd[1] = 0;
+00005: 0x0180?           327 	clrf	(SI47xx_setFreq_$1_cmd+1)
+                         328 ; :: si47xx.c #94: cmd[2] = freq >> 8;
+00006: 0x0800?           329 	movf	SI47xx_setFreq_$_freq+1, W
+00007: 0x0080?           330 	movwf	(SI47xx_setFreq_$1_cmd+2)
+                         331 ; :: si47xx.c #95: cmd[3] = freq;
+00008: 0x0800?           332 	movf	SI47xx_setFreq_$_freq, W
+00009: 0x0080?           333 	movwf	(SI47xx_setFreq_$1_cmd+3)
+                         334 ; :: si47xx.c #96: cmd[4] = 0;
+0000A: 0x0180?           335 	clrf	(SI47xx_setFreq_$1_cmd+4)
+                         336 ; :: si47xx.c #98: if ( RADIO_mode == FM_MODE )
+                         337 	.bsel	SI47xx_setFreq_$data$, RADIO_mode
+0000B: 0x0800?           338 	movf	RADIO_mode, W
+                         339 	.psel	SI47xx_setFreq, _$L25
+0000C: 0x1D03            340 	btfss	3, 2
+0000D: 0x2800?           341 	goto	_$L25
+                         342 ; :: si47xx.c #100: cmd[0] = FM_TUNE_FREQ;
+0000E: 0x3020            343 	movlw	32
+                         344 	.bsel	RADIO_mode, SI47xx_setFreq_$data$
+0000F: 0x0080?           345 	movwf	SI47xx_setFreq_$1_cmd
+                         346 ; :: si47xx.c #101: SI47xx_command(cmd, 5);
+00010: 0x3000?           347 	movlw	SI47xx_setFreq_$1_cmd
+00011: 0x001D            348 	movwi	--INDF1
+00012: 0x3000?           349 	movlw	(SI47xx_setFreq_$1_cmd)>>8
+00013: 0x001D            350 	movwi	--INDF1
+00014: 0x3005            351 	movlw	5
+00015: 0x001D            352 	movwi	--INDF1
+                         353 	.psel	_$L25, SI47xx_command
+00016: 0x2000?           354 	call	SI47xx_command
+                         355 	.psel	SI47xx_command, _$L26
+00017: 0x2800?           356 	goto	_$L26
+                         357 	.psel	_$L26, _$L25
+                         358 _$L25:
+                         359 ; :: si47xx.c #105: else			cmd[0] = AM_TUNE_FREQ;
+00018: 0x3040            360 	movlw	64
+00019: 0x0020?           361 	.bsel	SI47xx_setFreq_$data$
+0001A: 0x0080?           362 	movwf	SI47xx_setFreq_$1_cmd
+                         363 ; :: si47xx.c #106: cmd[5] = 0;
+0001B: 0x0180?           364 	clrf	(SI47xx_setFreq_$1_cmd+5)
+                         365 ; :: si47xx.c #107: SI47xx_command(cmd, 6);
+0001C: 0x3000?           366 	movlw	SI47xx_setFreq_$1_cmd
+0001D: 0x001D            367 	movwi	--INDF1
+0001E: 0x3000?           368 	movlw	(SI47xx_setFreq_$1_cmd)>>8
+0001F: 0x001D            369 	movwi	--INDF1
+00020: 0x3006            370 	movlw	6
+00021: 0x001D            371 	movwi	--INDF1
+                         372 	.psel	_$L25, SI47xx_command
+00022: 0x2000?           373 	call	SI47xx_command
+                         374 	.psel	SI47xx_command, _$L26
+                         375 _$L26:
+                         376 	.psel	_$L26, SI47xx_setFreq
+00023: 0x0008            377 	return
+                         378 ; function(s) called::
+                         379 	.fcall	SI47xx_setFreq, SI47xx_command
+                         380 
+                         381 	.segment	CONSTi (REL) IS47xx_powerUpFM
+                         382 IS47xx_powerUpFM::
+00000: 0x3401            383 	retlw	1
+00001: 0x34D0            384 	retlw	208
+00002: 0x3405            385 	retlw	5
+                         386 
+                         387 	.segment	CONSTi (REL) IS47xx_powerUpAM
+                         388 IS47xx_powerUpAM::
+00000: 0x3401            389 	retlw	1
+00001: 0x34D1            390 	retlw	209
+00002: 0x3405            391 	retlw	5
+                         392 
+                         393 	.end

@@ -1,0 +1,740 @@
+I "c:\p16ecc/include/string"
+I "c:\p16ecc/include/pic16e"
+I "c:\p16ecc/include/p12f1840"
+P "p12f1840" 256 4096
+E _$$ 8432
+S BANKi REL
+G RADIO_mode
+R 1
+S BANKi REL
+G RADIO_volume
+R 1
+S BANKi REL
+G RADIO_fmFreq
+R 2
+S BANKi REL
+G RADIO_amFreq
+R 2
+S CODE2 REL
+U RADIO_init 0
+G RADIO_init
+; "; :: radio.c #14: LATA  &= ~(1 << 5);"
+W 0x0022 0x128C
+; "; :: radio.c #15: TRISA &= ~(1 << 5);"
+K 268 140
+W 0x128C
+; "; :: radio.c #16: TMR0_delayMs(100);"
+W 0x3064 0x001D
+J RADIO_init TMR0_delayMs
+W 0x2000|(TMR0_delayMs&2047)
+; "; :: radio.c #17: TRISA |= (1 << 5);"
+W 0x0021 0x168C
+; "; :: radio.c #18: TMR0_delayMs(100);"
+W 0x3064 0x001D 0x2000|(TMR0_delayMs&2047)
+; "; :: radio.c #20: startFM();"
+J TMR0_delayMs startFM
+W 0x2000|(startFM&2047)
+; "; :: radio.c #21: startFM();"
+W 0x2000|(startFM&2047)
+J startFM RADIO_init
+W 0x0008
+F RADIO_init startFM
+F RADIO_init TMR0_delayMs
+S CODE2 REL
+U startFM 0
+G startFM
+J startFM _$L3
+L _$L3
+; "; :: radio.c #26: while ( MODE_KEY_HOLD )"
+W 0x0020
+J _$L3 _$L5
+W 0x1A8C 0x2800|(_$L5&2047)
+; "; :: radio.c #26: TMR0_delayMs(5);"
+W 0x3005 0x001D
+J _$L5 TMR0_delayMs
+W 0x2000|(TMR0_delayMs&2047)
+J TMR0_delayMs _$L3
+W 0x2800|(_$L3&2047)
+J _$L3 _$L5
+L _$L5
+; "; :: radio.c #27: KEY_read();"
+J _$L5 KEY_read
+W 0x2000|(KEY_read&2047)
+; "; :: radio.c #29: RADIO_mode = FM_MODE;"
+K RADIO_mode
+W 0x0180:RADIO_mode
+; "; :: radio.c #30: SI47xx_init();"
+J KEY_read SI47xx_init
+W 0x2000|(SI47xx_init&2047)
+; "; :: radio.c #31: SI47xx_setVolume(RADIO_volume = 63);"
+W 0x303F
+K RADIO_volume
+W 0x0080:RADIO_volume 0x001D
+J SI47xx_init SI47xx_setVolume
+W 0x2000|(SI47xx_setVolume&2047)
+; "; :: radio.c #32: SI47xx_setFreq(RADIO_fmFreq);"
+K RADIO_fmFreq
+W 0x0800:RADIO_fmFreq 0x001D
+K RADIO_fmFreq (RADIO_fmFreq+1)
+W 0x0800:(RADIO_fmFreq+1) 0x001D
+J SI47xx_setVolume SI47xx_setFreq
+W 0x2000|(SI47xx_setFreq&2047)
+; "; :: radio.c #34: RADIO_dispFreq();"
+J SI47xx_setFreq RADIO_dispFreq
+W 0x2000|(RADIO_dispFreq&2047)
+; "; :: radio.c #36: OLED_displayChar_16( 7-2, 0, verdana_16x11ptBitmaps_F, 11);"
+W 0x3005 0x001D 0x3000 0x001D 0x3000|(verdana_16x11ptBitmaps_F&255) 0x001D
+W 0x3000|((verdana_16x11ptBitmaps_F>>8)&255) 0x001D 0x300B 0x001D
+J RADIO_dispFreq OLED_displayChar_16
+W 0x2000|(OLED_displayChar_16&2047)
+; "; :: radio.c #37: OLED_displayChar_16(20-2, 0, verdana_16x16ptBitmaps_M, 16);"
+W 0x3012 0x001D 0x3000 0x001D 0x3000|(verdana_16x16ptBitmaps_M&255) 0x001D
+W 0x3000|((verdana_16x16ptBitmaps_M>>8)&255) 0x001D 0x3010 0x001D
+W 0x2000|(OLED_displayChar_16&2047)
+; "; :: radio.c #39: OLED_displayChar_8x6_str(12-2, 3, "MHz");"
+W 0x300A 0x001D 0x3003 0x001D 0x3000|(_$CS1&255) 0x001D 0x3000|((_$CS1>>8)&255)
+W 0x001D
+J OLED_displayChar_16 OLED_displayChar_8x6_str
+W 0x2000|(OLED_displayChar_8x6_str&2047)
+J OLED_displayChar_8x6_str startFM
+W 0x0008
+F startFM OLED_displayChar_8x6_str
+F startFM OLED_displayChar_16
+F startFM RADIO_dispFreq
+F startFM SI47xx_setFreq
+F startFM SI47xx_setVolume
+F startFM SI47xx_init
+F startFM KEY_read
+F startFM TMR0_delayMs
+S CODE2 REL
+U startAM 0
+G startAM
+J startAM _$L7
+L _$L7
+; "; :: radio.c #44: while ( MODE_KEY_HOLD )"
+W 0x0020
+J _$L7 _$L9
+W 0x1A8C 0x2800|(_$L9&2047)
+; "; :: radio.c #44: TMR0_delayMs(5);"
+W 0x3005 0x001D
+J _$L9 TMR0_delayMs
+W 0x2000|(TMR0_delayMs&2047)
+J TMR0_delayMs _$L7
+W 0x2800|(_$L7&2047)
+J _$L7 _$L9
+L _$L9
+; "; :: radio.c #45: KEY_read();"
+J _$L9 KEY_read
+W 0x2000|(KEY_read&2047)
+; "; :: radio.c #47: RADIO_mode = AM_MODE;"
+W 0x3001
+K RADIO_mode
+W 0x0080:RADIO_mode
+; "; :: radio.c #48: SI47xx_init();"
+J KEY_read SI47xx_init
+W 0x2000|(SI47xx_init&2047)
+; "; :: radio.c #49: SI47xx_setVolume(RADIO_volume = 63);"
+W 0x303F
+K RADIO_volume
+W 0x0080:RADIO_volume 0x001D
+J SI47xx_init SI47xx_setVolume
+W 0x2000|(SI47xx_setVolume&2047)
+; "; :: radio.c #50: SI47xx_setFreq(RADIO_amFreq);"
+K RADIO_amFreq
+W 0x0800:RADIO_amFreq 0x001D
+K RADIO_amFreq (RADIO_amFreq+1)
+W 0x0800:(RADIO_amFreq+1) 0x001D
+J SI47xx_setVolume SI47xx_setFreq
+W 0x2000|(SI47xx_setFreq&2047)
+; "; :: radio.c #52: RADIO_dispFreq();"
+J SI47xx_setFreq RADIO_dispFreq
+W 0x2000|(RADIO_dispFreq&2047)
+; "; :: radio.c #54: OLED_displayChar_16( 2-2, 0, verdana_16x16ptBitmaps_A, 16);"
+W 0x3000 0x001D 0x001D 0x3000|(verdana_16x16ptBitmaps_A&255) 0x001D
+W 0x3000|((verdana_16x16ptBitmaps_A>>8)&255) 0x001D 0x3010 0x001D
+J RADIO_dispFreq OLED_displayChar_16
+W 0x2000|(OLED_displayChar_16&2047)
+; "; :: radio.c #55: OLED_displayChar_16(20-2, 0, verdana_16x16ptBitmaps_M, 16);"
+W 0x3012 0x001D 0x3000 0x001D 0x3000|(verdana_16x16ptBitmaps_M&255) 0x001D
+W 0x3000|((verdana_16x16ptBitmaps_M>>8)&255) 0x001D 0x3010 0x001D
+W 0x2000|(OLED_displayChar_16&2047)
+; "; :: radio.c #57: OLED_displayChar_8x6_str(12-2, 3, "KHz");"
+W 0x300A 0x001D 0x3003 0x001D 0x3000|(_$CS2&255) 0x001D 0x3000|((_$CS2>>8)&255)
+W 0x001D
+J OLED_displayChar_16 OLED_displayChar_8x6_str
+W 0x2000|(OLED_displayChar_8x6_str&2047)
+J OLED_displayChar_8x6_str startAM
+W 0x0008
+F startAM OLED_displayChar_8x6_str
+F startAM OLED_displayChar_16
+F startAM RADIO_dispFreq
+F startAM SI47xx_setFreq
+F startAM SI47xx_setVolume
+F startAM SI47xx_init
+F startAM KEY_read
+F startAM TMR0_delayMs
+S CODE2 REL
+U RADIO_poll 4
+G RADIO_poll
+J RADIO_poll KEY_read
+W 0x2000|(KEY_read&2047) 0x0870
+K RADIO_poll_$data$
+W 0x0080:RADIO_poll_$data$
+; "; :: radio.c #66: switch ( key )	"
+; "; :: radio.c #67: case MODE_KEY:"
+W 0x0800:RADIO_poll_$data$ 0x3A01
+J KEY_read _$L12
+W 0x1903 0x2800|(_$L12&2047)
+; "; :: radio.c #75: case INC_KEY:"
+W 0x0800:RADIO_poll_$data$ 0x3A02
+J _$L12 _$L13
+W 0x1903 0x2800|(_$L13&2047)
+; "; :: radio.c #76: case FAST_INC:"
+W 0x0800:RADIO_poll_$data$ 0x3A04 0x1903 0x2800|(_$L13&2047)
+; "; :: radio.c #108: case DEC_KEY:"
+W 0x0800:RADIO_poll_$data$ 0x3A03
+J _$L13 _$L15
+W 0x1903 0x2800|(_$L15&2047)
+; "; :: radio.c #109: case FAST_DEC:"
+W 0x0800:RADIO_poll_$data$ 0x3A05 0x1903 0x2800|(_$L15&2047)
+J _$L15 _$L11
+W 0x2800|(_$L11&2047)
+J _$L11 _$L12
+L _$L12
+; "; :: radio.c #68: OLED_clr();"
+J _$L12 OLED_clr
+W 0x2000|(OLED_clr&2047)
+; "; :: radio.c #69: if ( RADIO_mode == FM_MODE )"
+K RADIO_mode
+W 0x0800:RADIO_mode
+J OLED_clr _$L18
+W 0x1D03 0x2800|(_$L18&2047)
+; "; :: radio.c #70: startAM();"
+J _$L18 startAM
+W 0x2000|(startAM&2047)
+J startAM _$L11
+W 0x2800|(_$L11&2047)
+J _$L11 _$L18
+L _$L18
+; "; :: radio.c #72: else				startFM();"
+J _$L18 startFM
+W 0x2000|(startFM&2047)
+; "; :: radio.c #73: break;"
+J startFM _$L11
+W 0x2800|(_$L11&2047)
+J _$L11 _$L13
+L _$L13
+; "; :: radio.c #77: if ( RADIO_mode == FM_MODE )"
+K RADIO_mode
+W 0x0800:RADIO_mode
+J _$L13 _$L21
+W 0x1D03 0x2800|(_$L21&2047)
+; "; :: radio.c #79: delta = RADIO_fmFreq % 50;"
+W 0x3032 0x001D 0x3000 0x001D
+K RADIO_mode RADIO_fmFreq
+W 0x0800:RADIO_fmFreq 0x00F0
+K RADIO_fmFreq (RADIO_fmFreq+1)
+W 0x0800:(RADIO_fmFreq+1) 0x00F1 0x3001
+J _$L21 _divmod16
+W 0x2000|(_divmod16&2047) 0x0870
+K (RADIO_fmFreq+1) RADIO_poll_$data$
+W 0x0080:(RADIO_poll_$data$+1)
+; "; :: radio.c #80: if ( key == FAST_INC )"
+W 0x0800:RADIO_poll_$data$ 0x3A04
+J _divmod16 _$L24
+W 0x1D03 0x2800|(_$L24&2047)
+; "; :: radio.c #81: RADIO_fmFreq += 50 - delta;"
+W 0x0800:(RADIO_poll_$data$+1) 0x3C32 0x0080:(RADIO_poll_$data$+2) 0x3000 0x3B7F
+W 0x0080:((RADIO_poll_$data$+2)+1) 0x0800:(RADIO_poll_$data$+2)
+K RADIO_poll_$data$ RADIO_fmFreq
+W 0x0780:RADIO_fmFreq
+K RADIO_fmFreq RADIO_poll_$data$
+W 0x0800:((RADIO_poll_$data$+2)+1)
+K RADIO_poll_$data$ (RADIO_fmFreq+1)
+W 0x3D80:(RADIO_fmFreq+1)
+J _$L24 _$L25
+W 0x2800|(_$L25&2047)
+J _$L25 _$L24
+L _$L24
+; "; :: radio.c #83: else					RADIO_fmFreq += 10;"
+W 0x300A
+K RADIO_fmFreq
+W 0x0780:RADIO_fmFreq 0x3000
+K RADIO_fmFreq (RADIO_fmFreq+1)
+W 0x3D80:(RADIO_fmFreq+1)
+J _$L24 _$L25
+L _$L25
+; "; :: radio.c #85: if ( RADIO_fmFreq > 10850 )"
+W 0x3062
+K RADIO_fmFreq
+W 0x0200:RADIO_fmFreq 0x00F0 0x302A
+K RADIO_fmFreq (RADIO_fmFreq+1)
+W 0x3B00:(RADIO_fmFreq+1) 0x04F0
+J _$L25 _$L27
+W 0x1903 0x1003 0x1C03 0x2800|(_$L27&2047)
+; "; :: radio.c #86: RADIO_fmFreq = 10850;"
+W 0x3062
+K (RADIO_fmFreq+1) RADIO_fmFreq
+W 0x0080:RADIO_fmFreq 0x302A
+K RADIO_fmFreq (RADIO_fmFreq+1)
+W 0x0080:(RADIO_fmFreq+1)
+L _$L27
+; "; :: radio.c #88: (RADIO_fmFreq);"
+K RADIO_fmFreq
+W 0x0800:RADIO_fmFreq 0x001D
+K RADIO_fmFreq (RADIO_fmFreq+1)
+W 0x0800:(RADIO_fmFreq+1) 0x001D
+J _$L27 SI47xx_setFreq
+W 0x2000|(SI47xx_setFreq&2047)
+; "; :: radio.c #89: RADIO_dispFreq();"
+J SI47xx_setFreq RADIO_dispFreq
+W 0x2000|(RADIO_dispFreq&2047)
+J RADIO_dispFreq _$L11
+W 0x2800|(_$L11&2047)
+J _$L11 _$L21
+L _$L21
+; "; :: radio.c #93: else							delta = RADIO_amFreq % 10;"
+W 0x300A 0x001D 0x3000 0x001D
+K RADIO_amFreq
+W 0x0800:RADIO_amFreq 0x00F0
+K RADIO_amFreq (RADIO_amFreq+1)
+W 0x0800:(RADIO_amFreq+1) 0x00F1 0x3001
+J _$L21 _divmod16
+W 0x2000|(_divmod16&2047) 0x0870
+K (RADIO_amFreq+1) RADIO_poll_$data$
+W 0x0080:(RADIO_poll_$data$+1)
+; "; :: radio.c #94: if ( key == FAST_INC )"
+W 0x0800:RADIO_poll_$data$ 0x3A04
+J _divmod16 _$L30
+W 0x1D03 0x2800|(_$L30&2047)
+; "; :: radio.c #96: RADIO_amFreq += 10 - delta;"
+W 0x0800:(RADIO_poll_$data$+1) 0x3C0A 0x0080:(RADIO_poll_$data$+2) 0x3000 0x3B7F
+W 0x0080:((RADIO_poll_$data$+2)+1) 0x0800:(RADIO_poll_$data$+2)
+K RADIO_poll_$data$ RADIO_amFreq
+W 0x0780:RADIO_amFreq
+K RADIO_amFreq RADIO_poll_$data$
+W 0x0800:((RADIO_poll_$data$+2)+1)
+K RADIO_poll_$data$ (RADIO_amFreq+1)
+W 0x3D80:(RADIO_amFreq+1)
+J _$L30 _$L31
+W 0x2800|(_$L31&2047)
+J _$L31 _$L30
+L _$L30
+; "; :: radio.c #99: else					RADIO_amFreq++;"
+K RADIO_amFreq
+W 0x0A80:RADIO_amFreq
+K RADIO_amFreq (RADIO_amFreq+1)
+W 0x1903 0x0A80:(RADIO_amFreq+1)
+J _$L30 _$L31
+L _$L31
+; "; :: radio.c #101: if ( RADIO_amFreq > 1650 )"
+W 0x3072
+K RADIO_amFreq
+W 0x0200:RADIO_amFreq 0x00F0 0x3006
+K RADIO_amFreq (RADIO_amFreq+1)
+W 0x3B00:(RADIO_amFreq+1) 0x04F0
+J _$L31 _$L33
+W 0x1903 0x1003 0x1C03 0x2800|(_$L33&2047)
+; "; :: radio.c #102: RADIO_amFreq = 1650;"
+W 0x3072
+K (RADIO_amFreq+1) RADIO_amFreq
+W 0x0080:RADIO_amFreq 0x3006
+K RADIO_amFreq (RADIO_amFreq+1)
+W 0x0080:(RADIO_amFreq+1)
+L _$L33
+; "; :: radio.c #104: (RADIO_amFreq);"
+K RADIO_amFreq
+W 0x0800:RADIO_amFreq 0x001D
+K RADIO_amFreq (RADIO_amFreq+1)
+W 0x0800:(RADIO_amFreq+1) 0x001D
+J _$L33 SI47xx_setFreq
+W 0x2000|(SI47xx_setFreq&2047)
+; "; :: radio.c #105: RADIO_dispFreq();"
+J SI47xx_setFreq RADIO_dispFreq
+W 0x2000|(RADIO_dispFreq&2047)
+; "; :: radio.c #107: break;"
+J RADIO_dispFreq _$L11
+W 0x2800|(_$L11&2047)
+J _$L11 _$L15
+L _$L15
+; "; :: radio.c #110: if ( RADIO_mode == FM_MODE )"
+K RADIO_mode
+W 0x0800:RADIO_mode
+J _$L15 _$L36
+W 0x1D03 0x2800|(_$L36&2047)
+; "; :: radio.c #112: delta = RADIO_fmFreq % 50;"
+W 0x3032 0x001D 0x3000 0x001D
+K RADIO_mode RADIO_fmFreq
+W 0x0800:RADIO_fmFreq 0x00F0
+K RADIO_fmFreq (RADIO_fmFreq+1)
+W 0x0800:(RADIO_fmFreq+1) 0x00F1 0x3001
+J _$L36 _divmod16
+W 0x2000|(_divmod16&2047) 0x0870
+K (RADIO_fmFreq+1) RADIO_poll_$data$
+W 0x0080:(RADIO_poll_$data$+1)
+; "; :: radio.c #114: if ( key == FAST_DEC )"
+W 0x0800:RADIO_poll_$data$ 0x3A05
+J _divmod16 _$L39
+W 0x1D03 0x2800|(_$L39&2047)
+; "; :: radio.c #115: RADIO_fmFreq -= delta? delta: 50;"
+W 0x0800:(RADIO_poll_$data$+1)
+J _$L39 _$L42
+W 0x1903 0x2800|(_$L42&2047) 0x0080:(RADIO_poll_$data$+2)
+J _$L42 _$L43
+W 0x2800|(_$L43&2047)
+J _$L43 _$L42
+L _$L42
+W 0x3032
+K RADIO_poll_$data$
+W 0x0080:(RADIO_poll_$data$+2)
+J _$L42 _$L43
+L _$L43
+K RADIO_poll_$data$
+W 0x0800:(RADIO_poll_$data$+2)
+K RADIO_poll_$data$ RADIO_fmFreq
+W 0x0280:RADIO_fmFreq 0x3980 0x1D03 0x30FF
+K RADIO_fmFreq (RADIO_fmFreq+1)
+W 0x3B80:(RADIO_fmFreq+1)
+J _$L43 _$L40
+W 0x2800|(_$L40&2047)
+J _$L40 _$L39
+L _$L39
+; "; :: radio.c #117: else					RADIO_fmFreq -= 10;"
+W 0x30F6
+K RADIO_fmFreq
+W 0x0780:RADIO_fmFreq 0x30FF
+K RADIO_fmFreq (RADIO_fmFreq+1)
+W 0x3D80:(RADIO_fmFreq+1)
+J _$L39 _$L40
+L _$L40
+; "; :: radio.c #119: if ( RADIO_fmFreq < 8750 )"
+W 0x302E
+K RADIO_fmFreq
+W 0x0200:RADIO_fmFreq 0x3022
+K RADIO_fmFreq (RADIO_fmFreq+1)
+W 0x3B00:(RADIO_fmFreq+1)
+J _$L40 _$L45
+W 0x1803 0x2800|(_$L45&2047)
+; "; :: radio.c #120: RADIO_fmFreq = 8750;"
+W 0x302E
+K (RADIO_fmFreq+1) RADIO_fmFreq
+W 0x0080:RADIO_fmFreq 0x3022
+K RADIO_fmFreq (RADIO_fmFreq+1)
+W 0x0080:(RADIO_fmFreq+1)
+L _$L45
+; "; :: radio.c #122: (RADIO_fmFreq);"
+K RADIO_fmFreq
+W 0x0800:RADIO_fmFreq 0x001D
+K RADIO_fmFreq (RADIO_fmFreq+1)
+W 0x0800:(RADIO_fmFreq+1) 0x001D
+J _$L45 SI47xx_setFreq
+W 0x2000|(SI47xx_setFreq&2047)
+; "; :: radio.c #123: RADIO_dispFreq();"
+J SI47xx_setFreq RADIO_dispFreq
+W 0x2000|(RADIO_dispFreq&2047)
+J RADIO_dispFreq _$L11
+W 0x2800|(_$L11&2047)
+J _$L11 _$L36
+L _$L36
+; "; :: radio.c #127: else							delta = RADIO_amFreq % 10;"
+W 0x300A 0x001D 0x3000 0x001D
+K RADIO_amFreq
+W 0x0800:RADIO_amFreq 0x00F0
+K RADIO_amFreq (RADIO_amFreq+1)
+W 0x0800:(RADIO_amFreq+1) 0x00F1 0x3001
+J _$L36 _divmod16
+W 0x2000|(_divmod16&2047) 0x0870
+K (RADIO_amFreq+1) RADIO_poll_$data$
+W 0x0080:(RADIO_poll_$data$+1)
+; "; :: radio.c #129: if ( key == FAST_DEC )"
+W 0x0800:RADIO_poll_$data$ 0x3A05
+J _divmod16 _$L48
+W 0x1D03 0x2800|(_$L48&2047)
+; "; :: radio.c #130: RADIO_amFreq -= delta? delta: 10;"
+W 0x0800:(RADIO_poll_$data$+1)
+J _$L48 _$L51
+W 0x1903 0x2800|(_$L51&2047) 0x0080:(RADIO_poll_$data$+2)
+J _$L51 _$L52
+W 0x2800|(_$L52&2047)
+J _$L52 _$L51
+L _$L51
+W 0x300A
+K RADIO_poll_$data$
+W 0x0080:(RADIO_poll_$data$+2)
+J _$L51 _$L52
+L _$L52
+K RADIO_poll_$data$
+W 0x0800:(RADIO_poll_$data$+2)
+K RADIO_poll_$data$ RADIO_amFreq
+W 0x0280:RADIO_amFreq 0x3980 0x1D03 0x30FF
+K RADIO_amFreq (RADIO_amFreq+1)
+W 0x3B80:(RADIO_amFreq+1)
+J _$L52 _$L49
+W 0x2800|(_$L49&2047)
+J _$L49 _$L48
+L _$L48
+; "; :: radio.c #132: else					RADIO_amFreq--;"
+W 0x30FF
+K RADIO_amFreq
+W 0x0780:RADIO_amFreq
+K RADIO_amFreq (RADIO_amFreq+1)
+W 0x3D80:(RADIO_amFreq+1)
+J _$L48 _$L49
+L _$L49
+; "; :: radio.c #134: if ( RADIO_amFreq < 535 )"
+W 0x3017
+K RADIO_amFreq
+W 0x0200:RADIO_amFreq 0x3002
+K RADIO_amFreq (RADIO_amFreq+1)
+W 0x3B00:(RADIO_amFreq+1)
+J _$L49 _$L54
+W 0x1803 0x2800|(_$L54&2047)
+; "; :: radio.c #135: RADIO_amFreq = 535;"
+W 0x3017
+K (RADIO_amFreq+1) RADIO_amFreq
+W 0x0080:RADIO_amFreq 0x3002
+K RADIO_amFreq (RADIO_amFreq+1)
+W 0x0080:(RADIO_amFreq+1)
+L _$L54
+; "; :: radio.c #137: (RADIO_amFreq);"
+K RADIO_amFreq
+W 0x0800:RADIO_amFreq 0x001D
+K RADIO_amFreq (RADIO_amFreq+1)
+W 0x0800:(RADIO_amFreq+1) 0x001D
+J _$L54 SI47xx_setFreq
+W 0x2000|(SI47xx_setFreq&2047)
+; "; :: radio.c #138: RADIO_dispFreq();"
+J SI47xx_setFreq RADIO_dispFreq
+W 0x2000|(RADIO_dispFreq&2047)
+; "; :: radio.c #140: break;"
+J RADIO_dispFreq _$L11
+L _$L11
+J _$L11 RADIO_poll
+W 0x0008
+F RADIO_poll RADIO_dispFreq
+F RADIO_poll SI47xx_setFreq
+F RADIO_poll _divmod16
+F RADIO_poll startFM
+F RADIO_poll startAM
+F RADIO_poll OLED_clr
+F RADIO_poll KEY_read
+S CODE2 REL
+U RADIO_dispFreq 8
+G RADIO_dispFreq
+; "; :: radio.c #146: if ( RADIO_mode == FM_MODE )"
+K RADIO_mode
+W 0x0800:RADIO_mode
+J RADIO_dispFreq _$L58
+W 0x1D03 0x2800|(_$L58&2047)
+K RADIO_mode RADIO_fmFreq
+W 0x0800:RADIO_fmFreq
+K RADIO_fmFreq RADIO_dispFreq_$data$
+W 0x0080:RADIO_dispFreq_$data$
+K RADIO_dispFreq_$data$ (RADIO_fmFreq+1)
+W 0x0800:(RADIO_fmFreq+1)
+K (RADIO_fmFreq+1) RADIO_dispFreq_$data$
+W 0x0080:(RADIO_dispFreq_$data$+1) 0x3010 0x001D 0x3027 0x001D
+W 0x0800:RADIO_dispFreq_$data$ 0x00F0 0x0800:(RADIO_dispFreq_$data$+1) 0x00F1
+W 0x3000
+J _$L58 _divmod16
+W 0x2000|(_divmod16&2047) 0x0870 0x0080:(RADIO_dispFreq_$data$+2)
+; "; :: radio.c #149: freq %= 10000;"
+W 0x3010 0x001D 0x3027 0x001D 0x0800:RADIO_dispFreq_$data$ 0x00F0
+W 0x0800:(RADIO_dispFreq_$data$+1) 0x00F1 0x3001 0x2000|(_divmod16&2047) 0x0870
+W 0x0080:RADIO_dispFreq_$data$ 0x0871 0x0080:(RADIO_dispFreq_$data$+1) 0x30E8
+W 0x001D 0x3003 0x001D 0x0800:RADIO_dispFreq_$data$ 0x00F0
+W 0x0800:(RADIO_dispFreq_$data$+1) 0x00F1 0x3000 0x2000|(_divmod16&2047) 0x0870
+W 0x0080:(RADIO_dispFreq_$data$+3)
+; "; :: radio.c #150: freq %= 1000;"
+W 0x30E8 0x001D 0x3003 0x001D 0x0800:RADIO_dispFreq_$data$ 0x00F0
+W 0x0800:(RADIO_dispFreq_$data$+1) 0x00F1 0x3001 0x2000|(_divmod16&2047) 0x0870
+W 0x0080:RADIO_dispFreq_$data$ 0x0871 0x0080:(RADIO_dispFreq_$data$+1) 0x3064
+W 0x001D 0x3000 0x001D 0x0800:RADIO_dispFreq_$data$ 0x00F0
+W 0x0800:(RADIO_dispFreq_$data$+1) 0x00F1 0x3000 0x2000|(_divmod16&2047) 0x0870
+W 0x0080:(RADIO_dispFreq_$data$+4)
+; "; :: radio.c #151: freq %= 100;"
+W 0x3064 0x001D 0x3000 0x001D 0x0800:RADIO_dispFreq_$data$ 0x00F0
+W 0x0800:(RADIO_dispFreq_$data$+1) 0x00F1 0x3001 0x2000|(_divmod16&2047) 0x0870
+W 0x0080:RADIO_dispFreq_$data$ 0x0871 0x0080:(RADIO_dispFreq_$data$+1) 0x300A
+W 0x001D 0x3000 0x001D 0x0800:RADIO_dispFreq_$data$ 0x00F0
+W 0x0800:(RADIO_dispFreq_$data$+1) 0x00F1 0x3000 0x2000|(_divmod16&2047) 0x0870
+W 0x0080:(RADIO_dispFreq_$data$+5)
+; "; :: radio.c #154: OLED_displayChar_16(106, 2, &arial_16x11ptBitmaps[10*22],    11);"
+W 0x306A 0x001D 0x3002 0x001D 0x3000|((arial_16x11ptBitmaps+220)&255) 0x001D
+W 0x3000|(((arial_16x11ptBitmaps+220)>>8)&255) 0x001D 0x300B 0x001D
+J _divmod16 OLED_displayChar_16
+W 0x2000|(OLED_displayChar_16&2047)
+; "; :: radio.c #155: OLED_displayChar_16(117, 2, &arial_16x11ptBitmaps[freq3*22], 11);"
+W 0x3075 0x001D 0x3002 0x001D
+K RADIO_dispFreq_$data$
+W 0x0800:(RADIO_dispFreq_$data$+5) 0x00F0 0x3016
+J OLED_displayChar_16 _mul8
+W 0x2000|(_mul8&2047) 0x0870 0x0080:(RADIO_dispFreq_$data$+6) 0x0871
+W 0x0080:((RADIO_dispFreq_$data$+6)+1) 0x3000|(arial_16x11ptBitmaps&255)
+W 0x0780:(RADIO_dispFreq_$data$+6) 0x3000|((arial_16x11ptBitmaps>>8)&255)
+W 0x3D80:((RADIO_dispFreq_$data$+6)+1) 0x0800:(RADIO_dispFreq_$data$+6) 0x001D
+W 0x0800:((RADIO_dispFreq_$data$+6)+1) 0x001D 0x300B 0x001D
+J _mul8 OLED_displayChar_16
+W 0x2000|(OLED_displayChar_16&2047)
+; "; :: radio.c #157: if ( freq0 )"
+K RADIO_dispFreq_$data$
+W 0x0800:(RADIO_dispFreq_$data$+2)
+J OLED_displayChar_16 _$L61
+W 0x1903 0x2800|(_$L61&2047)
+; "; :: radio.c #158: OLED_displayChar_32x19(46, &arialNarrow_32x19_Bitmaps[(4*19)]);"
+W 0x302E 0x001D 0x3000|((arialNarrow_32x19_Bitmaps+76)&255) 0x001D
+W 0x3000|(((arialNarrow_32x19_Bitmaps+76)>>8)&255) 0x001D
+J _$L61 OLED_displayChar_32x19
+W 0x2000|(OLED_displayChar_32x19&2047)
+J OLED_displayChar_32x19 _$L62
+W 0x2800|(_$L62&2047)
+J _$L62 _$L61
+L _$L61
+; "; :: radio.c #160: else			OLED_displayChar_32x19(46, arialNarrow_32x19_Blank);"
+W 0x302E 0x001D 0x3000|(arialNarrow_32x19_Blank&255) 0x001D
+W 0x3000|((arialNarrow_32x19_Blank>>8)&255) 0x001D
+J _$L61 OLED_displayChar_32x19
+W 0x2000|(OLED_displayChar_32x19&2047)
+J OLED_displayChar_32x19 _$L62
+L _$L62
+; "; :: radio.c #162: OLED_displayChar_32x19(66, &arialNarrow_32x19_Bitmaps[freq1*(4*19)]);"
+W 0x3042 0x001D
+K RADIO_dispFreq_$data$
+W 0x0800:(RADIO_dispFreq_$data$+3) 0x00F0 0x304C
+J _$L62 _mul8
+W 0x2000|(_mul8&2047) 0x0870 0x0080:(RADIO_dispFreq_$data$+6) 0x0871
+W 0x0080:((RADIO_dispFreq_$data$+6)+1) 0x3000|(arialNarrow_32x19_Bitmaps&255)
+W 0x0780:(RADIO_dispFreq_$data$+6) 0x3000|((arialNarrow_32x19_Bitmaps>>8)&255)
+W 0x3D80:((RADIO_dispFreq_$data$+6)+1) 0x0800:(RADIO_dispFreq_$data$+6) 0x001D
+W 0x0800:((RADIO_dispFreq_$data$+6)+1) 0x001D
+J _mul8 OLED_displayChar_32x19
+W 0x2000|(OLED_displayChar_32x19&2047)
+; "; :: radio.c #163: OLED_displayChar_32x19(86, &arialNarrow_32x19_Bitmaps[freq2*(4*19)]);"
+W 0x3056 0x001D
+K RADIO_dispFreq_$data$
+W 0x0800:(RADIO_dispFreq_$data$+4) 0x00F0 0x304C
+J OLED_displayChar_32x19 _mul8
+W 0x2000|(_mul8&2047) 0x0870 0x0080:(RADIO_dispFreq_$data$+6) 0x0871
+W 0x0080:((RADIO_dispFreq_$data$+6)+1) 0x3000|(arialNarrow_32x19_Bitmaps&255)
+W 0x0780:(RADIO_dispFreq_$data$+6) 0x3000|((arialNarrow_32x19_Bitmaps>>8)&255)
+W 0x3D80:((RADIO_dispFreq_$data$+6)+1) 0x0800:(RADIO_dispFreq_$data$+6) 0x001D
+W 0x0800:((RADIO_dispFreq_$data$+6)+1) 0x001D
+J _mul8 OLED_displayChar_32x19
+W 0x2000|(OLED_displayChar_32x19&2047)
+J OLED_displayChar_32x19 _$L59
+W 0x2800|(_$L59&2047)
+J _$L59 _$L58
+L _$L58
+K RADIO_amFreq
+W 0x0800:RADIO_amFreq
+K RADIO_amFreq RADIO_dispFreq_$data$
+W 0x0080:RADIO_dispFreq_$data$
+K RADIO_dispFreq_$data$ (RADIO_amFreq+1)
+W 0x0800:(RADIO_amFreq+1)
+K (RADIO_amFreq+1) RADIO_dispFreq_$data$
+W 0x0080:(RADIO_dispFreq_$data$+1) 0x30E8 0x001D 0x3003 0x001D
+W 0x0800:RADIO_dispFreq_$data$ 0x00F0 0x0800:(RADIO_dispFreq_$data$+1) 0x00F1
+W 0x3000
+J _$L58 _divmod16
+W 0x2000|(_divmod16&2047) 0x0870 0x0080:(RADIO_dispFreq_$data$+2)
+; "; :: radio.c #168: freq %= 1000;"
+W 0x30E8 0x001D 0x3003 0x001D 0x0800:RADIO_dispFreq_$data$ 0x00F0
+W 0x0800:(RADIO_dispFreq_$data$+1) 0x00F1 0x3001 0x2000|(_divmod16&2047) 0x0870
+W 0x0080:RADIO_dispFreq_$data$ 0x0871 0x0080:(RADIO_dispFreq_$data$+1) 0x3064
+W 0x001D 0x3000 0x001D 0x0800:RADIO_dispFreq_$data$ 0x00F0
+W 0x0800:(RADIO_dispFreq_$data$+1) 0x00F1 0x3000 0x2000|(_divmod16&2047) 0x0870
+W 0x0080:(RADIO_dispFreq_$data$+3)
+; "; :: radio.c #169: freq %= 100;"
+W 0x3064 0x001D 0x3000 0x001D 0x0800:RADIO_dispFreq_$data$ 0x00F0
+W 0x0800:(RADIO_dispFreq_$data$+1) 0x00F1 0x3001 0x2000|(_divmod16&2047) 0x0870
+W 0x0080:RADIO_dispFreq_$data$ 0x0871 0x0080:(RADIO_dispFreq_$data$+1) 0x300A
+W 0x001D 0x3000 0x001D 0x0800:RADIO_dispFreq_$data$ 0x00F0
+W 0x0800:(RADIO_dispFreq_$data$+1) 0x00F1 0x3000 0x2000|(_divmod16&2047) 0x0870
+W 0x0080:(RADIO_dispFreq_$data$+4)
+; "; :: radio.c #170: freq %= 10;"
+W 0x300A 0x001D 0x3000 0x001D 0x0800:RADIO_dispFreq_$data$ 0x00F0
+W 0x0800:(RADIO_dispFreq_$data$+1) 0x00F1 0x3001 0x2000|(_divmod16&2047) 0x0870
+W 0x0080:RADIO_dispFreq_$data$ 0x0871 0x0080:(RADIO_dispFreq_$data$+1)
+; "; :: radio.c #172: if ( freq0 )"
+W 0x0800:(RADIO_dispFreq_$data$+2)
+J _divmod16 _$L64
+W 0x1903 0x2800|(_$L64&2047)
+; "; :: radio.c #173: OLED_displayChar_32x19(46, &arialNarrow_32x19_Bitmaps[(4*19)]);"
+W 0x302E 0x001D 0x3000|((arialNarrow_32x19_Bitmaps+76)&255) 0x001D
+W 0x3000|(((arialNarrow_32x19_Bitmaps+76)>>8)&255) 0x001D
+J _$L64 OLED_displayChar_32x19
+W 0x2000|(OLED_displayChar_32x19&2047)
+J OLED_displayChar_32x19 _$L65
+W 0x2800|(_$L65&2047)
+J _$L65 _$L64
+L _$L64
+; "; :: radio.c #175: else            OLED_displayChar_32x19(46, arialNarrow_32x19_Blank);"
+W 0x302E 0x001D 0x3000|(arialNarrow_32x19_Blank&255) 0x001D
+W 0x3000|((arialNarrow_32x19_Blank>>8)&255) 0x001D
+J _$L64 OLED_displayChar_32x19
+W 0x2000|(OLED_displayChar_32x19&2047)
+J OLED_displayChar_32x19 _$L65
+L _$L65
+; "; :: radio.c #177: OLED_displayChar_32x19( 66, &arialNarrow_32x19_Bitmaps[freq1*(4*19)]);"
+W 0x3042 0x001D
+K RADIO_dispFreq_$data$
+W 0x0800:(RADIO_dispFreq_$data$+3) 0x00F0 0x304C
+J _$L65 _mul8
+W 0x2000|(_mul8&2047) 0x0870 0x0080:(RADIO_dispFreq_$data$+6) 0x0871
+W 0x0080:((RADIO_dispFreq_$data$+6)+1) 0x3000|(arialNarrow_32x19_Bitmaps&255)
+W 0x0780:(RADIO_dispFreq_$data$+6) 0x3000|((arialNarrow_32x19_Bitmaps>>8)&255)
+W 0x3D80:((RADIO_dispFreq_$data$+6)+1) 0x0800:(RADIO_dispFreq_$data$+6) 0x001D
+W 0x0800:((RADIO_dispFreq_$data$+6)+1) 0x001D
+J _mul8 OLED_displayChar_32x19
+W 0x2000|(OLED_displayChar_32x19&2047)
+; "; :: radio.c #178: OLED_displayChar_32x19( 86, &arialNarrow_32x19_Bitmaps[freq2*(4*19)]);"
+W 0x3056 0x001D
+K RADIO_dispFreq_$data$
+W 0x0800:(RADIO_dispFreq_$data$+4) 0x00F0 0x304C
+J OLED_displayChar_32x19 _mul8
+W 0x2000|(_mul8&2047) 0x0870 0x0080:(RADIO_dispFreq_$data$+6) 0x0871
+W 0x0080:((RADIO_dispFreq_$data$+6)+1) 0x3000|(arialNarrow_32x19_Bitmaps&255)
+W 0x0780:(RADIO_dispFreq_$data$+6) 0x3000|((arialNarrow_32x19_Bitmaps>>8)&255)
+W 0x3D80:((RADIO_dispFreq_$data$+6)+1) 0x0800:(RADIO_dispFreq_$data$+6) 0x001D
+W 0x0800:((RADIO_dispFreq_$data$+6)+1) 0x001D
+J _mul8 OLED_displayChar_32x19
+W 0x2000|(OLED_displayChar_32x19&2047)
+; "; :: radio.c #179: OLED_displayChar_32x19(106, &arialNarrow_32x19_Bitmaps[freq *(4*19)]);"
+W 0x306A 0x001D
+K RADIO_dispFreq_$data$
+W 0x0800:RADIO_dispFreq_$data$ 0x0080:(RADIO_dispFreq_$data$+6)
+W 0x0800:(RADIO_dispFreq_$data$+1) 0x0080:((RADIO_dispFreq_$data$+6)+1) 0x304C
+W 0x001D 0x3000 0x001D 0x3000|((RADIO_dispFreq_$data$+6)&255) 0x0084
+W 0x3000|(((RADIO_dispFreq_$data$+6)>>8)&255) 0x0085
+J OLED_displayChar_32x19 _mul16indf
+W 0x2000|(_mul16indf&2047) 0x3000|(arialNarrow_32x19_Bitmaps&255)
+W 0x0780:(RADIO_dispFreq_$data$+6) 0x3000|((arialNarrow_32x19_Bitmaps>>8)&255)
+W 0x3D80:((RADIO_dispFreq_$data$+6)+1) 0x0800:(RADIO_dispFreq_$data$+6) 0x001D
+W 0x0800:((RADIO_dispFreq_$data$+6)+1) 0x001D
+J _mul16indf OLED_displayChar_32x19
+W 0x2000|(OLED_displayChar_32x19&2047)
+J OLED_displayChar_32x19 _$L59
+L _$L59
+J _$L59 RADIO_dispFreq
+W 0x0008
+F RADIO_dispFreq _mul16indf
+F RADIO_dispFreq OLED_displayChar_32x19
+F RADIO_dispFreq _mul8
+F RADIO_dispFreq OLED_displayChar_16
+F RADIO_dispFreq _divmod16
+S CODEi REL
+W 0x3006
+K RADIO_fmFreq
+W 0x0080:RADIO_fmFreq 0x3027
+K RADIO_fmFreq (RADIO_fmFreq+1)
+W 0x0080:(RADIO_fmFreq+1) 0x3026
+K (RADIO_fmFreq+1) RADIO_amFreq
+W 0x0080:RADIO_amFreq 0x3002
+K RADIO_amFreq (RADIO_amFreq+1)
+W 0x0080:(RADIO_amFreq+1)
+S CONSTi REL
+L _$CS1
+W 0x344D 0x3448 0x347A 0x3400
+S CONSTi REL
+L _$CS2
+W 0x344B 0x3448 0x347A 0x3400

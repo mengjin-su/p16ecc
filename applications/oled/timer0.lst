@@ -1,0 +1,81 @@
+                           1 ;**********************************************************
+                           2 ;  Microchip Enhanced PIC16F1xxx C Compiler (CC16E), v1.00
+                           3 ;  Thu Dec 07 16:12:49 2023
+                           4 ;**********************************************************
+                           5 	.invoke	"c:\p16ecc/include/pic16e"
+                           6 	.invoke	"c:\p16ecc/include/p16f18857"
+                           7 
+                           8 	.device	"p16f18857", 4096, 32768
+                           9 
+                          10 _$$::	.equ	0x2FF0	; stack init. value
+                          11 
+                          12 	.segment	BANKi (REL)
+                          13 tmr0Count::	.rs	1
+                          14 
+                          15 
+                          16 	.segment	CODE2 (REL) TMR0_init:0
+                          17 TMR0_init::
+                          18 ; :: timer0.c #7: T0CON0 = 0x80 | 0x2f;
+00000: 0x30AF             19 	movlw	175
+00001: 0x0140             20 	movlb	0
+00002: 0x009E             21 	movwf	30
+                          22 ; :: timer0.c #8: T0CON1 = (3 << 5) | 0x2;
+00003: 0x3062             23 	movlw	98
+                          24 	.bsel	30, 31
+00004: 0x009F             25 	movwf	31
+                          26 ; :: timer0.c #9: TMR0IF = 0;
+                          27 	.bsel	31, 1804
+00005: 0x128C             28 	bcf	12, 5
+                          29 ; :: timer0.c #10: TMR0IE = 1;
+                          30 	.bsel	1804, 1814
+00006: 0x1696             31 	bsf	22, 5
+00007: 0x0008             32 	return
+                          33 
+                          34 	.segment	CODE1 (REL) tmr0_isr:0
+                          35 	.psel	0, _$L4
+00000: 0x014E             36 	movlb	14
+00001: 0x1E8C             37 	btfss	12, 5
+00002: 0x2800?            38 	goto	_$L4
+                          39 ; :: timer0.c #17: TMR0L  = 68;
+00003: 0x3044             40 	movlw	68
+                          41 	.bsel	1804, 28
+00004: 0x009C             42 	movwf	28
+                          43 ; :: timer0.c #18: TMR0IF = 0;
+                          44 	.bsel	28, 1804
+00005: 0x128C             45 	bcf	12, 5
+                          46 ; :: timer0.c #19: tmr0Count++;
+                          47 	.bsel	1804, tmr0Count
+00006: 0x0A80?            48 	incf	tmr0Count, F
+                          49 _$L4:
+                          50 	.psel	_$L4, 0
+                          51 
+                          52 	.segment	CODE2 (REL) TMR0_delayMs:3
+                          53 TMR0_delayMs_$_ms:	.equ	TMR0_delayMs_$data$+0
+                          54 TMR0_delayMs_$1_t:	.equ	TMR0_delayMs_$data$+1
+                          55 TMR0_delayMs_$1:	.equ	TMR0_delayMs_$data$+2
+                          56 TMR0_delayMs::
+00000: 0x0140?            57 	.bsel	TMR0_delayMs_$data$
+00001: 0x0016             58 	moviw	INDF1++
+00002: 0x0080?            59 	movwf	TMR0_delayMs_$data$+0
+                          60 	.bsel	TMR0_delayMs_$data$, tmr0Count
+00003: 0x0800?            61 	movf	tmr0Count, W
+                          62 	.bsel	tmr0Count, TMR0_delayMs_$data$
+00004: 0x0080?            63 	movwf	TMR0_delayMs_$1_t
+                          64 	.psel	TMR0_delayMs, _$L7
+                          65 _$L7:
+                          66 ; :: timer0.c #26: while ( (unsigned char)(tmr0Count - t) < ms )
+00005: 0x0140?            67 	.bsel	TMR0_delayMs_$data$
+00006: 0x0800?            68 	movf	TMR0_delayMs_$1_t, W
+                          69 	.bsel	TMR0_delayMs_$data$, tmr0Count
+00007: 0x0200?            70 	subwf	tmr0Count, W
+                          71 	.bsel	tmr0Count, TMR0_delayMs_$data$
+00008: 0x0080?            72 	movwf	TMR0_delayMs_$1
+00009: 0x0800?            73 	movf	TMR0_delayMs_$_ms, W
+0000A: 0x0200?            74 	subwf	TMR0_delayMs_$1, W
+0000B: 0x1C03             75 	btfss	3, 0
+0000C: 0x2800?            76 	goto	_$L7
+                          77 ; :: timer0.c #26: ;
+                          78 	.psel	_$L7, TMR0_delayMs
+0000D: 0x0008             79 	return
+                          80 
+                          81 	.end

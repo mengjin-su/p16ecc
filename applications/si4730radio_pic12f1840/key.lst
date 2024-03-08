@@ -1,0 +1,284 @@
+                           1 ;**********************************************************
+                           2 ;  Microchip Enhanced PIC16F1xxx C Compiler (CC16E), v1.00
+                           3 ;  Mon Dec 04 17:19:05 2023
+                           4 ;**********************************************************
+                           5 	.invoke	"c:\p16ecc/include/pic16e"
+                           6 	.invoke	"c:\p16ecc/include/p12f1840"
+                           7 
+                           8 	.device	"p12f1840", 256, 4096
+                           9 
+                          10 _$$::	.equ	0x20F0	; stack init. value
+                          11 
+                          12 	.segment	BANKi (REL)
+                          13 keyValue:	.rs	1
+                          14 	.segment	BANKi (REL)
+                          15 keyTimer:	.rs	1
+                          16 	.segment	BANKi (REL)
+                          17 keyState:	.rs	1
+                          18 	.segment	BANKi (REL)
+                          19 keyRead:	.rs	1
+                          20 	.segment	BANKi (REL)
+                          21 keyLast:	.rs	1
+                          22 	.segment	BANKi (REL)
+                          23 keyElapse:	.rs	2
+                          24 
+                          25 
+                          26 	.segment	CODE2 (REL) KEY_init:0
+                          27 KEY_init::
+                          28 ; :: key.c #14: WPUEN    = 0;
+00000: 0x0021             29 	movlb	1
+00001: 0x1395             30 	bcf	21, 7
+                          31 ; :: key.c #15: WPUA    |= KEY_MASK;
+00002: 0x3031             32 	movlw	49
+                          33 	.bsel	149, 524
+00003: 0x048C             34 	iorwf	12, F
+                          35 ; :: key.c #16: TRISA   |= KEY_MASK;
+                          36 	.bsel	524, 140
+00004: 0x048C             37 	iorwf	12, F
+                          38 ; :: key.c #17: keyValue = 0;
+                          39 	.bsel	140, keyValue
+00005: 0x0180?            40 	clrf	keyValue
+                          41 ; :: key.c #18: keyState = KEY_IDLE;
+                          42 	.bsel	keyValue, keyState
+00006: 0x0180?            43 	clrf	keyState
+00007: 0x0008             44 	return
+                          45 
+                          46 	.segment	CODE2 (REL) KEY_scan:2
+                          47 KEY_scan_$1_key:	.equ	KEY_scan_$data$+0
+                          48 KEY_scan_$1:	.equ	KEY_scan_$data$+1
+                          49 KEY_scan::
+00000: 0x0020             50 	movlb	0
+00001: 0x080C             51 	movf	12, W
+00002: 0x3931             52 	andlw	49
+                          53 	.bsel	12, KEY_scan_$data$
+00003: 0x0080?            54 	movwf	KEY_scan_$1_key
+                          55 ; :: key.c #25: switch ( keyState )	
+                          56 ; :: key.c #26: case KEY_IDLE:
+                          57 	.bsel	KEY_scan_$data$, keyState
+00004: 0x0800?            58 	movf	keyState, W
+                          59 	.psel	KEY_scan, _$L4
+00005: 0x1903             60 	btfsc	3, 2
+00006: 0x2800?            61 	goto	_$L4
+                          62 ; :: key.c #35: case KEY_WAIT:
+00007: 0x3A01             63 	xorlw	1
+                          64 	.psel	_$L4, _$L5
+00008: 0x1903             65 	btfsc	3, 2
+00009: 0x2800?            66 	goto	_$L5
+                          67 ; :: key.c #50: case KEY_DONE:
+0000A: 0x0800?            68 	movf	keyState, W
+0000B: 0x3A02             69 	xorlw	2
+                          70 	.psel	_$L5, _$L6
+0000C: 0x1903             71 	btfsc	3, 2
+0000D: 0x2800?            72 	goto	_$L6
+                          73 	.psel	_$L6, _$L3
+0000E: 0x2800?            74 	goto	_$L3
+                          75 	.psel	_$L3, _$L4
+                          76 _$L4:
+                          77 ; :: key.c #27: if ( ANY_KEY(key) )
+0000F: 0x0020?            78 	.bsel	KEY_scan_$data$
+00010: 0x0800?            79 	movf	KEY_scan_$1_key, W
+00011: 0x3A31             80 	xorlw	49
+                          81 	.psel	_$L4, _$L3
+00012: 0x1903             82 	btfsc	3, 2
+00013: 0x2800?            83 	goto	_$L3
+                          84 ; :: key.c #29: keyRead  = key;
+00014: 0x0800?            85 	movf	KEY_scan_$1_key, W
+                          86 	.bsel	KEY_scan_$data$, keyRead
+00015: 0x0080?            87 	movwf	keyRead
+                          88 ; :: key.c #30: keyState = KEY_WAIT;
+00016: 0x3001             89 	movlw	1
+                          90 	.bsel	keyRead, keyState
+00017: 0x0080?            91 	movwf	keyState
+                          92 ; :: key.c #31: keyTimer = tmr0Count;
+                          93 	.bsel	keyState, tmr0Count
+00018: 0x0800?            94 	movf	tmr0Count, W
+                          95 	.bsel	tmr0Count, keyTimer
+00019: 0x0080?            96 	movwf	keyTimer
+                          97 ; :: key.c #33: break;
+0001A: 0x2800?            98 	goto	_$L3
+                          99 	.psel	_$L3, _$L5
+                         100 _$L5:
+                         101 ; :: key.c #36: if ( keyRead != key )
+0001B: 0x0020?           102 	.bsel	keyRead
+0001C: 0x0800?           103 	movf	keyRead, W
+                         104 	.bsel	keyRead, KEY_scan_$data$
+0001D: 0x0600?           105 	xorwf	KEY_scan_$1_key, W
+                         106 	.psel	_$L5, _$L11
+0001E: 0x1903            107 	btfsc	3, 2
+0001F: 0x2800?           108 	goto	_$L11
+                         109 ; :: key.c #37: keyState = KEY_IDLE;
+                         110 	.bsel	KEY_scan_$data$, keyState
+00020: 0x0180?           111 	clrf	keyState
+                         112 	.psel	_$L11, _$L3
+00021: 0x2800?           113 	goto	_$L3
+                         114 	.psel	_$L3, _$L11
+                         115 _$L11:
+                         116 ; :: key.c #38: else if ( (unsigned char)(tmr0Count - keyTimer) >= 20 )
+00022: 0x0020?           117 	.bsel	keyTimer
+00023: 0x0800?           118 	movf	keyTimer, W
+                         119 	.bsel	keyTimer, tmr0Count
+00024: 0x0200?           120 	subwf	tmr0Count, W
+                         121 	.bsel	tmr0Count, KEY_scan_$data$
+00025: 0x0080?           122 	movwf	KEY_scan_$1
+00026: 0x3014            123 	movlw	20
+00027: 0x0200?           124 	subwf	KEY_scan_$1, W
+                         125 	.psel	_$L11, _$L3
+00028: 0x1C03            126 	btfss	3, 0
+00029: 0x2800?           127 	goto	_$L3
+                         128 ; :: key.c #40: if ( KEY1_IN(keyRead) )
+                         129 	.bsel	KEY_scan_$data$, keyRead
+                         130 	.psel	_$L3, _$L17
+0002A: 0x1A80?           131 	btfsc	keyRead, 5
+0002B: 0x2800?           132 	goto	_$L17
+                         133 ; :: key.c #40: keyValue = KEY1;
+0002C: 0x3001            134 	movlw	1
+                         135 	.bsel	keyRead, keyValue
+0002D: 0x0080?           136 	movwf	keyValue
+                         137 _$L17:
+                         138 ; :: key.c #41: ( KEY2_IN(keyRead) )
+0002E: 0x0020?           139 	.bsel	keyRead
+                         140 	.psel	_$L17, _$L20
+0002F: 0x1A00?           141 	btfsc	keyRead, 4
+00030: 0x2800?           142 	goto	_$L20
+                         143 ; :: key.c #41: keyValue = KEY2;
+00031: 0x3002            144 	movlw	2
+                         145 	.bsel	keyRead, keyValue
+00032: 0x0080?           146 	movwf	keyValue
+                         147 _$L20:
+                         148 ; :: key.c #42: ( KEY3_IN(keyRead) )
+00033: 0x0020?           149 	.bsel	keyRead
+                         150 	.psel	_$L20, _$L23
+00034: 0x1800?           151 	btfsc	keyRead, 0
+00035: 0x2800?           152 	goto	_$L23
+                         153 ; :: key.c #42: keyValue = KEY3;
+00036: 0x3003            154 	movlw	3
+                         155 	.bsel	keyRead, keyValue
+00037: 0x0080?           156 	movwf	keyValue
+                         157 _$L23:
+                         158 ; :: key.c #43: = KEY_DONE;
+00038: 0x3002            159 	movlw	2
+00039: 0x0020?           160 	.bsel	keyState
+0003A: 0x0080?           161 	movwf	keyState
+                         162 ; :: key.c #44: keyTimer = tmr0Count;
+                         163 	.bsel	keyState, tmr0Count
+0003B: 0x0800?           164 	movf	tmr0Count, W
+                         165 	.bsel	tmr0Count, keyTimer
+0003C: 0x0080?           166 	movwf	keyTimer
+                         167 ; :: key.c #45: keyElapse= 600;
+0003D: 0x3058            168 	movlw	88
+                         169 	.bsel	keyTimer, keyElapse
+0003E: 0x0080?           170 	movwf	keyElapse
+0003F: 0x3002            171 	movlw	2
+                         172 	.bsel	keyElapse, keyElapse+1
+00040: 0x0080?           173 	movwf	keyElapse+1
+                         174 ; :: key.c #46: keyLast  = keyValue;
+                         175 	.bsel	keyElapse+1, keyValue
+00041: 0x0800?           176 	movf	keyValue, W
+                         177 	.bsel	keyValue, keyLast
+00042: 0x0080?           178 	movwf	keyLast
+                         179 ; :: key.c #48: break;
+                         180 	.psel	_$L23, _$L3
+00043: 0x2800?           181 	goto	_$L3
+                         182 	.psel	_$L3, _$L6
+                         183 _$L6:
+                         184 ; :: key.c #51: if ( ANY_KEY(key) )
+00044: 0x0020?           185 	.bsel	KEY_scan_$data$
+00045: 0x0800?           186 	movf	KEY_scan_$1_key, W
+00046: 0x3A31            187 	xorlw	49
+                         188 	.psel	_$L6, _$L26
+00047: 0x1903            189 	btfsc	3, 2
+00048: 0x2800?           190 	goto	_$L26
+                         191 ; :: key.c #53: keyTimer = tmr0Count;
+                         192 	.bsel	KEY_scan_$data$, tmr0Count
+00049: 0x0800?           193 	movf	tmr0Count, W
+                         194 	.bsel	tmr0Count, keyTimer
+0004A: 0x0080?           195 	movwf	keyTimer
+                         196 ; :: key.c #54: if ( keyElapse )
+                         197 	.bsel	keyTimer, keyElapse
+0004B: 0x0800?           198 	movf	keyElapse, W
+                         199 	.bsel	keyElapse, keyElapse+1
+0004C: 0x0400?           200 	iorwf	keyElapse+1, W
+                         201 	.psel	_$L26, _$L29
+0004D: 0x1903            202 	btfsc	3, 2
+0004E: 0x2800?           203 	goto	_$L29
+                         204 ; :: key.c #54: keyElapse--;
+0004F: 0x30FF            205 	movlw	255
+                         206 	.bsel	keyElapse+1, keyElapse
+00050: 0x0780?           207 	addwf	keyElapse, F
+                         208 	.bsel	keyElapse, keyElapse+1
+00051: 0x3D80?           209 	addwfc	keyElapse+1, F
+                         210 _$L29:
+                         211 ; :: key.c #55: ( keyElapse == 0 && keyLast != KEY1 )
+00052: 0x0020?           212 	.bsel	keyElapse
+00053: 0x0800?           213 	movf	keyElapse, W
+                         214 	.bsel	keyElapse, keyElapse+1
+00054: 0x0400?           215 	iorwf	keyElapse+1, W
+                         216 	.psel	_$L29, _$L3
+00055: 0x1D03            217 	btfss	3, 2
+00056: 0x2800?           218 	goto	_$L3
+                         219 	.bsel	keyElapse+1, keyLast
+00057: 0x0800?           220 	movf	keyLast, W
+00058: 0x3A01            221 	xorlw	1
+00059: 0x1903            222 	btfsc	3, 2
+0005A: 0x2800?           223 	goto	_$L3
+                         224 ; :: key.c #58: keyElapse= 100;
+0005B: 0x3064            225 	movlw	100
+                         226 	.bsel	keyLast, keyElapse
+0005C: 0x0080?           227 	movwf	keyElapse
+                         228 	.bsel	keyElapse, keyElapse+1
+0005D: 0x0180?           229 	clrf	keyElapse+1
+                         230 ; :: key.c #60: if ( keyLast == KEY2 )
+                         231 	.bsel	keyElapse+1, keyLast
+0005E: 0x0800?           232 	movf	keyLast, W
+0005F: 0x3A02            233 	xorlw	2
+                         234 	.psel	_$L3, _$L36
+00060: 0x1D03            235 	btfss	3, 2
+00061: 0x2800?           236 	goto	_$L36
+                         237 ; :: key.c #61: keyValue = FAST_INC;
+00062: 0x3004            238 	movlw	4
+                         239 	.bsel	keyLast, keyValue
+00063: 0x0080?           240 	movwf	keyValue
+                         241 	.psel	_$L36, _$L3
+00064: 0x2800?           242 	goto	_$L3
+                         243 	.psel	_$L3, _$L36
+                         244 _$L36:
+                         245 ; :: key.c #63: else						keyValue = FAST_DEC;
+00065: 0x3005            246 	movlw	5
+00066: 0x0020?           247 	.bsel	keyValue
+00067: 0x0080?           248 	movwf	keyValue
+                         249 	.psel	_$L36, _$L3
+00068: 0x2800?           250 	goto	_$L3
+                         251 	.psel	_$L3, _$L26
+                         252 _$L26:
+                         253 ; :: key.c #66: else if ( (unsigned char)(tmr0Count - keyTimer) >= 20 )
+00069: 0x0020?           254 	.bsel	keyTimer
+0006A: 0x0800?           255 	movf	keyTimer, W
+                         256 	.bsel	keyTimer, tmr0Count
+0006B: 0x0200?           257 	subwf	tmr0Count, W
+                         258 	.bsel	tmr0Count, KEY_scan_$data$
+0006C: 0x0080?           259 	movwf	KEY_scan_$1
+0006D: 0x3014            260 	movlw	20
+0006E: 0x0200?           261 	subwf	KEY_scan_$1, W
+                         262 	.psel	_$L26, _$L3
+0006F: 0x1C03            263 	btfss	3, 0
+00070: 0x2800?           264 	goto	_$L3
+                         265 ; :: key.c #67: keyState = KEY_IDLE;
+                         266 	.bsel	KEY_scan_$data$, keyState
+00071: 0x0180?           267 	clrf	keyState
+                         268 ; :: key.c #68: break;
+                         269 _$L3:
+                         270 	.psel	_$L3, KEY_scan
+00072: 0x0008            271 	return
+                         272 
+                         273 	.segment	CODE2 (REL) KEY_read:0
+                         274 KEY_read::
+                         275 ; :: key.c #74: WREG = keyValue;
+00000: 0x0020?           276 	.bsel	keyValue
+00001: 0x0800?           277 	movf	keyValue, W
+                         278 ; :: key.c #75: keyValue = 0;
+00002: 0x0180?           279 	clrf	keyValue
+                         280 ; :: key.c #76: return WREG;
+00003: 0x00F0            281 	movwf	112
+00004: 0x0008            282 	return
+                         283 
+                         284 	.end

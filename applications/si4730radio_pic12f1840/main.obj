@@ -1,0 +1,74 @@
+I "c:\p16ecc/include/pic16e"
+I "c:\p16ecc/include/p12f1840"
+I "c:\p16ecc/include/string"
+P "p12f1840" 256 4096
+E _$$ 8432
+S FUSE ABS 32775
+W 0x3FE4
+S FUSE ABS 32776
+W 0x3FFF
+S CODE0 ABS 0
+W 0x0000 0x3180|((main>>8)&127) 0x2800|(main&2047)
+S CODEi REL BEG
+G _$init$
+W 0x01FF 0x01FE
+S CODEi REL END
+W 0x0008
+S CODE1 ABS 4 BEG
+W 0x018A 0x0870 0x001D
+S CODE1 REL END
+W 0x0016 0x00F0 0x0009
+S CODE2 REL
+U main 0
+G main
+J main _$init$
+W 0x2000|(_$init$&2047) 0x30F0 0x0086 0x3020 0x0087
+; "; :: main.c #12: OSCCON = 0x70;"
+W 0x3070 0x0021 0x0099
+; "; :: main.c #13: OSCTUNE = 0x00;"
+K 153 152
+W 0x0198
+; "; :: main.c #14: BORCON = 0x00;"
+K 152 278
+W 0x0196
+J _$init$ _$L2
+L _$L2
+; "; :: main.c #15: while( !(OSCSTAT & (1 << 6)) )"
+W 0x0021 0x1F1A 0x2800|(_$L2&2047)
+; "; :: main.c #15: ;"
+; "; :: main.c #17: GIE = 1;"
+W 0x178B
+; "; :: main.c #18: ANSELA = 0;"
+K 154 396
+W 0x018C
+; "; :: main.c #20: TMR0_init();"
+J _$L2 TMR0_init
+W 0x2000|(TMR0_init&2047)
+; "; :: main.c #21: I2C_init();"
+J TMR0_init I2C_init
+W 0x2000|(I2C_init&2047)
+; "; :: main.c #22: OLED_init();"
+J I2C_init OLED_init
+W 0x2000|(OLED_init&2047)
+; "; :: main.c #23: KEY_init();"
+J OLED_init KEY_init
+W 0x2000|(KEY_init&2047)
+; "; :: main.c #24: RADIO_init();"
+J KEY_init RADIO_init
+W 0x2000|(RADIO_init&2047)
+J RADIO_init _$L5
+L _$L5
+; "; :: main.c #28: RADIO_poll();"
+J _$L5 RADIO_poll
+W 0x2000|(RADIO_poll&2047)
+J RADIO_poll _$L5
+W 0x2800|(_$L5&2047)
+J _$L5 main
+W 0x0008
+F main RADIO_poll
+F main RADIO_init
+F main KEY_init
+F main OLED_init
+F main I2C_init
+F main TMR0_init
+F main _$init$
