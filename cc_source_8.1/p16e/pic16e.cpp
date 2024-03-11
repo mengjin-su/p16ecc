@@ -1,0 +1,177 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+#include <string.h>
+#include <ctype.h>
+#include <time.h>
+#include "../common.h"
+extern "C" {
+#include "../cc.h"
+}
+#include "../sizer.h"
+#include "../pcoder.h"
+#include "../display.h"
+#include "../const.h"
+//#include "../option.h"
+#include "pic16e.h"
+#include "pic16e_reg.h"
+#include "pic16e_inst.h"
+#include "pic16e_asm.h"
+
+P16E_REG8 	*regWREG;
+P16E_REG8 	*regBSR;
+P16E_REG8 	*regPCLATH;
+P16E_FSR0	*regFSR0;
+
+PIC16E :: PIC16E(char *out_file, Nlist *_nlist, Pcoder *_pcoder)
+{
+	memset(this, 0, sizeof(PIC16E));	// clean up the class data
+
+	if( out_file ) fout = fopen(out_file, "w");
+	if ( fout == NULL )	fout = stdout;
+	asm16e = new P16E_ASM(fout);
+	nlist  = _nlist;
+	pcoder = _pcoder;
+
+	regWREG   = new P16E_REG8(WREG,   asm16e);
+	regBSR 	  = new P16E_REG8(BSR,    asm16e);
+	regPCLATH = new P16E_REG8(PCLATH, asm16e);
+	regFSR0   = new P16E_FSR0(asm16e);
+	accSave   = 4;
+	isrStackSet = true;
+}
+
+PIC16E :: ~PIC16E()
+{
+	fclose(fout);
+	delete asm16e;
+	delete regWREG;
+	delete regBSR;
+	delete regPCLATH;
+	delete regFSR0;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+void PIC16E :: run(void)
+{
+	time_t t = time (&t);	// current time
+	char *buf = STRBUF();	// string buffer
+	Nnode *nnp = NULL;
+	int ram_size = 0;
+	int stack_addr = 0;
+
+    sprintf(buf, ";**********************************************************\n"
+	             ";  Microchip Enhanced PIC16F1xxx C Compiler (CC16E), %s\n"
+				 ";  %s"
+				 ";**********************************************************\n",
+				 VERSION, ctime (&t));
+	ASM_OUTP(buf);
+
+	for (NameList *lp = sysIncludeList; lp; lp = lp->next)
+	{
+		strcpy(buf, lp->name);
+		int len = strlen(buf);
+		if ( buf[len-2] == '.' && toupper(buf[len-1]) == 'H' )
+		{
+			buf[len-2] = '\0';
+			char *s = STRBUF();
+			sprintf(s, "\"%s\"", buf);
+			ASM_CODE(_INVOKE, s);
+		}
+	}
+	delName(&sysIncludeList); ASM_OUTP("\n");
+
+	sprintf(buf, "\"pic16e\"");
+	if ( nlist )	// search Name List...
+	{
+		// device RAM name
+		nnp = nlist->search((char*)"__DEVICE", DEFINE);
+		if ( nnp && nnp->np[0] && nnp->np[0]->type == NODE_STR )
+			sprintf(buf, "\"%s\"", nnp->np[0]->str.str);
+
+		// device RAM size
+		nnp = nlist->search((char*)"__SRAM_SIZE", DEFINE);
+		if ( nnp && nnp->np[0] && nnp->np[0]->type == NODE_CON )
+		{
+			ram_size = nnp->np[0]->con.value;
+			sprintf(&buf[strlen(buf)], ", %d", ram_size);
+			stack_addr = 0x2000 + ram_size - 16;
+		}
+
+		// device FLASH size
+		nnp = nlist->search((char*)"__FLASH_SIZE", DEFINE);
+		if ( nnp && nnp->np[0] && nnp->np[0]->type == NODE_CON )
+		{
+			int flash_size = nnp->np[0]->con.value;
+			sprintf(&buf[strlen(buf)], ", %d", flash_size);
+		}
+
+		nnp = nlist->search((char*)"__STACK_INIT_ADDR", DEFINE);
+		if ( nnp && nnp->np[0] && nnp->np[0]->type == NODE_CON )
+			stack_addr = nnp->np[0]->con.value;
+	}
+	ASM_CODE(_DEVICE, buf);
+	ASM_OUTP("\n");
+
+	if ( stack_addr > 0 )
+	{
+		sprintf(buf, "%s\t0x%X\t; stack init. value\n", _RS, stack_addr);
+		ASM_LABL((char*)"_$$", true, buf);
+	}
+
+	// allocate memory for fixed address & public data
+	if ( outputData(dataLink) )
+		ASM_OUTP("\n");
+
+	ASM_OUTP("\n");
+	ASM_CODE(_END);
+}
+
+void PIC16E :: errPrint(const char *msg)
+{
+	if ( srcCode )
+		printf("%s - %s\n", msg, srcCode);
+	else
+		printf ("%s\n", msg);
+	errors++;
+}
+
+int PIC16E :: outputData(Dlink *dlink)
+{
+	if ( dlink == NULL ) return 0;
+	int count = 0;
+	char *buf = STRBUF();
+
+	for (Dnode *dnode = dlink->dlist; dnode; dnode = dnode->next)
+	{
+		attrib *attr = dnode->attr;
+		if ( attr == NULL || attr->isExtern ) continue;
+
+		int bank = attr->dataBank;
+		if ( bank == CONST || bank == EEPROM ) continue;
+
+		if ( dnode->atAddr >= 0 )	// allocate fixed address variables
+		{
+			int addr = dnode->atAddr;
+
+			// linear address conversion...
+			if ( bank == LINEAR && addr < 0x2000 && (addr & 0x7f) >= 0x20 )
+				addr = ((addr >> 7)*80 + ((addr&0x7f) - 0x20)) | 0x2000;
+
+			sprintf(buf, "BANK (ABS, =%d)", addr);
+			ASM_CODE(_SEGMENT, buf);
+		}
+		else						// allocate public variables
+		{
+			if ( bank == LINEAR )
+				ASM_CODE(_SEGMENT, "BANKn (REL)");
+			else
+				ASM_CODE(_SEGMENT, "BANKi (REL)");
+		}
+
+		sprintf(buf, "%s\t%d", _RS, sizer(attr, TOTAL_SIZE));
+		ASM_LABL(dnode->nameStr(), !attr->isStatic, buf);
+		count++;
+	}
+	return count;
+}
