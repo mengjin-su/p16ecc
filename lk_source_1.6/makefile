@@ -1,0 +1,38 @@
+CC  = gcc
+CXX = g++
+RM  = rm
+MV  = mv
+CP  = cp
+EXE = lk16e.exe
+OBJ = main.o lex.yy.o lnk.o common.o path.o segment.o memory.o symbol.o p16link.o \
+	  exp.o p16link0.o p16link1.o p16link2.o fcall.o fcall1.o fcall2.o p16link3.o \
+	  p16link4.o fwriter_hex.o fwriter_map.o disasm.o
+
+
+OPTIONS= -c -Os
+
+$(EXE): $(OBJ) lnk.h makefile
+	$(CXX) -static $(OBJ) -o $(EXE)
+	$(CP) $(EXE) ../bin
+	
+%.o: %.c lnk.h makefile
+	$(CC) $(OPTIONS) $<
+
+%.o: %.cpp lnk.h makefile
+	$(CXX) $(OPTIONS) $<
+
+lex.yy.c: lnk.l lnk.h makefile
+	flex lnk.l
+
+lnk.h: lnk.y makefile
+	bison -d lnk.y -o lnk.c
+
+lnk.c: lnk.y makefile
+	bison -d lnk.y -o lnk.c
+	
+clean:
+	$(RM) *.o
+	$(RM) lnk.h
+	$(RM) lnk.c
+	$(RM) lex.yy.c
+	$(RM) $(EXE)
