@@ -182,21 +182,24 @@ void Pcoder :: run8(oprNode_t *op)
 			{
 				int size0 = ip0->acceSize();
 				int	size1 = ip1->acceSize();
-				if ( size0 < size1 ) size0 = size1;
-				size0 = (size0 > 0)? size0-1: 0;
-				Item *ip = makeTemp();
-				ip->attr = newAttr(size0 + CHAR);
-				ip->attr->isUnsigned = (ip0->acceSign() && ip1->acceSign())? 0: 1;
+				if ( size0 <= 4 && size1 <= 4 )
+				{
+					if ( size0 < size1 ) size0 = size1;
+					size0 = (size0 > 0)? size0-1: 0;
+					Item *ip = makeTemp();
+					ip->attr = newAttr(size0 + CHAR);
+					ip->attr->isUnsigned = (ip0->acceSign() && ip1->acceSign())? 0: 1;
 
-				pp0->items[0] = ip->clone();
-				pp1->items[0] = ip->clone();
-				PUSH(ip);
+					pp0->items[0] = ip->clone();
+					pp1->items[0] = ip->clone();
+					PUSH(ip);
+					break;
+				}
 			}
-			else // something wrong, dump both pp0 and pp1
-			{
-				if ( pp0 ) delete pp0;
-				if ( pp1 ) delete pp1;
-			}
+			// something wrong, dump both pp0 and pp1
+			errPrint("Can't merge items for '?'!");
+			if ( pp0 ) delete pp0;
+			if ( pp1 ) delete pp1;
 			break;
 
 		case ',':
