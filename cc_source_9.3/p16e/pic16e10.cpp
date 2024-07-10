@@ -88,8 +88,17 @@ void PIC16E :: mul(Item *ip0, Item *ip1, Item *ip2)
 		delete acc;
 		return;
 	}
-	mov(ip0, ip1);
-	mulAssign(ip0, ip2);
+
+	if ( !related(ip0, ip2) )
+	{
+		mov(ip0, ip1);
+		mulAssign(ip0, ip2);
+	}
+	else
+	{
+		mov(ip0, ip2);
+		mulAssign(ip0, ip1);
+	}
 }
 
 void PIC16E :: mul8(Item *ip0, Item *ip1, Item *ip2)
@@ -127,7 +136,7 @@ void PIC16E :: mul8(Item *ip0, Item *ip1, Item *ip2)
 		acc = accItem(newAttr(INT));
 	else
 		acc->attr->type = INT;
-	
+
 	acc->attr->isUnsigned = 1;
 	mov(ip0, acc);
 	delete acc;
