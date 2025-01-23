@@ -8,7 +8,7 @@
 
 #define IS_SPACE(c)		((c) == ' ' || (c) == '\t')
 #define IS_SLASH(c)		((c) == '/' || (c) == '\\')
-#define IS_SEPERATOR(c)	((c) == '=' || (c) == ';' )
+#define IS_SEPERATOR(c)	((c) == '=' || (c) == ';' || (c) == ':')
 #define CC_FOLDER_NAME1	"\\p16ecc"
 #define CC_FOLDER_NAME2	"/p16ecc"
 #define CC_FOLDER_LEN	strlen(CC_FOLDER_NAME2)

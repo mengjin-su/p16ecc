@@ -22,7 +22,7 @@ static int  readLine(FILE *fin, char *buffer);
 static char *skipSP(char *line);
 
 #define IS_SLASH(c)		((c) == '/' || (c) == '\\')
-#define IS_SEPERATOR(c)	((c) == '=' || (c) == ';' )
+#define IS_SEPERATOR(c)	((c) == '=' || (c) == ';' || (c) == ':')
 
 //////////////////////////////////////////////////////////////////////////
 int cpp1(char *env[], char *file_in, char *file_out, bool sys_file)
