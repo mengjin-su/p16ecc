@@ -1,0 +1,230 @@
+#ifndef _STM8S_H
+#define _STM8S_H
+#include "../sizer.h"
+#include "stm8s_reg.h"
+#include "stm8s_asm.h"
+
+#define VERSION		"v1.02"
+
+#define CONST_ID_ITEM(ip)	(ip->type == ID_ITEM && ip->attr->dataBank == CONST)
+#define CONST_ITEM(ip)		(ip->type == CON_ITEM || ip->type == IMMD_ITEM)
+#define LOCAL_ADDR(ip)		(ip->type == IMMD_ITEM && isLocal(ip))
+
+#define ASM_OUTP			st8asm->output
+#define ASM_OUTP_LN			st8asm->output_ln
+#define ASM_LABL			st8asm->label
+#define ASM_LABL_LN			st8asm->label_ln
+#define ASM_CODE0			st8asm->code0
+#define ASM_CODE1			st8asm->code1
+#define ASM_CODE2			st8asm->code2
+#define ASM_CODE_LBL		st8asm->codeLbl
+#define ASM_I_CODE			st8asm->icode
+
+typedef enum {
+	FIXED_DATA_ALLOC,	// fixed address data
+	PUBLIC_DATA0_ALLOC,	//	bank0 data
+	PUBLIC_DATA_ALLOC,	//	generic data
+} RAM_DATA;
+
+typedef struct _LocalData {
+	char 				*name;
+	int 				offset;
+	struct _LocalData 	*next;
+} LocalData;
+
+enum {
+	J_CODE_EQ,  J_CODE_NE,  J_CODE_C,   J_CODE_NC,
+	J_CODE_PL,  J_CODE_MI,
+	J_CODE_SGT, J_CODE_SGE, J_CODE_SLT, J_CODE_SLE,
+	J_CODE_UGT, J_CODE_UGE, J_CODE_ULT, J_CODE_ULE
+};
+
+// --- stm8s1.cpp ---
+void addLocalData(LocalData **list, char *name, int offset);
+void delLocalData(LocalData **list);
+LocalData *getLocalData(LocalData *list, char *name);
+
+class STM8S {
+
+//	#define FAR_FUNC	(curFunc && curFunc->attr && curFunc->attr->isFar)
+
+	private:
+		FILE   		*fout;
+		STM8S_ASM 	*st8asm;
+		Fnode  		*curFunc;
+		int 		errCount;
+		Nlist  		*nlist;
+		Pcoder 		*pcoder;
+		char		*srcCode;
+		int 		errors;
+		int			accSave;
+		Pnode		*curPnode;
+
+		STM8S_reg 	*Reg_A,	// stm8s register A
+					*Reg_X,	// stm8s register X
+					*Reg_Y;	// stm8s register Y
+
+		int 		frameOffset;// local data offset
+		int			stackAddr;
+		LocalData	*localDataList;
+
+		// buffers for internal operation use
+		#define BUF_COUNT  32
+		int 	bufIndex;
+		char	buf[BUF_COUNT][4096];
+		char   *STRBUF() { return buf[bufIndex++ & (BUF_COUNT-1)]; }
+		char   *STRBUF(char *str, int bias) {
+				char *s = STRBUF();
+				if ( bias ) sprintf(s, "%s+%d", str, bias);
+				else	    strcpy(s, str);
+				return s;
+				}
+
+	public:
+		STM8S(char *out_file, Nlist *_nlist, Pcoder *_pcoder);
+		~STM8S();
+		void run(void);
+
+	private:
+		void errPrint(const char *msg, char *id=NULL);
+		int  outputData(RAM_DATA data_type, Dlink *dlink);
+		void outputASM0(Pnode *plist);
+		bool isLocal(Item *ip);
+		bool isBank0(Item *ip);
+		bool isDirect(Item *ip);
+		bool isIndirect(Item *ip, int *flags);
+		bool isGeneric(Item *ip);
+		bool farAcce(Item *ip);
+
+		// stm8s0.cpp
+		int  localOffset(Item *ip);
+		char *itemStr(Item *ip, int offset, int acce_size, char *reg=NULL);
+		char *itemStrI(Item *ip, int offset, int acce_size);
+		char *acceItem(Item *ip, int offset, int acce_size, char *reg=NULL);
+		void loadLocalAddr(Item *ip, char *reg);
+		bool usePtr(Item *ip0);
+		bool usePtr(Item *ip0, Item *ip1);
+		bool usePtr(Item *ip0, Item *ip1, Item *ip2);
+		bool farPtr(Item *ip);
+		char *setPtr(Item *ip, int index);
+		void setPtr(Item *ip, char *reg);
+		char *setPtr2(Item *ip, int index);
+		void setPtr(int addr, Item *ip);
+		Item *pushStack(Item *ip, int size);
+		void popStack(int size);
+		void call(char *);
+		void fetch(Item *ip, int offset, char *indf);
+		void store(Item *ip, int offset, char *indf);
+		Item *storeToACC(Item *ip, int limit);
+
+		// stm8s1.cpp
+		void funcBeg(Pnode *pp);
+		void funcEnd(void);
+		int  listData(Fnode *fp, Pnode *pnp);
+		int  vectorAddr(attrib *attr);
+
+		// stm8s2.cpp
+		void mov(Item *ip0, Item *ip1);
+		void movImmd(Item *ip0, Item *ip1);
+		void movBlock(Item *ip0, Item *ip1);
+
+		void moveToBit(Item *ip0, Item *ip1);
+		void moveFromBit(Item *ip0, Item *ip1);
+		void moveBetweenBits(Item *ip0, Item *ip1);
+
+		// stm8s3.cpp
+		void incValue(Item *ip, int value);
+		void neg(Item *ip0);
+		void neg(Item *ip0, Item *ip1);
+		void neg8(Item *ip0, Item *ip1);
+		void compl1(Item *ip0);
+		void compl1(Item *ip0, Item *ip1);
+		void compl1FromBit(Item *ip0, Item *ip1);
+		void compl1ToBit(Item *ip0, Item *ip1);
+		void notop(Item *ip0);
+		void notop(Item *ip0, Item *ip1);
+
+		// stm8s4.cpp
+		void add(Item *ip0, Item *ip1);
+		void add16(Item *ip0, Item *ip1);
+		void sub(Item *ip0, Item *ip1);
+		void sub16(Item *ip0, Item *ip1);
+		void andorxor(int code, Item *ip0, int n);
+		void andorxor(int code, Item *ip0, Item *ip1);
+		void andorxor_bit(int code, Item *ip0, Item *ip1);
+		void andorxor_bf(int code, Item *ip0, Item *ip1);
+
+		// stm8s5.cpp
+		void jzjnz(int code, Item *ip0, Item *ip1);
+		void jbzjbnz(int code, Item *ip0, Item *ip1, Item *ip2);
+		void pcall(Item *ip);
+		void jzjnz_incdec(int code, Item *ip0, Item *ip1, Item *ip2);
+
+		// stm8s6.cpp
+		void add(Item *ip0, Item *ip1, Item *ip2);
+		void add8(Item *ip0, Item *ip1, Item *ip2);
+		void sub(Item *ip0, Item *ip1, Item *ip2);
+		void sub8(Item *ip0, Item *ip1, Item *ip2);
+
+		// stm8s7.cpp
+		void jeqjne(int code, Item *ip0, Item *ip1, Item *ip2);
+		void jeqjne(int code, Item *ip0, Item *ip1, Item *ip2, int stack);
+		void jeqjneBit(int code, Item *ip0, Item *ip1, Item *ip2);
+
+		// stm8s8.cpp
+		void cmpJump(int code, Item *ip0, Item *ip1, Item *ip2);
+		void cmpJump(int code, Item *ip, bool signed_cmp);
+
+		// stm8s8.cpp
+		void leftAssign(Item *ip0, Item *ip1);
+		void leftAssign(Item *ip0, int n);
+		void rightAssign(Item *ip0, Item *ip1, bool sign0);
+		void rightAssign(Item *ip0, int n, bool sign0);
+
+		// stm8s9.cpp
+		void leftOpr(Item *ip0, Item *ip1, Item *ip2);
+		void leftOpr(Item *ip0, Item *ip1, int n);
+		void rightOpr(Item *ip0, Item *ip1, Item *ip2);
+		void rightOprIndf1(Item *ip0, Item *ip1);
+		void rightOpr(Item *ip0, Item *ip1);
+		void rightOpr(Item *ip0, Item *ip1, int byte_shift);
+
+		// stm8s10.cpp
+		void mulAssign(Item *ip0, Item *ip1);
+		void mulAssign8(Item *ip0, Item *ip1);
+		void mul(Item *ip0, Item *ip1, Item *ip2);
+		void mul8(Item *ip0, Item *ip1, Item *ip2);
+
+		// stm8s11.cpp
+		void divmodAssign(int code, Item *ip0, Item *ip1);
+		void divmodAssignU(int code, Item *ip0, Item *ip1);
+		void divmod(int code, Item *ip0, Item *ip1, Item *ip2);
+		void divmodU(int code, Item *ip0, Item *ip1, Item *ip2);
+		void divmod8(int code, Item *ip0, Item *ip1);
+		void divmod16(int code, Item *ip0, Item *ip1);
+		void pragma(Item *ip0, Item *ip1);
+		void divmod8(int code, Item *ip0, Item *ip1, Item *ip2);
+		void divmod16(int code, Item *ip0, Item *ip1, Item *ip2);
+
+		// stm8s12.cpp
+		void outputInit(Pnode *);
+		void outputConst(Pnode *);
+		void outputString(void);
+
+		// stm8s13.cpp
+		void andorxor(int code, Item *ip0, Item *ip1, Item *ip2);
+		void andorxor(int code, Item *ip0, Item *ip1, int n);
+		void andorxor8(int code, Item *ip0, Item *ip1, Item *ip2);
+		void asmfunc(Item *ip0, Item *ip1, Item *ip2);
+		void djnz(int code, Item *ip0, Item *ip1);
+
+		void casefetch(Item *ip0);
+		void casejump(Item *ip0, Item *ip1, Item *ip2);
+
+		void moveToBF(Item *ip0, Item *ip1);
+		void moveToBF(Item *ip0, int n);
+		void moveFromBF(Item *ip0, Item *ip1);
+		void getBF(Item *ip, int left_shift=0, int req_size=8);
+};
+
+#endif
